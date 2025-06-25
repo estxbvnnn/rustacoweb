@@ -1,16 +1,125 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import logo from '../assets/img/logorustaco.png';
-import rustpmc1 from '../assets/img/rustpmc1.png';
-import rustpmc2 from '../assets/img/rustpmc2.png';
 import rustpmc3 from '../assets/img/rustpmc3.png';
 import rustpmc4 from '../assets/img/rustpmc4.png';
 import logodiscord from '../assets/img/logodiscord.png';
+// Usa banderas desde CDN para evitar errores de importación
+const flagChile = "https://flagcdn.com/w20/cl.png";
+const flagUSA = "https://flagcdn.com/w20/us.png";
+const flagBrazil = "https://flagcdn.com/w20/br.png";
 import '../assets/styles.css';
 
+// Traducciones
+const translations = {
+  es: {
+    formato: 'Formato',
+    sobre: 'Sobre Rustaco',
+    equipos: 'Equipos',
+    stats: 'Stats',
+    infoAdicional: 'Información adicional',
+    infoAdicionalTexto: 'Pronto anunciaremos más detalles sobre premios, invitados especiales y sorpresas para la comunidad. ¡Mantente atento a nuestras redes sociales!',
+    formatoTitulo: 'Formato - Rustaco II',
+    formato1: 'Rustaco II contará con <b>96 streamers</b> participando en el evento.',
+    formato2: '12 equipos formados por 8 jugadores lucharán por el primer puesto.',
+    formato3: 'Cada equipo tendrá su propia isla donde podrán construir y equiparse estratégicamente para el enfrentamiento final.',
+    sobreTitulo: 'Sobre Rustaco',
+    sobreTexto: 'Rustaco fue formado por un grupo de amigos con experiencia brutal en Rust, que han decidido crear torneos y eventos competitivos para la comunidad LATAM.',
+    eventoTitulo: 'Rustaco II',
+    equiposParticipantes: 'Equipos participantes',
+    equiposTexto: 'Los equipos participantes serán anunciados próximamente. Por ahora, todos los equipos están a confirmar.',
+    equipo: 'Team',
+    aConfirmar: 'A confirmar',
+    discord1: 'Únete a nuestro Discord',
+    discord2: 'Haz click aquí para entrar al servidor',
+    footer: 'Rustaco Eventos — Inspirado en Rust. Todos los derechos reservados.',
+    equiposLabel: 'Equipos',
+    equiposDesc: 'Total de equipos participantes en el evento.',
+    jugadoresEquipo: 'Jugadores por equipo',
+    jugadoresEquipoDesc: 'Cada equipo estará compuesto por 8 jugadores.',
+    jugadores: 'Jugadores',
+    jugadoresDesc: 'Participantes confirmados para Rustaco 2.',
+    hora: 'Hora',
+    horaDesc: 'Horario de inicio del evento (hora chilena).',
+    fecha: 'Fecha',
+    fechaDesc: 'La fecha exacta será anunciada próximamente.',
+    modo: 'Modo',
+    modoDesc: 'El evento se desarrollará en formato competitivo.',
+  },
+  en: {
+    formato: 'Format',
+    sobre: 'About Rustaco',
+    equipos: 'Teams',
+    stats: 'Stats',
+    infoAdicional: 'Additional Information',
+    infoAdicionalTexto: 'We will soon announce more details about prizes, special guests, and surprises for the community. Stay tuned to our social networks!',
+    formatoTitulo: 'Format - Rustaco II',
+    formato1: 'Rustaco II will feature <b>96 streamers</b> participating in the event.',
+    formato2: '12 teams of 8 players will compete for first place.',
+    formato3: 'Each team will have its own island to build and prepare strategically for the final showdown.',
+    sobreTitulo: 'About Rustaco',
+    sobreTexto: 'Rustaco was formed by a group of friends with brutal Rust experience, who decided to create tournaments and competitive events for the LATAM community.',
+    eventoTitulo: 'Rustaco II',
+    equiposParticipantes: 'Participating Teams',
+    equiposTexto: 'Participating teams will be announced soon. For now, all teams are to be confirmed.',
+    equipo: 'Team',
+    aConfirmar: 'To be confirmed',
+    discord1: 'Join our Discord',
+    discord2: 'Click here to join the server',
+    footer: 'Rustaco Events — Inspired by Rust. All rights reserved.',
+    equiposLabel: 'Teams',
+    equiposDesc: 'Total teams participating in the event.',
+    jugadoresEquipo: 'Players per team',
+    jugadoresEquipoDesc: 'Each team will be made up of 8 players.',
+    jugadores: 'Players',
+    jugadoresDesc: 'Confirmed participants for Rustaco 2.',
+    hora: 'Time',
+    horaDesc: 'Event start time (Chile time).',
+    fecha: 'Date',
+    fechaDesc: 'The exact date will be announced soon.',
+    modo: 'Mode',
+    modoDesc: 'The event will be held in competitive format.',
+  },
+  pt: {
+    formato: 'Formato',
+    sobre: 'Sobre o Rustaco',
+    equipos: 'Equipes',
+    stats: 'Estatísticas',
+    infoAdicional: 'Informações adicionais',
+    infoAdicionalTexto: 'Em breve anunciaremos mais detalhes sobre prêmios, convidados especiais e surpresas para a comunidade. Fique ligado em nossas redes sociais!',
+    formatoTitulo: 'Formato - Rustaco II',
+    formato1: 'O Rustaco II contará com <b>96 streamers</b> participando do evento.',
+    formato2: '12 equipes formadas por 8 jogadores disputarão o primeiro lugar.',
+    formato3: 'Cada equipe terá sua própria ilha para construir e se equipar estrategicamente para o confronto final.',
+    sobreTitulo: 'Sobre o Rustaco',
+    sobreTexto: 'O Rustaco foi formado por um grupo de amigos com grande experiência em Rust, que decidiram criar torneios e eventos competitivos para a comunidade LATAM.',
+    eventoTitulo: 'Rustaco II',
+    equiposParticipantes: 'Equipes participantes',
+    equiposTexto: 'As equipes participantes serão anunciadas em breve. Por enquanto, todas as equipes estão a confirmar.',
+    equipo: 'Equipe',
+    aConfirmar: 'A confirmar',
+    discord1: 'Entre no nosso Discord',
+    discord2: 'Clique aqui para entrar no servidor',
+    footer: 'Rustaco Eventos — Inspirado em Rust. Todos os direitos reservados.',
+    equiposLabel: 'Equipes',
+    equiposDesc: 'Total de equipes participantes no evento.',
+    jugadoresEquipo: 'Jogadores por equipe',
+    jugadoresEquipoDesc: 'Cada equipe será composta por 8 jogadores.',
+    jugadores: 'Jogadores',
+    jugadoresDesc: 'Participantes confirmados para o Rustaco 2.',
+    hora: 'Hora',
+    horaDesc: 'Horário de início do evento (horário do Chile).',
+    fecha: 'Data',
+    fechaDesc: 'A data exata será anunciada em breve.',
+    modo: 'Modo',
+    modoDesc: 'O evento será realizado em formato competitivo.',
+  }
+};
+
+// Hook para animaciones al hacer scroll
 function useRevealOnScroll(ref, options = {}) {
   useEffect(() => {
+    if (!ref?.current) return;
     const node = ref.current;
-    if (!node) return;
     const handleIntersect = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -28,8 +137,7 @@ function useRevealOnScroll(ref, options = {}) {
   }, [ref, options.threshold]);
 }
 
-// TopBar: logo a la izquierda y botones a la derecha del logo
-const TopBar = ({ onFormatoClick, onInfoClick }) => (
+const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) => (
   <div
     style={{
       width: '100%',
@@ -38,40 +146,105 @@ const TopBar = ({ onFormatoClick, onInfoClick }) => (
       boxShadow: '0 2px 12px #0008',
       display: 'flex',
       alignItems: 'center',
-      padding: '0 4rem',
+      justifyContent: 'center',
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      gap: '2rem'
     }}
   >
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '2rem',
-      minWidth: 0,
-      marginLeft: 0
-    }}>
-      <img
-        src={logo}
-        alt="Rustaco Logo"
-        style={{
-          borderRadius: '50%',
-          width: 64,
-          height: 64,
-          objectFit: 'cover',
-          boxShadow: '0 1px 12px #0007',
-        }}
-      />
+    <div
+      style={{
+        width: '100%',
+        maxWidth: 1300,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 1.5rem',
+      }}
+    >
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '2rem',
-        marginLeft: '2rem'
+        minWidth: 0,
       }}>
-        <button className="nav-btn" onClick={onFormatoClick}>Formato</button>
-        <button className="nav-btn" onClick={onInfoClick}>Sobre Rustaco</button>
-        <a href="/events" className="nav-btn">Stats</a>
+        <img
+          src={logo}
+          alt="Rustaco Logo"
+          style={{
+            borderRadius: '50%',
+            width: 64,
+            height: 64,
+            objectFit: 'cover',
+            boxShadow: '0 1px 12px #0007',
+          }}
+        />
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2rem',
+          marginLeft: '2rem'
+        }}>
+          <button className="nav-btn" onClick={onFormatoClick}>{translations[lang].formato}</button>
+          <button className="nav-btn" onClick={onInfoClick}>{translations[lang].sobre}</button>
+          <button className="nav-btn" onClick={onTeamsClick}>{translations[lang].equipos}</button>
+          <a href="/events" className="nav-btn">{translations[lang].stats}</a>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+        }}
+      >
+        <button
+          onClick={() => setLang('es')}
+          style={{
+            background: lang === 'es' ? '#e25822' : '#23201a',
+            border: 'none',
+            borderRadius: 6,
+            padding: 2,
+            cursor: 'pointer',
+            marginRight: 2,
+            boxShadow: lang === 'es' ? '0 0 0 2px #e25822' : 'none',
+            transition: 'box-shadow 0.2s'
+          }}
+          title="Español LATAM"
+        >
+          <img src={flagChile} alt="Chile" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
+        </button>
+        <button
+          onClick={() => setLang('en')}
+          style={{
+            background: lang === 'en' ? '#3a4bd8' : '#23201a',
+            border: 'none',
+            borderRadius: 6,
+            padding: 2,
+            cursor: 'pointer',
+            marginRight: 2,
+            boxShadow: lang === 'en' ? '0 0 0 2px #3a4bd8' : 'none',
+            transition: 'box-shadow 0.2s'
+          }}
+          title="English USA"
+        >
+          <img src={flagUSA} alt="USA" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
+        </button>
+        <button
+          onClick={() => setLang('pt')}
+          style={{
+            background: lang === 'pt' ? '#27ae60' : '#23201a',
+            border: 'none',
+            borderRadius: 6,
+            padding: 2,
+            cursor: 'pointer',
+            boxShadow: lang === 'pt' ? '0 0 0 2px #27ae60' : 'none',
+            transition: 'box-shadow 0.2s'
+          }}
+          title="Português Brasil"
+        >
+          <img src={flagBrazil} alt="Brasil" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
+        </button>
       </div>
     </div>
   </div>
@@ -121,24 +294,13 @@ const Header = () => {
   );
 };
 
-const FormatoSection = React.forwardRef((props, ref) => {
+const FormatoSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  const listRef = useRef(null);
-  const imgRef = useRef(null);
-
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
-  useRevealOnScroll(titleRef, { threshold: 0.15 });
-  useRevealOnScroll(listRef, { threshold: 0.15 });
-  useRevealOnScroll(imgRef, { threshold: 0.15 });
 
   return (
     <section
-      ref={node => {
-        sectionRef.current = node;
-        if (typeof ref === 'function') ref(node);
-        else if (ref) ref.current = node;
-      }}
+      ref={ref || sectionRef}
       className="reveal"
       style={{
         maxWidth: 1600,
@@ -166,42 +328,32 @@ const FormatoSection = React.forwardRef((props, ref) => {
           minWidth: 0
         }}
       >
-        <div ref={titleRef} className="reveal">
-          <h2
-            style={{
-              fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
-              fontWeight: 800,
-              color: 'var(--rust-orange)',
-              marginBottom: '2rem',
-              fontSize: '2.5rem',
-              letterSpacing: '1px'
-            }}
-          >
-            Formato - Rustaco II
-          </h2>
-        </div>
-        <div ref={listRef} className="reveal">
-          <ul style={{
-            color: '#f5f5f5',
-            fontFamily: 'Montserrat, Arial, sans-serif',
-            fontWeight: 500,
-            fontSize: '1.5rem',
-            margin: 0,
-            maxWidth: 650,
-            paddingLeft: '1.2em',
-            listStyle: 'disc'
-          }}>
-            <li>
-              Rustaco II contará con <b>96 streamers</b> participando en el evento.
-            </li>
-            <li>
-              12 equipos formados por 8 jugadores lucharán por el primer puesto.
-            </li>
-            <li>
-              Cada equipo tendrá su propia isla donde podrán construir y equiparse estratégicamente para el enfrentamiento final.
-            </li>
-          </ul>
-        </div>
+        <h2
+          style={{
+            fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+            fontWeight: 800,
+            color: 'var(--rust-orange)',
+            marginBottom: '2rem',
+            fontSize: '2.5rem',
+            letterSpacing: '1px'
+          }}
+        >
+          {translations[lang].formatoTitulo}
+        </h2>
+        <ul style={{
+          color: '#f5f5f5',
+          fontFamily: 'Montserrat, Arial, sans-serif',
+          fontWeight: 500,
+          fontSize: '1.5rem',
+          margin: 0,
+          maxWidth: 650,
+          paddingLeft: '1.2em',
+          listStyle: 'disc'
+        }}>
+          <li dangerouslySetInnerHTML={{ __html: translations[lang].formato1 }} />
+          <li>{translations[lang].formato2}</li>
+          <li>{translations[lang].formato3}</li>
+        </ul>
       </div>
       <div
         style={{
@@ -213,7 +365,7 @@ const FormatoSection = React.forwardRef((props, ref) => {
           position: 'relative'
         }}
       >
-        <div ref={imgRef} className="logo-glow-container reveal">
+        <div className="logo-glow-container reveal">
           <img
             src={rustpmc4}
             alt="Evento Rust"
@@ -240,24 +392,13 @@ const FormatoSection = React.forwardRef((props, ref) => {
   );
 });
 
-const AboutSection = React.forwardRef((props, ref) => {
+const AboutSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
-  const titleRef = useRef(null);
-  const textRef = useRef(null);
-  const imgRef = useRef(null);
-
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
-  useRevealOnScroll(titleRef, { threshold: 0.15 });
-  useRevealOnScroll(textRef, { threshold: 0.15 });
-  useRevealOnScroll(imgRef, { threshold: 0.15 });
 
   return (
     <section
-      ref={node => {
-        sectionRef.current = node;
-        if (typeof ref === 'function') ref(node);
-        else if (ref) ref.current = node;
-      }}
+      ref={ref || sectionRef}
       className="reveal"
       style={{
         maxWidth: 1600,
@@ -286,7 +427,7 @@ const AboutSection = React.forwardRef((props, ref) => {
           position: 'relative'
         }}
       >
-        <div ref={imgRef} className="logo-glow-container reveal">
+        <div className="logo-glow-container reveal">
           <img
             src={rustpmc3}
             alt="Sobre Rustaco"
@@ -317,46 +458,42 @@ const AboutSection = React.forwardRef((props, ref) => {
           minWidth: 0
         }}
       >
-        <div ref={titleRef} className="reveal">
-          <h2
-            style={{
-              fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
-              fontWeight: 900,
-              color: 'var(--rust-orange)',
-              marginBottom: '2rem',
-              fontSize: '2.7rem',
-              letterSpacing: '1px',
-              textAlign: 'left'
-            }}
-          >
-            Sobre Rustaco
-          </h2>
-        </div>
-        <div ref={textRef} className="reveal">
-          <p style={{
-            color: '#f5f5f5',
-            fontFamily: 'Montserrat, Arial, sans-serif',
-            fontWeight: 500,
-            fontSize: '1.5rem',
-            margin: 0,
-            maxWidth: 700,
+        <h2
+          style={{
+            fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+            fontWeight: 900,
+            color: 'var(--rust-orange)',
+            marginBottom: '2rem',
+            fontSize: '2.7rem',
+            letterSpacing: '1px',
             textAlign: 'left'
-          }}>
-            Rustaco fue formado por un grupo de amigos con experiencia brutal en Rust, que han decidido crear torneos y eventos competitivos para la comunidad LATAM.
-          </p>
-        </div>
+          }}
+        >
+          {translations[lang].sobreTitulo}
+        </h2>
+        <p style={{
+          color: '#f5f5f5',
+          fontFamily: 'Montserrat, Arial, sans-serif',
+          fontWeight: 500,
+          fontSize: '1.5rem',
+          margin: 0,
+          maxWidth: 700,
+          textAlign: 'left'
+        }}>
+          {translations[lang].sobreTexto}
+        </p>
       </div>
     </section>
   );
 });
 
-const ExtraInfoSection = React.forwardRef((props, ref) => {
+const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref || sectionRef}
       className="reveal"
       style={{
         maxWidth: 900,
@@ -381,7 +518,7 @@ const ExtraInfoSection = React.forwardRef((props, ref) => {
         marginBottom: '1rem',
         letterSpacing: '1px'
       }}>
-        Información adicional
+        {translations[lang].infoAdicional}
       </h3>
       <p style={{
         color: '#fff',
@@ -391,21 +528,300 @@ const ExtraInfoSection = React.forwardRef((props, ref) => {
         margin: 0,
         maxWidth: 700
       }}>
-        Pronto anunciaremos más detalles sobre premios, invitados especiales y sorpresas para la comunidad. ¡Mantente atento a nuestras redes sociales!
+        {translations[lang].infoAdicionalTexto}
       </p>
     </section>
   );
 });
 
-// Banner flotante Discord (mejor visual y funcional)
-const DiscordBanner = () => (
+const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
+  const sectionRef = useRef(null);
+  useRevealOnScroll(sectionRef, { threshold: 0.15 });
+
+  const infoCards = [
+    {
+      label: translations[lang].equiposLabel,
+      value: '12',
+      icon: '👥',
+      description: translations[lang].equiposDesc
+    },
+    {
+      label: translations[lang].jugadoresEquipo,
+      value: '8',
+      icon: '🧑‍🤝‍🧑',
+      description: translations[lang].jugadoresEquipoDesc
+    },
+    {
+      label: translations[lang].jugadores,
+      value: lang === 'es' ? '96 streamers' : '96 streamers',
+      icon: '🎮',
+      description: translations[lang].jugadoresDesc
+    },
+    {
+      label: translations[lang].hora,
+      value: '17:00 (GMT-4)',
+      icon: '⏰',
+      description: translations[lang].horaDesc
+    },
+    {
+      label: translations[lang].fecha,
+      value: translations[lang].fecha === 'Fecha' ? 'A definir' : 'To be defined',
+      icon: '📅',
+      description: translations[lang].fechaDesc
+    },
+    {
+      label: translations[lang].modo,
+      value: translations[lang].modo === 'Modo' ? 'Competitivo' : 'Competitive',
+      icon: '🏆',
+      description: translations[lang].modoDesc
+    }
+  ];
+
+  return (
+    <section
+      ref={ref || sectionRef}
+      className="reveal"
+      style={{
+        maxWidth: 1100,
+        margin: '0 auto',
+        marginTop: '4rem',
+        marginBottom: '3rem',
+        padding: '2rem 1rem',
+        background: 'rgba(24,24,24,0.97)',
+        borderRadius: '28px',
+        boxShadow: '0 6px 32px #000b',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '2rem'
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1.5rem'
+      }}>
+        <div className="reveal">
+          <img
+            src={logo}
+            alt="Rustaco Logo"
+            style={{
+              width: 70,
+              height: 70,
+              borderRadius: '50%',
+              objectFit: 'cover',
+              boxShadow: '0 2px 12px #000a',
+              background: '#23201a',
+              border: '2px solid #e25822'
+            }}
+          />
+        </div>
+        <div className="reveal">
+          <h2 style={{
+            fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+            fontWeight: 900,
+            color: 'var(--rust-orange)',
+            fontSize: '2.1rem',
+            letterSpacing: '2px',
+            margin: 0,
+            textShadow: '2px 2px 8px #000a'
+          }}>
+            {translations[lang].eventoTitulo}
+          </h2>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '1.2rem',
+          justifyContent: 'center',
+          width: '100%'
+        }}
+      >
+        {infoCards.map((card, idx) => (
+          <div
+            key={card.label}
+            className="evento-info-card reveal"
+            style={{
+              background: 'linear-gradient(135deg, #23201a 70%, #e2582222 100%)',
+              borderRadius: '16px',
+              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #e25822cc',
+              padding: '1.2rem 1.4rem',
+              minWidth: 170,
+              maxWidth: 210,
+              minHeight: 120,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              border: 'none',
+              fontFamily: 'Montserrat, Arial, sans-serif',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              color: '#fff',
+              letterSpacing: '1px',
+              position: 'relative',
+              transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
+              overflow: 'hidden'
+            }}
+          >
+            <span style={{
+              fontSize: '1.7rem',
+              marginBottom: '0.1rem',
+              filter: 'drop-shadow(0 2px 6px #000a)'
+            }}>{card.icon}</span>
+            <span style={{
+              color: 'var(--rust-orange)',
+              fontWeight: 900,
+              fontSize: '1.35rem',
+              textShadow: '1px 1px 8px #000a'
+            }}>{card.value}</span>
+            <span style={{
+              fontSize: '0.98rem',
+              color: '#f39c12',
+              fontWeight: 600,
+              marginBottom: '0.1rem',
+              textAlign: 'center'
+            }}>{card.label}</span>
+            <span style={{
+              fontSize: '0.93rem',
+              color: '#e0e0e0',
+              fontWeight: 400,
+              textAlign: 'center',
+              marginTop: '0.1rem',
+              opacity: 0.85,
+              lineHeight: 1.3
+            }}>{card.description}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+});
+
+const TeamsSection = React.forwardRef(({ lang }, ref) => {
+  const sectionRef = useRef(null);
+  useRevealOnScroll(sectionRef, { threshold: 0.15 });
+
+  const teams = Array.from({ length: 12 }, (_, i) => ({
+    name: `${translations[lang].equipo} ${i + 1}`,
+    status: translations[lang].aConfirmar
+  }));
+
+  return (
+    <section
+      ref={ref || sectionRef}
+      className="reveal"
+      style={{
+        maxWidth: 1100,
+        margin: '0 auto',
+        marginTop: '2.5rem',
+        marginBottom: '3.5rem',
+        padding: 0,
+        background: 'none',
+        borderRadius: 0,
+        boxShadow: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '2.2rem'
+      }}
+    >
+      <h2 style={{
+        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+        fontWeight: 900,
+        color: 'var(--rust-orange)',
+        fontSize: '2rem',
+        letterSpacing: '2px',
+        margin: 0,
+        textShadow: '2px 2px 8px #000a'
+      }}>
+        {translations[lang].equiposParticipantes}
+      </h2>
+      <p
+        style={{
+          color: '#fff',
+          fontFamily: 'Montserrat, Arial, sans-serif',
+          fontSize: '1.15rem',
+          margin: 0,
+          marginBottom: '1.5rem',
+          textAlign: 'center',
+          opacity: 0.85,
+          maxWidth: 700
+        }}
+      >
+        {translations[lang].equiposTexto}
+      </p>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1.7rem',
+          width: '100%',
+          marginTop: '1.2rem'
+        }}
+      >
+        {teams.map((team, idx) => (
+          <div
+            key={team.name}
+            className="reveal"
+            style={{
+              background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
+              borderRadius: '16px',
+              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
+              padding: '1.5rem 1.2rem',
+              minHeight: 110,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.7rem',
+              border: 'none',
+              fontFamily: 'Montserrat, Arial, sans-serif',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              color: '#fff',
+              letterSpacing: '1px',
+              position: 'relative',
+              transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
+              overflow: 'hidden'
+            }}
+          >
+            <span style={{
+              fontSize: '1.3rem',
+              color: '#b3cfff',
+              fontWeight: 900,
+              textShadow: '1px 1px 8px #23272a'
+            }}>
+              {team.name}
+            </span>
+            <span style={{
+              fontSize: '1.08rem',
+              color: '#fff',
+              fontWeight: 600,
+              opacity: 0.85,
+              letterSpacing: '1px',
+              marginTop: '0.2rem'
+            }}>
+              {team.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+});
+
+const DiscordBanner = ({ lang }) => (
   <a
     href="https://discord.gg/rustaco"
     target="_blank"
     rel="noopener noreferrer"
     style={{
       position: 'fixed',
-      top: 90, // Justo debajo de la TopBar
+      top: 90,
       right: 24,
       zIndex: 9999,
       background: 'linear-gradient(90deg, #3a4bd8 60%, #5865f2 100%)',
@@ -455,7 +871,7 @@ const DiscordBanner = () => (
       display: 'flex',
       flexDirection: 'column'
     }}>
-      <span>Únete a nuestro Discord</span>
+      <span>{translations[lang].discord1}</span>
       <span style={{
         fontWeight: 500,
         fontSize: '0.97rem',
@@ -464,144 +880,20 @@ const DiscordBanner = () => (
         textDecoration: 'underline',
         cursor: 'pointer'
       }}>
-        Haz click aquí para entrar al servidor
+        {translations[lang].discord2}
       </span>
     </span>
   </a>
 );
 
-// Equipos participantes (Team 1 a Team 12, todos "A confirmar", sin fondo)
-const TeamsSection = React.forwardRef((props, ref) => {
-  const sectionRef = useRef(null);
-  useRevealOnScroll(sectionRef, { threshold: 0.15 });
-
-  // Teams array
-  const teams = [
-    { name: 'Team 1', status: 'A confirmar' },
-    { name: 'Team 2', status: 'A confirmar' },
-    { name: 'Team 3', status: 'A confirmar' },
-    { name: 'Team 4', status: 'A confirmar' },
-    { name: 'Team 5', status: 'A confirmar' },
-    { name: 'Team 6', status: 'A confirmar' },
-    { name: 'Team 7', status: 'A confirmar' },
-    { name: 'Team 8', status: 'A confirmar' },
-    { name: 'Team 9', status: 'A confirmar' },
-    { name: 'Team 10', status: 'A confirmar' },
-    { name: 'Team 11', status: 'A confirmar' },
-    { name: 'Team 12', status: 'A confirmar' },
-  ];
-
-  return (
-    <section
-      ref={sectionRef}
-      className="reveal"
-      style={{
-        maxWidth: 1100,
-        margin: '0 auto',
-        marginTop: '2.5rem',
-        marginBottom: '3.5rem',
-        padding: 0,
-        background: 'none',
-        borderRadius: 0,
-        boxShadow: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '2.2rem'
-      }}
-    >
-      <h2 style={{
-        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
-        fontWeight: 900,
-        color: 'var(--rust-orange)',
-        fontSize: '2rem',
-        letterSpacing: '2px',
-        margin: 0,
-        textShadow: '2px 2px 8px #000a'
-      }}>
-        Equipos participantes
-      </h2>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '1.7rem',
-          width: '100%',
-          marginTop: '1.2rem'
-        }}
-      >
-        {teams.map((team, idx) => (
-          <div
-            key={team.name}
-            className="reveal"
-            style={{
-              background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
-              borderRadius: '16px',
-              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
-              padding: '1.5rem 1.2rem',
-              minHeight: 110,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.7rem',
-              border: 'none',
-              fontFamily: 'Montserrat, Arial, sans-serif',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              color: '#fff',
-              letterSpacing: '1px',
-              position: 'relative',
-              transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
-              overflow: 'hidden'
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-5px) scale(1.03)';
-              e.currentTarget.style.boxShadow = '0 6px 24px #7289da88, 0 0 0 1.5px #7289da';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow = '0 2px 12px #000a, 0 0 0 1.5px #7289da88';
-            }}
-          >
-            <span style={{
-              fontSize: '1.3rem',
-              color: '#b3cfff',
-              fontWeight: 900,
-              textShadow: '1px 1px 8px #23272a'
-            }}>
-              {team.name}
-            </span>
-            <span style={{
-              fontSize: '1.08rem',
-              color: '#fff',
-              fontWeight: 600,
-              opacity: 0.85,
-              letterSpacing: '1px',
-              marginTop: '0.2rem'
-            }}>
-              {team.status}
-            </span>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-});
-
-// ...resto de componentes (EventoInfoSection, Footer, Home) igual...
-const EventoInfoSection = React.forwardRef((props, ref) => {
-  // ...sin cambios...
-  // (mantén tu código actual aquí)
-});
-
-const Footer = () => (
+const Footer = ({ lang }) => (
   <footer className="footer">
-    &copy; {new Date().getFullYear()} Rustaco Eventos &mdash; Inspirado en Rust. Todos los derechos reservados.
+    &copy; {new Date().getFullYear()} {translations[lang].footer}
   </footer>
 );
 
 const Home = () => {
+  const [lang, setLang] = useState('es');
   const formatoRef = useRef(null);
   const aboutRef = useRef(null);
   const eventoInfoRef = useRef(null);
@@ -614,18 +906,27 @@ const Home = () => {
   const scrollToAbout = () => {
     aboutRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+  const scrollToTeams = () => {
+    teamsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <>
-      <TopBar onFormatoClick={scrollToFormato} onInfoClick={scrollToAbout} />
+      <TopBar
+        onFormatoClick={scrollToFormato}
+        onInfoClick={scrollToAbout}
+        onTeamsClick={scrollToTeams}
+        lang={lang}
+        setLang={setLang}
+      />
       <Header />
-      <FormatoSection ref={formatoRef} />
-      <AboutSection ref={aboutRef} />
-      <ExtraInfoSection ref={extraInfoRef} />
-      <EventoInfoSection ref={eventoInfoRef} />
-      <TeamsSection ref={teamsRef} />
-      <DiscordBanner />
-      <Footer />
+      <FormatoSection ref={formatoRef} lang={lang} />
+      <AboutSection ref={aboutRef} lang={lang} />
+      <ExtraInfoSection ref={extraInfoRef} lang={lang} />
+      <EventoInfoSection ref={eventoInfoRef} lang={lang} />
+      <TeamsSection ref={teamsRef} lang={lang} />
+      <DiscordBanner lang={lang} />
+      <Footer lang={lang} />
     </>
   );
 };
