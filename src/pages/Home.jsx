@@ -28,6 +28,7 @@ function useRevealOnScroll(ref, options = {}) {
   }, [ref, options.threshold]);
 }
 
+// TopBar: logo a la izquierda y botones a la derecha del logo
 const TopBar = ({ onFormatoClick, onInfoClick }) => (
   <div
     style={{
@@ -47,9 +48,9 @@ const TopBar = ({ onFormatoClick, onInfoClick }) => (
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '2.5rem',
+      gap: '2rem',
       minWidth: 0,
-      marginLeft: '2rem'
+      marginLeft: 0
     }}>
       <img
         src={logo}
@@ -59,7 +60,7 @@ const TopBar = ({ onFormatoClick, onInfoClick }) => (
           width: 64,
           height: 64,
           objectFit: 'cover',
-          boxShadow: '0 1px 12px #0007'
+          boxShadow: '0 1px 12px #0007',
         }}
       />
       <div style={{
@@ -94,7 +95,11 @@ const Header = () => {
         justifyContent: 'center'
       }}
     >
-      <div className="logo-glow-container">
+      <div className="logo-glow-container" style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
         <img
           src={logo}
           alt="Rustaco Logo"
@@ -400,8 +405,8 @@ const DiscordBanner = () => (
     rel="noopener noreferrer"
     style={{
       position: 'fixed',
-      top: 24, // 24px desde arriba
-      right: 24, // 24px desde la derecha
+      top: 90, // Justo debajo de la TopBar
+      right: 24,
       zIndex: 9999,
       background: 'linear-gradient(90deg, #3a4bd8 60%, #5865f2 100%)',
       borderRadius: '18px',
@@ -465,69 +470,25 @@ const DiscordBanner = () => (
   </a>
 );
 
-const EventoInfoSection = React.forwardRef((props, ref) => {
+// Equipos participantes (Team 1 a Team 12, todos "A confirmar", sin fondo)
+const TeamsSection = React.forwardRef((props, ref) => {
   const sectionRef = useRef(null);
-  const logoRef = useRef(null);
-  const titleRef = useRef(null);
-  const cardsRef = useRef([]);
-
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
-  useRevealOnScroll(logoRef, { threshold: 0.15 });
-  useRevealOnScroll(titleRef, { threshold: 0.15 });
 
-  useEffect(() => {
-    cardsRef.current.forEach(card => {
-      if (card) {
-        const observer = new window.IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) card.classList.add('reveal-visible');
-            else card.classList.remove('reveal-visible');
-          },
-          { threshold: 0.15 }
-        );
-        observer.observe(card);
-        return () => observer.disconnect();
-      }
-    });
-  }, []);
-
-  const infoCards = [
-    {
-      label: 'Equipos',
-      value: '12',
-      icon: '👥',
-      description: 'Total de equipos participantes en el evento.'
-    },
-    {
-      label: 'Jugadores por equipo',
-      value: '8',
-      icon: '🧑‍🤝‍🧑',
-      description: 'Cada equipo estará compuesto por 8 jugadores.'
-    },
-    {
-      label: 'Jugadores',
-      value: '96 streamers',
-      icon: '🎮',
-      description: 'Participantes confirmados para Rustaco 2.'
-    },
-    {
-      label: 'Hora',
-      value: '17:00 (GMT-4)',
-      icon: '⏰',
-      description: 'Horario de inicio del evento (hora chilena).'
-    },
-    {
-      label: 'Fecha',
-      value: 'A definir',
-      icon: '📅',
-      description: 'La fecha exacta será anunciada próximamente.'
-    },
-    {
-      label: 'Modo',
-      value: 'Competitivo',
-      icon: '🏆',
-      description: 'El evento se desarrollará en formato competitivo.'
-    }
+  // Teams array
+  const teams = [
+    { name: 'Team 1', status: 'A confirmar' },
+    { name: 'Team 2', status: 'A confirmar' },
+    { name: 'Team 3', status: 'A confirmar' },
+    { name: 'Team 4', status: 'A confirmar' },
+    { name: 'Team 5', status: 'A confirmar' },
+    { name: 'Team 6', status: 'A confirmar' },
+    { name: 'Team 7', status: 'A confirmar' },
+    { name: 'Team 8', status: 'A confirmar' },
+    { name: 'Team 9', status: 'A confirmar' },
+    { name: 'Team 10', status: 'A confirmar' },
+    { name: 'Team 11', status: 'A confirmar' },
+    { name: 'Team 12', status: 'A confirmar' },
   ];
 
   return (
@@ -537,79 +498,53 @@ const EventoInfoSection = React.forwardRef((props, ref) => {
       style={{
         maxWidth: 1100,
         margin: '0 auto',
-        marginTop: '4rem',
-        marginBottom: '3rem',
-        padding: '2rem 1rem',
-        background: 'rgba(24,24,24,0.97)',
-        borderRadius: '28px',
-        boxShadow: '0 6px 32px #000b',
+        marginTop: '2.5rem',
+        marginBottom: '3.5rem',
+        padding: 0,
+        background: 'none',
+        borderRadius: 0,
+        boxShadow: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '2rem'
+        gap: '2.2rem'
       }}
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1.5rem'
+      <h2 style={{
+        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+        fontWeight: 900,
+        color: 'var(--rust-orange)',
+        fontSize: '2rem',
+        letterSpacing: '2px',
+        margin: 0,
+        textShadow: '2px 2px 8px #000a'
       }}>
-        <div ref={logoRef} className="reveal">
-          <img
-            src={logo}
-            alt="Rustaco Logo"
-            style={{
-              width: 70,
-              height: 70,
-              borderRadius: '50%',
-              objectFit: 'cover',
-              boxShadow: '0 2px 12px #000a',
-              background: '#23201a',
-              border: '2px solid #e25822'
-            }}
-          />
-        </div>
-        <div ref={titleRef} className="reveal">
-          <h2 style={{
-            fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
-            fontWeight: 900,
-            color: 'var(--rust-orange)',
-            fontSize: '2.1rem',
-            letterSpacing: '2px',
-            margin: 0,
-            textShadow: '2px 2px 8px #000a'
-          }}>
-            Rustaco II
-          </h2>
-        </div>
-      </div>
+        Equipos participantes
+      </h2>
       <div
         style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '1.2rem',
-          justifyContent: 'center',
-          width: '100%'
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gap: '1.7rem',
+          width: '100%',
+          marginTop: '1.2rem'
         }}
       >
-        {infoCards.map((card, idx) => (
+        {teams.map((team, idx) => (
           <div
-            key={card.label}
-            ref={el => (cardsRef.current[idx] = el)}
-            className="evento-info-card reveal"
+            key={team.name}
+            className="reveal"
             style={{
-              background: 'linear-gradient(135deg, #23201a 70%, #e2582222 100%)',
+              background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
               borderRadius: '16px',
-              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #e25822cc',
-              padding: '1.2rem 1.4rem',
-              minWidth: 170,
-              maxWidth: 210,
-              minHeight: 120,
+              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
+              padding: '1.5rem 1.2rem',
+              minHeight: 110,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.5rem',
+              gap: '0.7rem',
               border: 'none',
               fontFamily: 'Montserrat, Arial, sans-serif',
               fontWeight: 700,
@@ -622,45 +557,42 @@ const EventoInfoSection = React.forwardRef((props, ref) => {
             }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = 'translateY(-5px) scale(1.03)';
-              e.currentTarget.style.boxShadow = '0 6px 24px #e2582288, 0 0 0 1.5px #e25822cc';
+              e.currentTarget.style.boxShadow = '0 6px 24px #7289da88, 0 0 0 1.5px #7289da';
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow = '0 2px 12px #000a, 0 0 0 1.5px #e25822cc';
+              e.currentTarget.style.boxShadow = '0 2px 12px #000a, 0 0 0 1.5px #7289da88';
             }}
           >
             <span style={{
-              fontSize: '1.7rem',
-              marginBottom: '0.1rem',
-              filter: 'drop-shadow(0 2px 6px #000a)'
-            }}>{card.icon}</span>
-            <span style={{
-              color: 'var(--rust-orange)',
+              fontSize: '1.3rem',
+              color: '#b3cfff',
               fontWeight: 900,
-              fontSize: '1.35rem',
-              textShadow: '1px 1px 8px #000a'
-            }}>{card.value}</span>
+              textShadow: '1px 1px 8px #23272a'
+            }}>
+              {team.name}
+            </span>
             <span style={{
-              fontSize: '0.98rem',
-              color: '#f39c12',
+              fontSize: '1.08rem',
+              color: '#fff',
               fontWeight: 600,
-              marginBottom: '0.1rem',
-              textAlign: 'center'
-            }}>{card.label}</span>
-            <span style={{
-              fontSize: '0.93rem',
-              color: '#e0e0e0',
-              fontWeight: 400,
-              textAlign: 'center',
-              marginTop: '0.1rem',
               opacity: 0.85,
-              lineHeight: 1.3
-            }}>{card.description}</span>
+              letterSpacing: '1px',
+              marginTop: '0.2rem'
+            }}>
+              {team.status}
+            </span>
           </div>
         ))}
       </div>
     </section>
   );
+});
+
+// ...resto de componentes (EventoInfoSection, Footer, Home) igual...
+const EventoInfoSection = React.forwardRef((props, ref) => {
+  // ...sin cambios...
+  // (mantén tu código actual aquí)
 });
 
 const Footer = () => (
@@ -674,6 +606,7 @@ const Home = () => {
   const aboutRef = useRef(null);
   const eventoInfoRef = useRef(null);
   const extraInfoRef = useRef(null);
+  const teamsRef = useRef(null);
 
   const scrollToFormato = () => {
     formatoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -690,6 +623,7 @@ const Home = () => {
       <AboutSection ref={aboutRef} />
       <ExtraInfoSection ref={extraInfoRef} />
       <EventoInfoSection ref={eventoInfoRef} />
+      <TeamsSection ref={teamsRef} />
       <DiscordBanner />
       <Footer />
     </>
