@@ -3,11 +3,11 @@ import logo from '../assets/img/logorustaco.png';
 import rustpmc3 from '../assets/img/rustpmc3.png';
 import rustpmc4 from '../assets/img/rustpmc4.png';
 import logodiscord from '../assets/img/logodiscord.png';
-// Usa banderas desde CDN para evitar errores de importación
 const flagChile = "https://flagcdn.com/w20/cl.png";
 const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
 import '../assets/styles.css';
+import { Link } from 'react-router-dom';
 
 // Traducciones
 const translations = {
@@ -19,8 +19,8 @@ const translations = {
     infoAdicional: 'Información adicional',
     infoAdicionalTexto: 'Pronto anunciaremos más detalles sobre premios, invitados especiales y sorpresas para la comunidad. ¡Mantente atento a nuestras redes sociales!',
     formatoTitulo: 'Formato - Rustaco II',
-    formato1: 'Rustaco II contará con <b>96 streamers</b> participando en el evento.',
-    formato2: '12 equipos formados por 8 jugadores lucharán por el primer puesto.',
+    formato1: 'Rustaco II contará con <b>112 streamers</b> participando en el evento.',
+    formato2: '14 equipos formados por 8 jugadores lucharán por el primer puesto.',
     formato3: 'Cada equipo tendrá su propia isla donde podrán construir y equiparse estratégicamente para el enfrentamiento final.',
     sobreTitulo: 'Sobre Rustaco',
     sobreTexto: 'Rustaco fue formado por un grupo de amigos con experiencia brutal en Rust, que han decidido crear torneos y eventos competitivos para la comunidad LATAM.',
@@ -44,6 +44,7 @@ const translations = {
     fechaDesc: 'La fecha exacta será anunciada próximamente.',
     modo: 'Modo',
     modoDesc: 'El evento se desarrollará en formato competitivo.',
+    verReglas: 'Ver Reglas'
   },
   en: {
     formato: 'Format',
@@ -53,8 +54,8 @@ const translations = {
     infoAdicional: 'Additional Information',
     infoAdicionalTexto: 'We will soon announce more details about prizes, special guests, and surprises for the community. Stay tuned to our social networks!',
     formatoTitulo: 'Format - Rustaco II',
-    formato1: 'Rustaco II will feature <b>96 streamers</b> participating in the event.',
-    formato2: '12 teams of 8 players will compete for first place.',
+    formato1: 'Rustaco II will feature <b>112 streamers</b> participating in the event.',
+    formato2: '14 teams of 8 players will compete for first place.',
     formato3: 'Each team will have its own island to build and prepare strategically for the final showdown.',
     sobreTitulo: 'About Rustaco',
     sobreTexto: 'Rustaco was formed by a group of friends with brutal Rust experience, who decided to create tournaments and competitive events for the LATAM community.',
@@ -78,6 +79,7 @@ const translations = {
     fechaDesc: 'The exact date will be announced soon.',
     modo: 'Mode',
     modoDesc: 'The event will be held in competitive format.',
+    verReglas: 'See Rules'
   },
   pt: {
     formato: 'Formato',
@@ -87,8 +89,8 @@ const translations = {
     infoAdicional: 'Informações adicionais',
     infoAdicionalTexto: 'Em breve anunciaremos mais detalhes sobre prêmios, convidados especiais e surpresas para a comunidade. Fique ligado em nossas redes sociais!',
     formatoTitulo: 'Formato - Rustaco II',
-    formato1: 'O Rustaco II contará com <b>96 streamers</b> participando do evento.',
-    formato2: '12 equipes formadas por 8 jogadores disputarão o primeiro lugar.',
+    formato1: 'O Rustaco II contará com <b>112 streamers</b> participando do evento.',
+    formato2: '14 equipes formadas por 8 jogadores disputarão o primeiro lugar.',
     formato3: 'Cada equipe terá sua própria ilha para construir e se equipar estrategicamente para o confronto final.',
     sobreTitulo: 'Sobre o Rustaco',
     sobreTexto: 'O Rustaco foi formado por um grupo de amigos com grande experiência em Rust, que decidiram criar torneios e eventos competitivos para a comunidade LATAM.',
@@ -112,6 +114,7 @@ const translations = {
     fechaDesc: 'A data exata será anunciada em breve.',
     modo: 'Modo',
     modoDesc: 'O evento será realizado em formato competitivo.',
+    verReglas: 'Ver Regras'
   }
 };
 
@@ -189,6 +192,9 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           <button className="nav-btn" onClick={onInfoClick}>{translations[lang].sobre}</button>
           <button className="nav-btn" onClick={onTeamsClick}>{translations[lang].equipos}</button>
           <a href="/events" className="nav-btn">{translations[lang].stats}</a>
+          <Link to="/reglas" className="nav-btn">
+            {translations[lang].verReglas}
+          </Link>
         </div>
       </div>
       <div
@@ -294,13 +300,18 @@ const Header = () => {
   );
 };
 
+// --- Secciones con forwardRef ---
 const FormatoSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
   return (
     <section
-      ref={ref || sectionRef}
+      ref={sectionRef}
       className="reveal"
       style={{
         maxWidth: 1600,
@@ -396,9 +407,13 @@ const AboutSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
   return (
     <section
-      ref={ref || sectionRef}
+      ref={sectionRef}
       className="reveal"
       style={{
         maxWidth: 1600,
@@ -482,6 +497,29 @@ const AboutSection = React.forwardRef(({ lang }, ref) => {
         }}>
           {translations[lang].sobreTexto}
         </p>
+        <Link
+          to="/reglas"
+          style={{
+            marginTop: '2.2rem',
+            background: 'linear-gradient(90deg, #7289da 60%, #e25822 100%)',
+            color: '#fff',
+            fontWeight: 700,
+            fontSize: '1.15rem',
+            padding: '0.9rem 2.5rem',
+            border: 'none',
+            borderRadius: 14,
+            boxShadow: '0 2px 12px #0007',
+            cursor: 'pointer',
+            transition: 'background 0.2s, transform 0.2s',
+            letterSpacing: '1px',
+            textDecoration: 'none',
+            display: 'inline-block'
+          }}
+          onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
+          onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+        >
+          {translations[lang].verReglas}
+        </Link>
       </div>
     </section>
   );
@@ -491,9 +529,13 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
   return (
     <section
-      ref={ref || sectionRef}
+      ref={sectionRef}
       className="reveal"
       style={{
         maxWidth: 900,
@@ -538,10 +580,14 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
   const infoCards = [
     {
       label: translations[lang].equiposLabel,
-      value: '12',
+      value: '14',
       icon: '👥',
       description: translations[lang].equiposDesc
     },
@@ -553,7 +599,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
     },
     {
       label: translations[lang].jugadores,
-      value: lang === 'es' ? '96 streamers' : '96 streamers',
+      value: lang === 'es' ? '112 streamers' : '112 streamers',
       icon: '🎮',
       description: translations[lang].jugadoresDesc
     },
@@ -579,7 +625,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
 
   return (
     <section
-      ref={ref || sectionRef}
+      ref={sectionRef}
       className="reveal"
       style={{
         maxWidth: 1100,
@@ -705,14 +751,21 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
-  const teams = Array.from({ length: 12 }, (_, i) => ({
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
+  const teams = Array.from({ length: 14 }, (_, i) => ({
     name: `${translations[lang].equipo} ${i + 1}`,
     status: translations[lang].aConfirmar
   }));
 
+  const firstRow = teams.slice(0, 7);
+  const secondRow = teams.slice(7, 14);
+
   return (
     <section
-      ref={ref || sectionRef}
+      ref={sectionRef}
       className="reveal"
       style={{
         maxWidth: 1100,
@@ -754,16 +807,74 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
       >
         {translations[lang].equiposTexto}
       </p>
+      {/* Primera fila */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gridTemplateColumns: 'repeat(7, 1fr)',
           gap: '1.7rem',
           width: '100%',
           marginTop: '1.2rem'
         }}
       >
-        {teams.map((team, idx) => (
+        {firstRow.map((team) => (
+          <div
+            key={team.name}
+            className="reveal"
+            style={{
+              background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
+              borderRadius: '16px',
+              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
+              padding: '1.5rem 1.2rem',
+              minHeight: 110,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.7rem',
+              border: 'none',
+              fontFamily: 'Montserrat, Arial, sans-serif',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              color: '#fff',
+              letterSpacing: '1px',
+              position: 'relative',
+              transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
+              overflow: 'hidden'
+            }}
+          >
+            <span style={{
+              fontSize: '1.3rem',
+              color: '#b3cfff',
+              fontWeight: 900,
+              textShadow: '1px 1px 8px #23272a'
+            }}>
+              {team.name}
+            </span>
+            <span style={{
+              fontSize: '1.08rem',
+              color: '#fff',
+              fontWeight: 600,
+              opacity: 0.85,
+              letterSpacing: '1px',
+              marginTop: '0.2rem'
+            }}>
+              {team.status}
+            </span>
+          </div>
+        ))}
+      </div>
+      {/* Segunda fila */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(7, 1fr)',
+          gap: '1.7rem',
+          width: '100%',
+          marginTop: '1.2rem'
+        }}
+      >
+        {secondRow.map((team) => (
           <div
             key={team.name}
             className="reveal"

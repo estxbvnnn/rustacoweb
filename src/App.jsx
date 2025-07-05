@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Reglas from './pages/Reglas';
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <Route path="/events" component={Events} />
                 <Route path="/about" component={About} />
                 <Route path="/contact" component={Contact} />
+                <Route path="/reglas" component={Reglas} />
             </Switch>
         </Router>
     );
