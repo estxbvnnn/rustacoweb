@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'; // Cambia useNavigate por useHistory
 
 const Events = () => {
-    const navigate = useNavigate();
+    const history = useHistory();
 
     return (
         <div
@@ -62,7 +62,7 @@ const Events = () => {
                 ¡Gracias por tu interés y participación en Rustaco Events!
             </span>
             <button
-                onClick={() => navigate('/')}
+                onClick={() => history.push('/')}
                 style={{
                     marginTop: '2.2rem',
                     background: 'linear-gradient(90deg, #e25822 60%, #23201a 100%)',
