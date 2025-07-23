@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Events = () => {
+    const navigate = useNavigate();
+
     return (
         <div
             style={{
@@ -58,6 +61,27 @@ const Events = () => {
             >
                 ¡Gracias por tu interés y participación en Rustaco Events!
             </span>
+            <button
+                onClick={() => navigate('/')}
+                style={{
+                    marginTop: '2.2rem',
+                    background: 'linear-gradient(90deg, #e25822 60%, #23201a 100%)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '1.08rem',
+                    padding: '0.8rem 2.2rem',
+                    border: 'none',
+                    borderRadius: 14,
+                    boxShadow: '0 2px 12px #0007',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, transform 0.2s',
+                    letterSpacing: '1px'
+                }}
+                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
+                onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+            >
+                Volver al inicio
+            </button>
         </div>
     );
 };
