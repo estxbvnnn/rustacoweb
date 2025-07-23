@@ -15,12 +15,16 @@ import heavyHelmet from '../assets/img/heavy.plate.helmet.png';
 import heavyJacket from '../assets/img/heavy.plate.jacket.png';
 import heavyPants from '../assets/img/heavy.plate.pants.png';
 import scope8x from '../assets/img/weapon.mod.8x.scope.png';
+import scope16x from '../assets/img/weapon.mod.16x.scope.png';
+import rifleL96 from '../assets/img/rifle.l96.png';
 import muzzleBoost from '../assets/img/weapon.mod.muzzleboost.png';
 import oilFilterSilencer from '../assets/img/weapon.mod.oilfiltersilencer.png';
 import silencer from '../assets/img/weapon.mod.silencer.png';
 import sodaCanSilencer from '../assets/img/weapon.mod.sodacansilencer.png';
 import sulfurOre from '../assets/img/sulfur.ore.png';
 import hqMetalOre from '../assets/img/hq.metal.ore.png';
+import armoredDoor from '../assets/img/door.hinged.toptier.png';
+import armoredDoubleDoor from '../assets/img/door.double.hinged.toptier.png';
 import stone from '../assets/img/stones.png';
 import metalOre from '../assets/img/metal.ore.png';
 import wood from '../assets/img/wood.png';
@@ -158,47 +162,57 @@ const reglas = [
       </ul>
     )
   },
+{
+  titulo: "2. Ítems prohibidos durante el evento",
+  descripcion: (
+    <div>
+      Durante el evento, los siguientes ítems estarán <b>totalmente prohibidos</b> y no podrán ser usados bajo ninguna circunstancia:
+      <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
+        <li>
+          <img src={heavyHelmet} alt="Heavy Plate Helmet" style={iconStyle} />
+          <img src={heavyJacket} alt="Heavy Plate Jacket" style={iconStyle} />
+          <img src={heavyPants} alt="Heavy Plate Pants" style={iconStyle} />
+          Armaduras pesadas (<b>Heavy Plate Helmet, Jacket y Pants</b>)
+        </li>
+        <li>
+          <img src={scope8x} alt="8x Scope" style={iconStyle} />
+          <img src={scope16x} alt="16x Scope" style={iconStyle} />
+          Mira 8x (<b>8x Scope</b>) y Mira 16x (<b>16x Scope</b>)
+        </li>
+        <li>
+          <img src={rifleL96} alt="Rifle L96" style={iconStyle} />
+          Rifle L96 (<b>L96 Rifle</b>)
+        </li>
+        <li>
+          <img src={muzzleBoost} alt="Muzzle Boost" style={iconStyle} />
+          Muzzle Boost (<b>Bocacha de aceleración</b>)
+        </li>
+        <li>
+          <img src={oilFilterSilencer} alt="Oil Filter Silencer" style={iconStyle} />
+          Oil Filter Silencer (<b>Silenciador de filtro de aceite</b>)
+        </li>
+        <li>
+          <img src={silencer} alt="Silencer" style={iconStyle} />
+          Silencer (<b>Silenciador estándar</b>)
+        </li>
+        <li>
+          <img src={sodaCanSilencer} alt="Soda Can Silencer" style={iconStyle} />
+          Soda Can Silencer (<b>Silenciador de lata</b>)
+        </li>
+        <li>
+          <img src={armoredDoor} alt="Armored Door" style={iconStyle} />
+          <img src={armoredDoubleDoor} alt="Armored Double Door" style={iconStyle} />
+          Puertas blindadas (<b>Armored Door</b> e <b>Armored Double Door</b>)
+        </li>
+      </ul>
+      <span style={{ color: "#f39c12" }}>
+        El uso de cualquiera de estos ítems resultará en sanción inmediata para el jugador y/o el equipo.
+      </span>
+    </div>
+  )
+},
   {
-    titulo: "2. Ítems prohibidos durante el evento",
-    descripcion: (
-      <div>
-        Durante el evento, los siguientes ítems estarán <b>totalmente prohibidos</b> y no podrán ser usados bajo ninguna circunstancia:
-        <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-          <li>
-            <img src={heavyHelmet} alt="Heavy Plate Helmet" style={iconStyle} />
-            <img src={heavyJacket} alt="Heavy Plate Jacket" style={iconStyle} />
-            <img src={heavyPants} alt="Heavy Plate Pants" style={iconStyle} />
-            Armaduras pesadas (<b>Heavy Plate Helmet, Jacket y Pants</b>)
-          </li>
-          <li>
-            <img src={scope8x} alt="8x Scope" style={iconStyle} />
-            Mira 8x (<b>8x Scope</b>)
-          </li>
-          <li>
-            <img src={muzzleBoost} alt="Muzzle Boost" style={iconStyle} />
-            Muzzle Boost (<b>Bocacha de aceleración</b>)
-          </li>
-          <li>
-            <img src={oilFilterSilencer} alt="Oil Filter Silencer" style={iconStyle} />
-            Oil Filter Silencer (<b>Silenciador de filtro de aceite</b>)
-          </li>
-          <li>
-            <img src={silencer} alt="Silencer" style={iconStyle} />
-            Silencer (<b>Silenciador estándar</b>)
-          </li>
-          <li>
-            <img src={sodaCanSilencer} alt="Soda Can Silencer" style={iconStyle} />
-            Soda Can Silencer (<b>Silenciador de lata</b>)
-          </li>
-        </ul>
-        <span style={{ color: "#f39c12" }}>
-          El uso de cualquiera de estos ítems resultará en sanción inmediata para el jugador y/o el equipo.
-        </span>
-      </div>
-    )
-  },
-  {
-    titulo: "3. Farmeo de recursos (minerales)",
+    titulo: "3. Recursos",
     descripcion: (
       <div>
         El farmeo de recursos minerales estará configurado a <b>x2.0</b> durante todo el evento.
@@ -209,7 +223,7 @@ const reglas = [
           <img src={metalOre} alt="Metal Ore" style={iconStyle} title="Metal Ore" />
         </div>
         <span style={{ color: "#f39c12", display: 'block', marginTop: 8 }}>
-          Todos los minerales y recursos básicos tendrán este multiplicador.
+          Todos los minerales, recursos, componenentes, etc, tendran multiplicador x2.0.
         </span>
       </div>
     )
@@ -255,7 +269,7 @@ const reglas = [
           Cada isla cuenta con:
           <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
             <li>Un espacio designado para la <b>base principal (main)</b>.</li>
-            <li>Un área específica para la <b>zona de huerto</b> (6x7).</li>
+            <li>Un área específica para la <b>zona de huerto/garage</b> (9x8).</li>
             <li>Una <b>entrada a metro</b> exclusiva para cada isla.</li>
           </ul>
         </li>
@@ -348,11 +362,11 @@ const reglas = [
         <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 18 }}>
           <span>
             <img src={autoturret} alt="Auto Turret" style={iconStyle} />
-            <b>Auto Turret</b> (máx. 14)
+            <b>Auto Turret</b> (máx. 12)
           </span>
           <span>
             <img src={guntrap} alt="Gun Trap" style={iconStyle} />
-            <b>Escopeta Trampa</b> (máx. 14)
+            <b>Escopeta Trampa</b> (máx. 12)
           </span>
         </div>
       </div>
@@ -408,6 +422,7 @@ const reglas = [
           <li>TYardEvent</li>
           <li>AirfieldEvent</li>
           <li>Roams Event</li>
+          <li>Armored Train</li>
           <li>Sputnik</li>
           <li>Eventos customs</li>
         </ul>
@@ -437,7 +452,8 @@ const reglas = [
     titulo: "15. Stream obligatorio",
     descripcion: (
       <div>
-        Por cada equipo, obligatoria mente deben haber de 4-5 intengrantes <b>streameando el evento</b> durante su participación.
+        Por cada equipo, obligatoria mente deben haber de 4-5 intengrantes (ideal que todos) <b>streameando el evento</b> durante su participación.
+        <b> El capitan de equipo debe estar transmitiendo si o si.</b>
         <br />
         <span style={{ color: "#f39c12" }}>
           El mapa estará lo más optimizado posible para que todos puedan stremear sin problemas de rendimiento. El incumplimiento de esta norma puede resultar en sanciones o descalificación.

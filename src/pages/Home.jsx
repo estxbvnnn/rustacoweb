@@ -4,6 +4,7 @@ import rustpmc3 from '../assets/img/rustpmc3.png';
 import rustpmc4 from '../assets/img/rustpmc4.png';
 import logodiscord from '../assets/img/logodiscord.png';
 import mapaRustacooo from '../assets/img/maparustacooo.png';
+import poionakologo from '../assets/img/poionakologo.png'; // Agrega este import al inicio
 const flagChile = "https://flagcdn.com/w20/cl.png";
 const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
@@ -20,7 +21,7 @@ const translations = {
     infoAdicional: 'Información adicional',
     infoAdicionalTexto: 'Pronto anunciaremos más detalles sobre premios, invitados especiales y sorpresas para la comunidad. ¡Mantente atento a nuestras redes sociales!',
     formatoTitulo: 'Formato - Rustaco II',
-    formato1: 'Rustaco II contará con <b>112 streamers</b> participando en el evento.',
+    formato1: 'Rustaco II contará con <b>112 jugadores</b> participando en el evento.',
     formato2: '14 equipos formados por 8 jugadores lucharán por el primer puesto.',
     formato3: 'Cada equipo tendrá su propia isla donde podrán construir y equiparse estratégicamente para el enfrentamiento final.',
     sobreTitulo: 'Sobre Rustaco',
@@ -53,7 +54,7 @@ const translations = {
     infoAdicional: 'Additional Information',
     infoAdicionalTexto: 'We will soon announce more details about prizes, special guests, and surprises for the community. Stay tuned to our social networks!',
     formatoTitulo: 'Format - Rustaco II',
-    formato1: 'Rustaco II will feature <b>112 streamers</b> participating in the event.',
+    formato1: 'Rustaco II will feature <b>112 players</b> participating in the event.',
     formato2: '14 teams of 8 players will compete for first place.',
     formato3: 'Each team will have its own island to build and prepare strategically for the final showdown.',
     sobreTitulo: 'About Rustaco',
@@ -86,7 +87,7 @@ const translations = {
     infoAdicional: 'Informações adicionais',
     infoAdicionalTexto: 'Em breve anunciaremos mais detalhes sobre prêmios, convidados especiais e surpresas para a comunidade. Fique ligado em nossas redes sociais!',
     formatoTitulo: 'Formato - Rustaco II',
-    formato1: 'O Rustaco II contará com <b>112 streamers</b> participando do evento.',
+    formato1: 'O Rustaco II contará com <b>112 jogadores</b> participando do evento.',
     formato2: '14 equipes formadas por 8 jogadores disputarão o primeiro lugar.',
     formato3: 'Cada equipe terá sua própria ilha para construir e se equipar estrategicamente para o confronto final.',
     sobreTitulo: 'Sobre o Rustaco',
@@ -294,6 +295,267 @@ const Header = () => {
     </header>
   );
 };
+
+const SponsorSection = () => (
+  <div
+    className="sponsor-section"
+    style={{
+      maxWidth: 440,
+      margin: '2.5rem auto 0 auto',
+      background: 'linear-gradient(120deg, #23201a 80%, #e25822 100%)',
+      borderRadius: 22,
+      boxShadow: '0 8px 32px #000b',
+      padding: '2.2rem 2rem 1.5rem 2rem',
+      textAlign: 'center',
+      fontFamily: 'Montserrat, Arial, sans-serif',
+      color: '#fff',
+      position: 'relative',
+      border: '2px solid #e25822cc',
+      zIndex: 2
+    }}
+  >
+<div style={{ marginBottom: '1.2rem' }}>
+  <img
+    src={poionakologo}
+    alt="Poionako Logo"
+    style={{
+      width: '100%',
+      height: 'auto',
+      maxWidth: 120,
+      borderRadius: 0,
+      objectFit: 'contain',
+      boxShadow: 'none',
+      background: 'none',
+      border: 'none',
+      display: 'block',
+      margin: '0 auto'
+    }}
+  />
+</div>
+    <h3
+      style={{
+        fontWeight: 900,
+        fontSize: '1.35rem',
+        color: '#e25822',
+        marginBottom: '0.7rem',
+        letterSpacing: '1px',
+        textShadow: '0 1px 8px #000a'
+      }}
+    >
+      Evento sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
+    </h3>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      gap: 16,
+      marginTop: '1.2rem',
+      flexWrap: 'wrap'
+    }}>
+{/* Kick */}
+<a
+  href="https://kick.com/poionako"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    background: '#23201a',
+    color: '#53fc18',
+    fontWeight: 700,
+    fontSize: '1.09rem',
+    padding: '0.85rem 1.7rem',
+    borderRadius: 14,
+    textDecoration: 'none',
+    boxShadow: '0 4px 18px #53fc1888',
+    border: '2px solid #53fc18',
+    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.transform = 'scale(1.08)';
+    e.currentTarget.style.background = '#53fc18';
+    e.currentTarget.style.color = '#23201a';
+    e.currentTarget.style.boxShadow = '0 8px 24px #53fc18cc';
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.background = '#23201a';
+    e.currentTarget.style.color = '#53fc18';
+    e.currentTarget.style.boxShadow = '0 4px 18px #53fc1888';
+  }}
+>
+  <svg width="28" height="28" viewBox="0 0 32 32" style={{ borderRadius: 6, background: '#fff' }}>
+    <rect width="32" height="32" rx="6" fill="#53fc18"/>
+    <text x="16" y="22" textAnchor="middle" fontWeight="bold" fontSize="16" fill="#23201a" fontFamily="Arial">K</text>
+  </svg>
+  Kick
+</a>
+{/* TikTok */}
+<a
+  href="https://www.tiktok.com/@poionako"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    background: '#23201a',
+    color: '#FE2C55',
+    fontWeight: 700,
+    fontSize: '1.09rem',
+    padding: '0.85rem 1.7rem',
+    borderRadius: 14,
+    textDecoration: 'none',
+    boxShadow: '0 4px 18px #FE2C5588',
+    border: '2px solid #FE2C55',
+    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.transform = 'scale(1.08)';
+    e.currentTarget.style.background = '#FE2C55';
+    e.currentTarget.style.color = '#23201a';
+    e.currentTarget.style.boxShadow = '0 8px 24px #FE2C55cc';
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.background = '#23201a';
+    e.currentTarget.style.color = '#FE2C55';
+    e.currentTarget.style.boxShadow = '0 4px 18px #FE2C5588';
+  }}
+>
+  {/* TikTok SVG sin fondo blanco, solo el logo */}
+  <svg width="28" height="28" viewBox="0 0 48 48" style={{ display: 'block' }}>
+    <g>
+      <path d="M33.5 18.5c-2.2 0-4-1.8-4-4V10h-4v18.5c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4c.7 0 1.3.2 1.9.5v-4.2c-.6-.1-1.3-.2-1.9-.2-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8V22.5c1.2.7 2.6 1 4 1v-5z" fill="#fff"/>
+      <path d="M33.5 18.5v5c-1.4 0-2.8-.3-4-1V10h4v4.5c0 2.2 1.8 4 4 4z" fill="#25F4EE"/>
+      <path d="M29.5 22.5v4.2c-.6-.3-1.2-.5-1.9-.5-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4V22.5c-1.2-.7-2.6-1-4-1z" fill="#FE2C55"/>
+    </g>
+  </svg>
+  TikTok
+</a>
+{/* X (Twitter) */}
+<a
+  href="https://x.com/poionako"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    background: '#23201a',
+    color: '#fff',
+    fontWeight: 700,
+    fontSize: '1.09rem',
+    padding: '0.85rem 1.7rem',
+    borderRadius: 14,
+    textDecoration: 'none',
+    boxShadow: '0 4px 18px #0008',
+    border: '2px solid #fff',
+    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.transform = 'scale(1.08)';
+    e.currentTarget.style.background = '#fff';
+    e.currentTarget.style.color = '#23201a';
+    e.currentTarget.style.boxShadow = '0 8px 24px #000c';
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.background = '#23201a';
+    e.currentTarget.style.color = '#fff';
+    e.currentTarget.style.boxShadow = '0 4px 18px #0008';
+  }}
+>
+  {/* X SVG logo */}
+  <svg width="28" height="28" viewBox="0 0 32 32" style={{ display: 'block' }}>
+    <rect width="32" height="32" rx="7" fill="#23201a"/>
+    <path d="M9 9L23 23M23 9L9 23" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
+  </svg>
+  X
+</a>
+{/* YouTube */}
+<a
+  href="https://www.youtube.com/channel/UCO-XYXftKBvoiOiqeCQ4R4Q"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    background: '#23201a',
+    color: '#ff0000',
+    fontWeight: 700,
+    fontSize: '1.09rem',
+    padding: '0.85rem 1.7rem',
+    borderRadius: 14,
+    textDecoration: 'none',
+    boxShadow: '0 4px 18px #ff000088',
+    border: '2px solid #ff0000',
+    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.transform = 'scale(1.08)';
+    e.currentTarget.style.background = '#ff0000';
+    e.currentTarget.style.color = '#fff';
+    e.currentTarget.style.boxShadow = '0 8px 24px #ff0000cc';
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.background = '#23201a';
+    e.currentTarget.style.color = '#ff0000';
+    e.currentTarget.style.boxShadow = '0 4px 18px #ff000088';
+  }}
+>
+  <svg width="28" height="28" viewBox="0 0 48 48" style={{ borderRadius: 6, background: '#fff' }}>
+    <rect width="48" height="48" rx="10" fill="#ff0000"/>
+    <polygon points="19,15 36,24 19,33" fill="#fff"/>
+  </svg>
+  YouTube
+</a>
+{/* Twitch */}
+<a
+  href="https://www.twitch.tv/poionako"
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    background: '#23201a',
+    color: '#9147ff',
+    fontWeight: 700,
+    fontSize: '1.09rem',
+    padding: '0.85rem 1.7rem',
+    borderRadius: 14,
+    textDecoration: 'none',
+    boxShadow: '0 4px 18px #9147ff88',
+    border: '2px solid #9147ff',
+    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.transform = 'scale(1.08)';
+    e.currentTarget.style.background = '#9147ff';
+    e.currentTarget.style.color = '#fff';
+    e.currentTarget.style.boxShadow = '0 8px 24px #9147ffcc';
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.background = '#23201a';
+    e.currentTarget.style.color = '#9147ff';
+    e.currentTarget.style.boxShadow = '0 4px 18px #9147ff88';
+  }}
+>
+  <svg width="28" height="28" viewBox="0 0 32 32" style={{ borderRadius: 6, background: '#fff' }}>
+    <rect width="32" height="32" rx="7" fill="#9147ff"/>
+    <path d="M8 8v14h4v2h4v-2h4l4-4V8H8zm18 10.586L22.586 20H16v2h-2v-2H8V8h18v10.586z" fill="#fff"/>
+    <rect x="13" y="13" width="2" height="5" fill="#fff"/>
+    <rect x="18" y="13" width="2" height="5" fill="#fff"/>
+  </svg>
+  Twitch
+</a>
+    </div>
+  </div>
+);
 
 const MapaSection = React.forwardRef((props, ref) => {
   const sectionRef = useRef(null);
@@ -643,7 +905,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
     },
     {
       label: translations[lang].jugadores,
-      value: lang === 'es' ? '112 streamers' : '112 streamers',
+      value: lang === 'es' ? '112' : '112',
       icon: '🎮',
       description: translations[lang].jugadoresDesc
     },
@@ -1075,10 +1337,11 @@ const Home = () => {
         setLang={setLang}
       />
       <Header />
-      <MapaSection /> {/* <-- AGREGA ESTA LÍNEA PARA QUE SE VEA EL MAPA */}
+      <MapaSection />
       <FormatoSection ref={formatoRef} lang={lang} />
       <AboutSection ref={aboutRef} lang={lang} />
       <ExtraInfoSection ref={extraInfoRef} lang={lang} />
+      <SponsorSection /> 
       <EventoInfoSection ref={eventoInfoRef} lang={lang} />
       <TeamsSection ref={teamsRef} lang={lang} />
       <DiscordBanner lang={lang} />
