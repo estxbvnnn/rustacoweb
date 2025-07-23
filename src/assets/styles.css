@@ -322,3 +322,87 @@ html {
   opacity: 1 !important;
   transform: none !important;
 }
+
+/* General container for both pages */
+.home-container,
+.reglas-container {
+  max-width: 1050px;
+  margin: 3rem auto;
+  background: rgba(24,24,24,0.98);
+  border-radius: 32px;
+  box-shadow: 0 16px 64px #000c;
+  padding: 3.2rem 2.5rem 2.5rem 2.5rem;
+  color: #fff;
+  font-family: 'Montserrat', Arial, sans-serif;
+  border: 2px solid #e2582244;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Responsive styles */
+@media (max-width: 700px) {
+  .home-container,
+  .reglas-container {
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem !important;
+    border-radius: 12px !important;
+    max-width: 99vw !important;
+    margin: 0.5rem auto !important;
+  }
+  .regla-card,
+  .home-card {
+    padding: 1.2rem 0.7rem !important;
+    margin-bottom: 1.1rem !important;
+    border-radius: 10px !important;
+    font-size: 0.97rem !important;
+  }
+  .regla-card img,
+  .home-card img {
+    width: 28px !important;
+    height: 28px !important;
+    margin-right: 6px !important;
+  }
+  h1 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+  .regla-card h3,
+  .home-card h3 {
+    font-size: 1rem !important;
+  }
+  .reglas-container img[alt="Mapa del evento"],
+  .home-container img[alt="Mapa del evento"] {
+    max-width: 98vw !important;
+    border-radius: 8px !important;
+  }
+  .reglas-container > div[style*="display: flex"][style*="justify-content: center"],
+  .home-container > div[style*="display: flex"][style*="justify-content: center"] {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .reglas-container button,
+  .home-container button {
+    width: 100% !important;
+    font-size: 1rem !important;
+    padding: 0.7rem 0 !important;
+    margin-bottom: 0.5rem;
+  }
+  .regla-card,
+  .home-card {
+    gap: 0.7rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* Opcional: mejora la visualización de listas y textos */
+@media (max-width: 500px) {
+  .regla-card ul,
+  .home-card ul {
+    padding-left: 1em !important;
+    font-size: 0.93rem !important;
+  }
+  .regla-card,
+  .home-card {
+    font-size: 0.93rem !important;
+  }
+}

@@ -25,6 +25,7 @@ import stone from '../assets/img/stones.png';
 import metalOre from '../assets/img/metal.ore.png';
 import wood from '../assets/img/wood.png';
 import metalFragments from '../assets/img/metal.fragments.png';
+import mapaRustacooo from '../assets/img/maparustacooo.png';
 
 const SideAnimation = ({ side = 'left' }) => (
   <div
@@ -343,7 +344,7 @@ const reglas = [
     titulo: "10. Límite de torretas y trampas",
     descripcion: (
       <div>
-        El uso de torretas está limitado a un máximo de <b>14 Auto Turrets</b> y <b>14 Escopetas Trampa</b> por equipo.
+        El uso de torretas está limitado a un máximo de <b>12 Auto Turrets</b> y <b>12 Escopetas Trampa</b> por equipo.
         <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 18 }}>
           <span>
             <img src={autoturret} alt="Auto Turret" style={iconStyle} />
@@ -401,12 +402,14 @@ const reglas = [
       <div>
         Durante todo el evento se realizarán diferentes <b>eventos especiales</b> para todos los equipos y jugadores, incluyendo:
         <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-          <li>Convoy</li>
-          <li>Crates con dogtags o variedad</li>
-          <li>Trainyard Event</li>
-          <li>Airfield Event</li>
-          <li>Eventos personalizados</li>
-          <li>Roams</li>
+          <li>Convoys</li>
+          <li>Crates Guards</li>
+          <li>Cargo Plane Crash</li>
+          <li>TYardEvent</li>
+          <li>AirfieldEvent</li>
+          <li>Roams Event</li>
+          <li>Sputnik</li>
+          <li>Eventos customs</li>
         </ul>
         <span style={{ color: "#f39c12" }}>
           La participación en estos eventos es opcional pero recomendada para obtener ventajas y recompensas.
@@ -434,7 +437,7 @@ const reglas = [
     titulo: "15. Stream obligatorio",
     descripcion: (
       <div>
-        Todos los jugadores deben estar <b>streameando el evento</b> durante su participación.
+        Por cada equipo, obligatoria mente deben haber de 4-5 intengrantes <b>streameando el evento</b> durante su participación.
         <br />
         <span style={{ color: "#f39c12" }}>
           El mapa estará lo más optimizado posible para que todos puedan stremear sin problemas de rendimiento. El incumplimiento de esta norma puede resultar en sanciones o descalificación.
@@ -457,7 +460,11 @@ const reglas = [
     titulo: "17. Uso de la APP Rust+",
     descripcion: (
       <div>
-        El uso de la aplicación <b>Rust+</b> está permitido durante el evento. Puedes utilizarla para gestionar alarmas, cámaras, automatizaciones y cualquier funcionalidad que la app oficial de Rust ofrece para mejorar la experiencia de tu equipo.
+        <b>No está permitido el uso de la aplicación Rust+ durante el evento.</b> <br />
+        Queremos fomentar una experiencia <b>vanilla</b> auténtica, donde no sepas en todo momento lo que ocurre en tu base y debas confiar en tu instinto, trabajo en equipo y vigilancia. <br />
+        <span style={{ color: "#f39c12" }}>
+          La incertidumbre y el factor sorpresa son parte fundamental de la experiencia Rust.
+        </span>
       </div>
     )
   },
@@ -465,7 +472,7 @@ const reglas = [
     titulo: "18. Sistema de tickets",
     descripcion: (
       <div>
-        El sistema de <b>tickets</b> estará disponible las 24 horas para todos los participantes del torneo. Los tickets enviados serán recibidos por la administración y se intentará dar respuesta de forma inmediata.
+        El sistema de <b>tickets</b> estará disponible las 24 horas para solo los capitanes de equipo. Los tickets enviados serán recibidos por la administración y se intentará dar respuesta de forma inmediata.
       </div>
     )
   },
@@ -525,6 +532,23 @@ const Reglas = () => {
       >
         Reglas del Evento
       </h1>
+
+      {/* Imagen del mapa entre el título y la regla 1 */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem' }}>
+        <img
+          src={mapaRustacooo}
+          alt="Mapa del evento"
+          style={{
+            width: '100%',
+            maxWidth: 520,
+            height: 'auto',
+            borderRadius: 18,
+            boxShadow: '0 4px 24px #000a',
+            background: '#181818'
+          }}
+        />
+      </div>
+
       <div>
         {reglas.map((regla, idx) => (
           <div
@@ -666,7 +690,7 @@ const Reglas = () => {
         `}
       </style>
     </div>
-    );
+  );
 }
 
 export default Reglas;

@@ -3,6 +3,7 @@ import logo from '../assets/img/logorustaco.png';
 import rustpmc3 from '../assets/img/rustpmc3.png';
 import rustpmc4 from '../assets/img/rustpmc4.png';
 import logodiscord from '../assets/img/logodiscord.png';
+import mapaRustacooo from '../assets/img/maparustacooo.png';
 const flagChile = "https://flagcdn.com/w20/cl.png";
 const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
@@ -40,8 +41,6 @@ const translations = {
     jugadoresDesc: 'Participantes confirmados para Rustaco 2.',
     hora: 'Hora',
     horaDesc: 'Horario de inicio del evento (hora chilena).',
-    fecha: 'Fecha',
-    fechaDesc: 'La fecha exacta será anunciada próximamente.',
     modo: 'Modo',
     modoDesc: 'El evento se desarrollará en formato competitivo.',
     verReglas: 'Ver Reglas'
@@ -75,8 +74,6 @@ const translations = {
     jugadoresDesc: 'Confirmed participants for Rustaco 2.',
     hora: 'Time',
     horaDesc: 'Event start time (Chile time).',
-    fecha: 'Date',
-    fechaDesc: 'The exact date will be announced soon.',
     modo: 'Mode',
     modoDesc: 'The event will be held in competitive format.',
     verReglas: 'See Rules'
@@ -110,8 +107,6 @@ const translations = {
     jugadoresDesc: 'Participantes confirmados para o Rustaco 2.',
     hora: 'Hora',
     horaDesc: 'Horário de início do evento (horário do Chile).',
-    fecha: 'Data',
-    fechaDesc: 'A data exata será anunciada em breve.',
     modo: 'Modo',
     modoDesc: 'O evento será realizado em formato competitivo.',
     verReglas: 'Ver Regras'
@@ -299,6 +294,55 @@ const Header = () => {
     </header>
   );
 };
+
+const MapaSection = React.forwardRef((props, ref) => {
+  const sectionRef = useRef(null);
+  useRevealOnScroll(sectionRef, { threshold: 0.15 });
+
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="reveal"
+      style={{
+        maxWidth: 900,
+        margin: '0 auto',
+        marginTop: '2.5rem',
+        marginBottom: '2.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1.5rem'
+      }}
+    >
+      <h2 style={{
+        color: 'var(--rust-orange)',
+        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+        fontWeight: 900,
+        fontSize: '2rem',
+        marginBottom: '1rem',
+        letterSpacing: '1px',
+        textAlign: 'center'
+      }}>
+      </h2>
+      <img
+        src={mapaRustacooo}
+        alt=""
+        style={{
+          width: '100%',
+          maxWidth: 520,
+          height: 'auto',
+          borderRadius: 18,
+          boxShadow: '0 4px 24px #000a',
+          background: '#181818'
+        }}
+      />
+    </section>
+  );
+});
 
 // --- Secciones con forwardRef ---
 const FormatoSection = React.forwardRef(({ lang }, ref) => {
@@ -611,7 +655,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
     },
     {
       label: translations[lang].fecha,
-      value: translations[lang].fecha === 'Fecha' ? 'A definir' : 'To be defined',
+      value: '11, 12, 13 & 14 de septiembre', 
       icon: '📅',
       description: translations[lang].fechaDesc
     },
@@ -1031,6 +1075,7 @@ const Home = () => {
         setLang={setLang}
       />
       <Header />
+      <MapaSection /> {/* <-- AGREGA ESTA LÍNEA PARA QUE SE VEA EL MAPA */}
       <FormatoSection ref={formatoRef} lang={lang} />
       <AboutSection ref={aboutRef} lang={lang} />
       <ExtraInfoSection ref={extraInfoRef} lang={lang} />
@@ -1038,6 +1083,148 @@ const Home = () => {
       <TeamsSection ref={teamsRef} lang={lang} />
       <DiscordBanner lang={lang} />
       <Footer lang={lang} />
+      {/* --- CSS RESPONSIVO PARA MOVIL --- */}
+      <style>
+        {`
+          @media (max-width: 900px) {
+            .header .logo-glow-container img {
+              width: 180px !important;
+              height: 180px !important;
+            }
+            .header {
+              padding-top: 1.5rem !important;
+            }
+          }
+          @media (max-width: 700px) {
+            .header .logo-glow-container img {
+              width: 120px !important;
+              height: 120px !important;
+              margin-bottom: 0.7rem !important;
+            }
+            .header {
+              padding: 1.2rem 0 0.7rem 0 !important;
+              min-height: 10vh !important;
+            }
+            .reveal section,
+            section.reveal {
+              flex-direction: column !important;
+              padding: 0 0.5rem !important;
+              min-height: unset !important;
+              margin-top: 2rem !important;
+            }
+            section.reveal > div,
+            .reveal section > div {
+              min-width: 0 !important;
+              max-width: 100vw !important;
+            }
+            .logo-glow-container img {
+              min-width: 0 !important;
+              max-width: 90vw !important;
+            }
+            .logo-glow-container {
+              margin: 0 auto !important;
+            }
+            h1, h2, h3 {
+              font-size: 1.3rem !important;
+              margin-bottom: 1rem !important;
+            }
+            .evento-info-card.reveal {
+              min-width: 120px !important;
+              max-width: 99vw !important;
+              padding: 0.7rem 0.5rem !important;
+              font-size: 0.97rem !important;
+            }
+            .footer {
+              font-size: 0.95rem !important;
+              padding: 0.7rem 0.2rem !important;
+            }
+            .discord-banner {
+              right: 4vw !important;
+              top: unset !important;
+              bottom: 16px !important;
+              left: 4vw !important;
+              width: 92vw !important;
+              border-radius: 12px !important;
+              padding: 0.6rem 0.7rem !important;
+              font-size: 1rem !important;
+            }
+            .discord-banner span {
+              font-size: 1rem !important;
+            }
+            .discord-banner img {
+              width: 22px !important;
+              height: 22px !important;
+            }
+            .nav-btn {
+              font-size: 0.98rem !important;
+              padding: 0.5rem 0.7rem !important;
+              margin: 0 0.1rem !important;
+            }
+            .TopBar > div {
+              flex-direction: column !important;
+              gap: 0.5rem !important;
+            }
+            .evento-info-card.reveal {
+              min-width: 110px !important;
+              max-width: 99vw !important;
+              padding: 0.7rem 0.5rem !important;
+              font-size: 0.93rem !important;
+            }
+            .reveal section,
+            section.reveal {
+              gap: 1rem !important;
+            }
+            .reveal section ul,
+            section.reveal ul {
+              font-size: 1rem !important;
+              padding-left: 1em !important;
+            }
+            .reveal section p,
+            section.reveal p {
+              font-size: 1rem !important;
+            }
+            .reveal section .logo-glow-container,
+            section.reveal .logo-glow-container {
+              margin-bottom: 1rem !important;
+            }
+            .TeamsSection .reveal,
+            .TeamsSection section.reveal {
+              gap: 0.5rem !important;
+            }
+            .TeamsSection .reveal > div,
+            .TeamsSection section.reveal > div {
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 0.7rem !important;
+            }
+            .TeamsSection .reveal > div > div,
+            .TeamsSection section.reveal > div > div {
+              padding: 0.7rem 0.4rem !important;
+              min-height: 70px !important;
+              font-size: 0.93rem !important;
+            }
+          }
+          @media (max-width: 500px) {
+            .evento-info-card.reveal {
+              min-width: 90px !important;
+              font-size: 0.89rem !important;
+              padding: 0.5rem 0.2rem !important;
+            }
+            .footer {
+              font-size: 0.85rem !important;
+            }
+            .discord-banner {
+              font-size: 0.95rem !important;
+              padding: 0.5rem 0.5rem !important;
+            }
+            .TeamsSection .reveal > div,
+            .TeamsSection section.reveal > div {
+              grid-template-columns: 1fr !important;
+              gap: 0.5rem !important;
+            }
+          }
+        `}
+      </style>
+      {/* --- FIN CSS RESPONSIVO --- */}
     </>
   );
 };
