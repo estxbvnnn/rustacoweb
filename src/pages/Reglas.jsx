@@ -32,6 +32,7 @@ import metalOre from '../assets/img/metal.ore.png';
 import wood from '../assets/img/wood.png';
 import metalFragments from '../assets/img/metal.fragments.png';
 import mapaRustacooo from '../assets/img/maparustacooo.png';
+import shotgunM4 from '../assets/img/shotgun.m4.png';
 
 const SideAnimation = ({ side = 'left' }) => (
   <div
@@ -184,6 +185,10 @@ const reglas = [
         <li>
           <img src={rifleL96} alt="Rifle L96" style={iconStyle} />
           Rifle L96 (<b>L96 Rifle</b>)
+        </li>
+        <li>
+          <img src={shotgunM4} alt="M4 Shotgun" style={iconStyle} />
+          M4 Shotgun (<b>M4 Shotgun</b>)
         </li>
         <li>
           <img src={muzzleBoost} alt="Muzzle Boost" style={iconStyle} />
