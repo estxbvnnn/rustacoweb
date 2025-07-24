@@ -1,6 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-
+import ammoGrenadeLauncherHE from '../assets/img/ammo.grenadelauncher.he.png';
+import ammoRocketHV from '../assets/img/ammo.rocket.hv.png';
+import grenadeF1 from '../assets/img/grenade.f1.png';
 import eraPrimitivo from '../assets/img/primitivo.png';
 import eraTier1 from '../assets/img/tier1.png';
 import eraTier2 from '../assets/img/tier2.png';
@@ -207,6 +209,31 @@ const reglas = [
       </ul>
       <span style={{ color: "#f39c12" }}>
         El uso de cualquiera de estos ítems resultará en sanción inmediata para el jugador y/o el equipo.
+      </span>
+    </div>
+  )
+},
+{
+  titulo: "2.1. Reducción de daño de explosivos a jugadores",
+  descripcion: (
+    <div>
+      El daño recibido por jugadores de los siguientes explosivos será <b>reducido considerablemente</b> durante el evento:
+      <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
+        <li>
+          <img src={ammoGrenadeLauncherHE} alt="40mm Grenade" style={iconStyle} />
+          40mm Grenade (<b>Granada lanzagranadas</b>)
+        </li>
+        <li>
+          <img src={ammoRocketHV} alt="High Velocity Rocket" style={iconStyle} />
+          High Velocity Rocket (<b>Cohete de alta velocidad</b>)
+        </li>
+        <li>
+          <img src={grenadeF1} alt="F1 Grenade" style={iconStyle} />
+          Granada F1 (<b>F1 Grenade</b>)
+        </li>
+      </ul>
+      <span style={{ color: "#f39c12" }}>
+        Estos explosivos seguirán causando daño al BradleyAPC normalmente, pero el daño a jugadores será reducido para evitar muertes instantáneas y fomentar el combate.
       </span>
     </div>
   )
