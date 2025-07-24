@@ -363,15 +363,14 @@ const reglas = [
     )
   },
   {
-    titulo: "9. Prohibido el uso de trampas, SAM Turrets y Torretas de Fuego",
+    titulo: "9. Límite de SAM Turrets y Torretas de Fuego",
     descripcion: (
       <div>
-        Está estrictamente prohibido el uso de hacks, cheats, exploits o cualquier software externo que otorgue ventajas injustas. El incumplimiento será motivo de descalificación inmediata.
-        <br />
+        Cada base puede tener un máximo de <b>1 SAM Turret</b> colocada. Las <b>Torretas de Fuego</b> siguen estando totalmente prohibidas durante el evento.
         <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 18 }}>
           <span>
             <img src={samsite} alt="SAM Site" style={iconStyle} />
-            <b>SAM Turrets</b> prohibidas
+            <b>SAM Turret</b> (máx. 1 por base)
           </span>
           <span>
             <img src={flameturret} alt="Flame Turret" style={iconStyle} />
