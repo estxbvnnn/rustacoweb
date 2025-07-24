@@ -319,9 +319,9 @@ const reglas = [
     descripcion: (
       <div>
         <div style={{ marginBottom: 18 }}>
-          Todos los participantes deben mantener una actitud respetuosa y deportiva hacia otros jugadores, organizadores y espectadores. Cualquier conducta tóxica, insultos o discriminación resultará en sanciones o expulsión.
+          El evento está estructurado en <b>eras</b>, cada una con sus propias reglas y restricciones. A medida que avanza el evento, se habilitan nuevos objetos, armas y mecánicas para todos los equipos. 
           <br /><br />
-          <b>IMPORTANTE:</b> El respeto se extiende también al uso de chats de voz y texto, redes sociales y cualquier medio relacionado con el evento. La organización promueve un ambiente sano y seguro para todos los participantes.
+          <b>IMPORTANTE:</b> Presta atención a los anuncios de la organización para saber cuándo comienza cada era y qué está permitido en cada una. ¡Planifica tu estrategia en función de la era actual!
         </div>
         <div>
           <h3 style={{
