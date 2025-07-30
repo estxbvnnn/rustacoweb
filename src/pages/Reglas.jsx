@@ -483,11 +483,12 @@ const reglas = [
     titulo: "15. Stream obligatorio",
     descripcion: (
       <div>
-        Por cada equipo, obligatoria mente deben haber de 4-5 intengrantes (ideal que todos) <b>streameando el evento</b> durante su participación.
-        <b> El capitan de equipo debe estar transmitiendo si o si.</b>
+        <b>Todos los miembros del equipo deben stremear obligatoriamente durante el evento.</b> No es necesario transmitir en calidad Full HD, pero la transmisión debe ser aceptable y que se vea correctamente.
+        <br />
+        <b>Idealmente, todos los jugadores deben estar siempre en stream.</b> En caso de que algún jugador no esté stremeando, debe estar grabando su partida en todo momento como respaldo.
         <br />
         <span style={{ color: "#f39c12" }}>
-          El mapa estará lo más optimizado posible para que todos puedan stremear sin problemas de rendimiento. El incumplimiento de esta norma puede resultar en sanciones o descalificación.
+          El incumplimiento de esta norma puede resultar en sanciones o descalificación. El mapa estará lo más optimizado posible para que todos puedan stremear sin problemas de rendimiento.
         </span>
       </div>
     )
