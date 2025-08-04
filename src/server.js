@@ -24,8 +24,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    sameSite: 'lax', // o 'none' si usas https
-    secure: false    // true si usas https
+    sameSite: 'none', // <-- usa 'none' para cross-site cookies con HTTPS
+    secure: true      // <-- usa true para HTTPS
   }
 }));
 app.use(passport.initialize());
