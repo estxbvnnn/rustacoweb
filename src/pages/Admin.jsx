@@ -10,6 +10,7 @@ const Admin = () => {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [applys, setApplys] = useState([]);
   const [loadingApplys, setLoadingApplys] = useState(true);
+  const [deletingIdx, setDeletingIdx] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
@@ -40,6 +41,24 @@ const Admin = () => {
         .catch(() => setLoadingApplys(false));
     }
   }, [user]);
+
+  // Nuevo: Eliminar solicitud de inscripción
+  const handleDeleteApply = idx => {
+    if (!window.confirm('¿Seguro que deseas eliminar esta solicitud?')) return;
+    setDeletingIdx(idx);
+    fetch(`https://www.rustaco.site/api/admin/applys/${idx}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          setApplys(applys => applys.filter((_, i) => i !== idx));
+        }
+        setDeletingIdx(null);
+      })
+      .catch(() => setDeletingIdx(null));
+  };
 
   if (checking) {
     return <div style={{ color: '#fff', textAlign: 'center', margin: '2rem' }}>Cargando...</div>;
@@ -88,21 +107,22 @@ const Admin = () => {
 
   return (
     <div style={{
-      maxWidth: 700,
+      maxWidth: 1100,
       margin: '4rem auto',
       background: 'rgba(24,24,24,0.97)',
-      borderRadius: 24,
+      borderRadius: 32,
       boxShadow: '0 8px 32px #000b',
       padding: '2.5rem 2rem',
       textAlign: 'center',
       color: '#fff',
-      fontFamily: 'Montserrat, Arial, sans-serif'
+      fontFamily: 'Montserrat, Arial, sans-serif',
+      border: '2px solid #27ae60cc'
     }}>
       <h1 style={{
         color: '#27ae60',
         fontWeight: 900,
-        fontSize: '2.2rem',
-        marginBottom: '1.5rem',
+        fontSize: '2.5rem',
+        marginBottom: '2rem',
         letterSpacing: '2px',
         textShadow: '0 2px 18px #000a'
       }}>
@@ -113,7 +133,7 @@ const Admin = () => {
         borderRadius: 14,
         boxShadow: '0 2px 12px #27ae6088',
         padding: '1.2rem 1rem',
-        marginBottom: '1.5rem',
+        marginBottom: '2.5rem',
         fontSize: '1.18rem',
         fontWeight: 600,
         color: '#fff',
@@ -124,11 +144,11 @@ const Admin = () => {
         Bienvenido, {user.name} <br />
         Aquí puedes gestionar el evento y ver información exclusiva de administración.
       </div>
-      {/* Lista de usuarios autenticados por Steam */}
+      {/* Usuarios autenticados por Steam */}
       <div style={{
         margin: '2.5rem 0 0 0',
         background: '#23201a',
-        borderRadius: 14,
+        borderRadius: 18,
         boxShadow: '0 2px 12px #0007',
         padding: '1.2rem 1rem',
         color: '#fff',
@@ -142,35 +162,44 @@ const Admin = () => {
         ) : users.length === 0 ? (
           <div>No hay usuarios registrados aún.</div>
         ) : (
-          <table style={{ width: '100%', color: '#fff', borderCollapse: 'collapse', fontSize: '1rem' }}>
-            <thead>
+          <table style={{
+            width: '100%',
+            color: '#fff',
+            borderCollapse: 'collapse',
+            fontSize: '1rem',
+            background: '#181818',
+            borderRadius: 12,
+            overflow: 'hidden',
+            marginBottom: 24
+          }}>
+            <thead style={{ background: '#23201a' }}>
               <tr>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Avatar</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>SteamID</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Nombre</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Último login</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Avatar</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>SteamID</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Nombre</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Último login</th>
               </tr>
             </thead>
             <tbody>
               {users.map(u => (
-                <tr key={u.steamid}>
-                  <td style={{ padding: 8 }}>
-                    <img src={u.avatar} alt="avatar" style={{ width: 38, height: 38, borderRadius: '50%' }} />
+                <tr key={u.steamid} style={{ background: '#23201a' }}>
+                  <td style={{ padding: 10 }}>
+                    <img src={u.avatar} alt="avatar" style={{ width: 38, height: 38, borderRadius: '50%', border: '2px solid #7289da' }} />
                   </td>
-                  <td style={{ padding: 8 }}>{u.steamid}</td>
-                  <td style={{ padding: 8 }}>{u.name}</td>
-                  <td style={{ padding: 8 }}>{u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
+                  <td style={{ padding: 10 }}>{u.steamid}</td>
+                  <td style={{ padding: 10 }}>{u.name}</td>
+                  <td style={{ padding: 10 }}>{u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
-      {/* Lista de solicitudes de inscripción */}
+      {/* Solicitudes de inscripción */}
       <div style={{
         margin: '2.5rem 0 0 0',
         background: '#23201a',
-        borderRadius: 14,
+        borderRadius: 18,
         boxShadow: '0 2px 12px #0007',
         padding: '1.2rem 1rem',
         color: '#fff',
@@ -184,25 +213,35 @@ const Admin = () => {
         ) : applys.length === 0 ? (
           <div>No hay solicitudes de inscripción aún.</div>
         ) : (
-          <table style={{ width: '100%', color: '#fff', borderCollapse: 'collapse', fontSize: '1rem' }}>
-            <thead>
+          <table style={{
+            width: '100%',
+            color: '#fff',
+            borderCollapse: 'collapse',
+            fontSize: '1rem',
+            background: '#181818',
+            borderRadius: 12,
+            overflow: 'hidden'
+          }}>
+            <thead style={{ background: '#23201a' }}>
               <tr>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Equipo</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Capitán</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Discord</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Jugadores</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Motivo</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Estrategia</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #444' }}>Fecha</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Equipo</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Capitán</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Discord</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Jugadores</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Motivo</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Estrategia</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Fecha</th>
+                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Postulante</th>
+                <th style={{ textAlign: 'center', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Acción</th>
               </tr>
             </thead>
             <tbody>
               {applys.map((a, idx) => (
-                <tr key={idx}>
-                  <td style={{ padding: 8 }}>{a.teamName}</td>
-                  <td style={{ padding: 8 }}>{a.captain}</td>
-                  <td style={{ padding: 8 }}>{a.discord}</td>
-                  <td style={{ padding: 8 }}>
+                <tr key={idx} style={{ background: idx % 2 === 0 ? '#23201a' : '#181818' }}>
+                  <td style={{ padding: 10 }}>{a.teamName}</td>
+                  <td style={{ padding: 10 }}>{a.captain}</td>
+                  <td style={{ padding: 10 }}>{a.discord}</td>
+                  <td style={{ padding: 10 }}>
                     <ul style={{ margin: 0, paddingLeft: 18 }}>
                       {a.players.map((p, i) => (
                         <li key={i}>
@@ -212,9 +251,38 @@ const Admin = () => {
                       ))}
                     </ul>
                   </td>
-                  <td style={{ padding: 8 }}>{a.why}</td>
-                  <td style={{ padding: 8 }}>{a.strategy}</td>
-                  <td style={{ padding: 8 }}>{a.submittedAt ? new Date(a.submittedAt).toLocaleString() : '-'}</td>
+                  <td style={{ padding: 10 }}>{a.why}</td>
+                  <td style={{ padding: 10 }}>{a.strategy}</td>
+                  <td style={{ padding: 10 }}>{a.submittedAt ? new Date(a.submittedAt).toLocaleString() : '-'}</td>
+                  <td style={{ padding: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <img src={users.find(u => u.steamid === a.submittedBy)?.avatar} alt="avatar" style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid #7289da' }} />
+                      <span style={{ color: '#b3cfff', fontWeight: 700 }}>{a.submittedByName}</span>
+                      <span style={{ color: '#fff', fontSize: '0.95rem' }}>({a.submittedBy})</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: 10, textAlign: 'center' }}>
+                    <button
+                      onClick={() => handleDeleteApply(idx)}
+                      disabled={deletingIdx === idx}
+                      style={{
+                        background: deletingIdx === idx ? '#aaa' : 'linear-gradient(90deg, #e25822 60%, #27ae60 100%)',
+                        color: '#fff',
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        padding: '0.5rem 1.2rem',
+                        border: 'none',
+                        borderRadius: 8,
+                        boxShadow: '0 2px 8px #0007',
+                        cursor: deletingIdx === idx ? 'not-allowed' : 'pointer',
+                        letterSpacing: '1px',
+                        textDecoration: 'none',
+                        transition: 'background 0.2s, transform 0.2s'
+                      }}
+                    >
+                      {deletingIdx === idx ? 'Eliminando...' : 'Eliminar'}
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -251,6 +319,24 @@ const Admin = () => {
       }}>
         (Solo visible para el usuario administrador)
       </span>
+      <style>
+        {`
+          table {
+            border-radius: 12px;
+            overflow: hidden;
+          }
+          th, td {
+            vertical-align: top;
+          }
+          tr:hover {
+            background: #2d2d2d !important;
+          }
+          button:hover:not(:disabled) {
+            transform: scale(1.07);
+            background: linear-gradient(90deg, #27ae60 60%, #e25822 100%);
+          }
+        `}
+      </style>
     </div>
   );
 };
