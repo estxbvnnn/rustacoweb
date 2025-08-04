@@ -128,7 +128,7 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
                 </div>
                 <div style={{ color: '#fff', fontWeight: 600 }}>Nombre: <span style={{ color: '#b3cfff' }}>{p.name}</span></div>
                 <div style={{ color: '#fff', fontWeight: 600 }}>SteamID: <span style={{ color: '#b3cfff' }}>{p.steamid}</span></div>
-                <div style={{ color: '#fff', fontWeight: 600 }}>Twitch: <span style={{ color: '#27ae60' }}>{p.twitch}</span></div>
+                <div style={{ color: '#fff', fontWeight: 600 }}>Canal de Transmision: <span style={{ color: '#27ae60' }}>{p.twitch}</span></div>
               </div>
             ))}
           </div>

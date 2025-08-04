@@ -474,7 +474,7 @@ const Applys = () => {
                       color: '#fff'
                     }}
                     required
-                    placeholder="Canal de Twitch"
+                    placeholder="Canal de Transmisión"
                   />
                 </li>
               ))}
