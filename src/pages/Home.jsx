@@ -264,7 +264,7 @@ const LoginSteam = () => {
 
   React.useEffect(() => {
     let isMounted = true;
-    fetch('/api/user', {
+    fetch('https://www.rustaco.site/api/user', {
       credentials: 'include',
       headers: {
         'Cache-Control': 'no-cache',
@@ -272,7 +272,6 @@ const LoginSteam = () => {
       }
     })
       .then(res => {
-        // Fuerza recarga si la cookie no está presente
         if (res.status === 401 || res.status === 403) return { steamid: null };
         return res.json();
       })

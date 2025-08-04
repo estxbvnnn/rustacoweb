@@ -154,8 +154,8 @@ app.post('/api/apply', (req, res) => {
     players,
     why: why || '',
     strategy: strategy || '',
-    submittedBy: req.user.id,
-    submittedByName: req.user.displayName,
+    submittedBy: req.user.steamid,
+    submittedByName: req.user.name,
     submittedAt: new Date().toISOString()
   });
   res.json({ ok: true });
@@ -166,7 +166,7 @@ const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042']; // Agrega am
 
 // Middleware para proteger rutas de admin
 function requireAdmin(req, res, next) {
-  if (req.isAuthenticated() && req.user && ADMIN_STEAM_IDS.includes(req.user.id)) {
+  if (req.isAuthenticated() && req.user && ADMIN_STEAM_IDS.includes(req.user.steamid)) {
     return next();
   }
   res.status(403).json({ error: 'Forbidden' });
