@@ -33,10 +33,13 @@ const Applys = () => {
       .catch(() => setUser(null));
   }, []);
 
+  // Corrige el bug de edición de jugadores usando un estado local para cada input
   const handlePlayerChange = (idx, field, value) => {
-    setPlayers(players =>
-      players.map((p, i) => (i === idx ? { ...p, [field]: value } : p))
-    );
+    setPlayers(players => {
+      const updated = [...players];
+      updated[idx] = { ...updated[idx], [field]: value };
+      return updated;
+    });
   };
 
   const handleSubmit = (e) => {
@@ -408,7 +411,7 @@ const Applys = () => {
     </div>
   );
 
-  // Nuevo: layout profesional para el formulario
+  // Nuevo: layout profesional para el formulario, con checkbox de términos abajo
   if (user && !submitted && acceptTerms) {
     return (
       <div style={{
@@ -549,18 +552,6 @@ const Applys = () => {
                 placeholder="Describe brevemente la preparación, entrenamientos, roles, etc."
               />
             </div>
-            <div>
-              <label style={{ fontWeight: 700, color: '#27ae60', fontSize: '1.09rem' }}>
-                <input
-                  type="checkbox"
-                  checked={terms}
-                  onChange={e => setTerms(e.target.checked)}
-                  style={{ marginRight: 8, accentColor: '#e25822' }}
-                  required
-                />
-                Confirmo que he leído y acepto los <a href="/reglas" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>términos y condiciones</a> y me comprometo a respetar todas las reglas del evento.
-              </label>
-            </div>
           </div>
           <div style={{
             marginBottom: 24,
@@ -581,6 +572,25 @@ const Applys = () => {
                 <PlayerCard key={idx} idx={idx} player={p} onChange={handlePlayerChange} />
               ))}
             </div>
+          </div>
+          {/* Mueve el checkbox de términos aquí abajo, antes del botón */}
+          <div style={{
+            marginBottom: 18,
+            background: 'rgba(34,34,34,0.97)',
+            borderRadius: 12,
+            padding: '1rem 1.2rem',
+            boxShadow: '0 1px 8px #0007'
+          }}>
+            <label style={{ fontWeight: 700, color: '#27ae60', fontSize: '1.09rem' }}>
+              <input
+                type="checkbox"
+                checked={terms}
+                onChange={e => setTerms(e.target.checked)}
+                style={{ marginRight: 8, accentColor: '#e25822' }}
+                required
+              />
+              Confirmo que he leído y acepto los <a href="/reglas" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>términos y condiciones</a> y me comprometo a respetar todas las reglas del evento.
+            </label>
           </div>
           {error && (
             <div style={{
