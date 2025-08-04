@@ -4,8 +4,6 @@ import App from './App';
 import './assets/styles.css'; // Assuming you will have a styles.css for global styles
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App />,
   document.getElementById('root')
 );

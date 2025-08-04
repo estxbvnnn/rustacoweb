@@ -5,11 +5,12 @@ import rustpmc4 from '../assets/img/rustpmc4.png';
 import logodiscord from '../assets/img/logodiscord.png';
 import mapaRustacooo from '../assets/img/maparustacooo.png';
 import poionakologo from '../assets/img/poionakologo.png'; // Agrega este import al inicio
+import steamlogo from '../assets/img/steamlogo.png'; // Asegúrate de tener este archivo en assets/img
 const flagChile = "https://flagcdn.com/w20/cl.png";
 const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
 import '../assets/styles.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // Traducciones
 const translations = {
@@ -191,6 +192,7 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           <Link to="/reglas" className="nav-btn">
             {translations[lang].verReglas}
           </Link>
+          <LoginSteam />
         </div>
       </div>
       <div
@@ -200,6 +202,7 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           gap: 8,
         }}
       >
+        {/* ...selector de idioma... */}
         <button
           onClick={() => setLang('es')}
           style={{
@@ -252,6 +255,294 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
   </div>
 );
 
+// Botón profesional de Login Steam SOLO en la TopBar
+const ADMIN_STEAM_ID = '76561198416933402';
+
+const LoginSteam = () => {
+  const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    fetch('https://www.rustaco.site:3001/api/user', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => {
+        if (isMounted) {
+          setUser(data && data.steamid ? data : null);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setLoading(false);
+      });
+    return () => { isMounted = false; };
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    fetch('https://www.rustaco.site:3001/api/logout', {
+      method: 'POST',
+      credentials: 'include'
+    })
+      .then(() => window.location.href = '/')
+      .catch(() => window.location.href = '/');
+  };
+
+  if (loading) {
+    // Muestra un spinner pequeño pero NO bloquea la UI ni overlays
+    return (
+      <div style={{
+        width: 120,
+        height: 44,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <span className="loader" style={{
+          display: 'inline-block',
+          width: 28, height: 28,
+          border: '4px solid #e25822',
+          borderTop: '4px solid #23201a',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }} />
+        <style>
+          {`
+            @keyframes spin {
+              0% { transform: rotate(0deg);}
+              100% { transform: rotate(360deg);}
+            }
+          `}
+        </style>
+      </div>
+    );
+  }
+
+  if (user) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        background: '#23201a',
+        borderRadius: 10,
+        padding: '0.35rem 1.1rem',
+        boxShadow: '0 1px 8px #0006',
+        color: '#fff',
+        fontWeight: 600,
+        margin: 0,
+        maxWidth: 340,
+        height: 44,
+        minHeight: 44
+      }}>
+        <img src={user.avatar} alt="avatar" style={{
+          width: 32, height: 32, borderRadius: '50%', marginRight: 6, border: '2px solid #7289da'
+        }} />
+        <span style={{ color: '#b3cfff', fontWeight: 700, fontSize: '1rem', marginRight: 8 }}>
+          {user.name}
+        </span>
+        {/* Solo muestra el botón Admin Panel si el usuario es el admin */}
+        {user.steamid === ADMIN_STEAM_ID && (
+          <a
+            href="/admin"
+            style={{
+              marginLeft: 8,
+              color: '#27ae60',
+              fontWeight: 700,
+              textDecoration: 'underline',
+              fontSize: '0.98rem'
+            }}
+          >
+            Admin Panel
+          </a>
+        )}
+        <a
+          href="#logout"
+          onClick={handleLogout}
+          style={{
+            marginLeft: 8,
+            color: '#e25822',
+            fontWeight: 700,
+            textDecoration: 'underline',
+            fontSize: '0.98rem'
+          }}
+        >
+          Logout
+        </a>
+      </div>
+    );
+  }
+
+  // Botón de Login Steam como <a> normal, sin overlays ni eventos extra
+  return (
+    <a
+      href="https://www.rustaco.site:3001/auth/steam"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 10,
+        background: 'linear-gradient(90deg, #23201a 60%, #27ae60 100%)',
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: '1.08rem',
+        padding: '0.55rem 1.5rem 0.55rem 1.1rem',
+        border: 'none',
+        borderRadius: 10,
+        boxShadow: '0 2px 8px #0007',
+        cursor: 'pointer',
+        letterSpacing: '1px',
+        textDecoration: 'none',
+        margin: 0,
+        height: 44,
+        minHeight: 44,
+        transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s',
+        alignSelf: 'center'
+      }}
+      title="Iniciar sesión con Steam"
+    >
+      <img
+        src={steamlogo}
+        alt="Steam"
+        style={{
+          width: 28,
+          height: 28,
+          borderRadius: '50%',
+          background: 'transparent',
+          marginRight: 8,
+          boxShadow: '0 1px 4px #0006',
+          objectFit: 'cover',
+          border: '2px solid #27ae60'
+        }}
+      />
+      <span style={{
+        fontWeight: 700,
+        fontSize: '1.08rem',
+        letterSpacing: '1px',
+        color: '#fff',
+        textShadow: '0 1px 4px #000a'
+      }}>
+        Login Steam
+      </span>
+    </a>
+  );
+};
+
+const DISCORD_CONTACT = "https://discord.gg/rustaco"; // Cambia por el Discord oficial si es otro
+
+const InscripcionBanner = () => {
+  const [user, setUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const history = useHistory();
+
+  useEffect(() => {
+    fetch('https://www.rustaco.site:3001/api/user', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => setUser(data && data.steamid ? data : null))
+      .catch(() => setUser(null));
+  }, []);
+
+  const handleClick = () => {
+    if (user) {
+      history.push('/applys');
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      margin: '2.5rem 0 0 0'
+    }}>
+      <button
+        onClick={handleClick}
+        style={{
+          background: 'linear-gradient(90deg, #27ae60 60%, #e25822 100%)',
+          color: '#fff',
+          fontWeight: 900,
+          fontSize: '1.35rem',
+          padding: '1.1rem 2.8rem',
+          border: 'none',
+          borderRadius: 18,
+          boxShadow: '0 4px 18px #27ae6088',
+          cursor: 'pointer',
+          letterSpacing: '1px',
+          textDecoration: 'none',
+          marginBottom: '1.2rem',
+          transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+        }}
+        onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.045)')}
+        onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+        title={user ? "Ir al formulario de inscripción" : "Debes iniciar sesión con Steam para inscribirte"}
+      >
+        Inscripciones para el evento ¡YA!
+      </button>
+      <span style={{
+        color: '#b3cfff',
+        fontSize: '1.08rem',
+        fontWeight: 500,
+        marginTop: 2,
+        opacity: 0.92,
+        textAlign: 'center'
+      }}>
+        {user
+          ? <>La administración te contactará por Discord si tu equipo es seleccionado.</>
+          : <>Debes iniciar sesión con Steam para inscribirte. Si tienes dudas, contáctanos en <a href={DISCORD_CONTACT} target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>nuestro Discord</a>.</>
+        }
+      </span>
+      {showModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.7)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{
+            background: '#23201a',
+            borderRadius: 18,
+            boxShadow: '0 8px 32px #000b',
+            padding: '2.2rem 2.2rem 1.5rem 2.2rem',
+            textAlign: 'center',
+            color: '#fff',
+            fontFamily: 'Montserrat, Arial, sans-serif',
+            maxWidth: 380,
+            minWidth: 260
+          }}>
+            <h2 style={{ color: '#e25822', fontWeight: 900, fontSize: '1.4rem', marginBottom: '1.2rem' }}>
+              Debes estar logeado primero para poder inscribirte
+            </h2>
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                marginTop: 12,
+                background: '#27ae60',
+                color: '#fff',
+                fontWeight: 700,
+                fontSize: '1rem',
+                padding: '0.7rem 2rem',
+                border: 'none',
+                borderRadius: 10,
+                boxShadow: '0 2px 8px #0007',
+                cursor: 'pointer',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+                transition: 'background 0.2s, transform 0.2s'
+              }}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Header = () => {
   const headerRef = useRef(null);
   useRevealOnScroll(headerRef, { threshold: 0.2 });
@@ -292,6 +583,8 @@ const Header = () => {
         />
         <div className="logo-glow-bg"></div>
       </div>
+      {/* Banner de inscripción debajo del logo grande */}
+      <InscripcionBanner />
     </header>
   );
 };
@@ -993,7 +1286,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
       >
         {infoCards.map((card, idx) => (
           <div
-            key={card.label}
+            key={card.label + '-' + idx}
             className="evento-info-card reveal"
             style={{
               background: 'linear-gradient(135deg, #23201a 70%, #e2582222 100%)',
@@ -1123,9 +1416,9 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
           marginTop: '1.2rem'
         }}
       >
-        {firstRow.map((team) => (
+        {firstRow.map((team, idx) => (
           <div
-            key={team.name}
+            key={team.name + '-' + idx}
             className="reveal"
             style={{
               background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
@@ -1180,9 +1473,9 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
           marginTop: '1.2rem'
         }}
       >
-        {secondRow.map((team) => (
+        {secondRow.map((team, idx) => (
           <div
-            key={team.name}
+            key={team.name + '-' + (idx + 7)}
             className="reveal"
             style={{
               background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
@@ -1309,6 +1602,7 @@ const Footer = ({ lang }) => (
   </footer>
 );
 
+// Home component
 const Home = () => {
   const [lang, setLang] = useState('es');
   const formatoRef = useRef(null);
@@ -1337,6 +1631,7 @@ const Home = () => {
         setLang={setLang}
       />
       <Header />
+      {/* Ya no muestres <LoginSteam /> aquí */}
       <MapaSection />
       <FormatoSection ref={formatoRef} lang={lang} />
       <AboutSection ref={aboutRef} lang={lang} />
