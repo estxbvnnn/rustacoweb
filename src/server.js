@@ -84,7 +84,7 @@ app.get('/auth/steam', (req, res, next) => {
 app.get('/auth/steam/return',
   passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }),
   (req, res) => {
-    if (req.user && req.user.id) {
+    if (req.user && req.user.steamid) {
       // Redirige solo a la home sin parámetros visibles
       res.redirect('https://www.rustaco.site/');
     } else {
