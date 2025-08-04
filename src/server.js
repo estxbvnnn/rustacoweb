@@ -145,12 +145,12 @@ app.post('/api/apply', (req, res) => {
   res.json({ ok: true });
 });
 
-// Define aquí el SteamID del admin (puedes obtenerlo tras loguear con Steam)
-const ADMIN_STEAM_ID = '76561198416933402'; // Reemplaza por el SteamID real del admin
+// Define aquí los SteamID de los admins
+const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042']; // Agrega ambos SteamID
 
 // Middleware para proteger rutas de admin
 function requireAdmin(req, res, next) {
-  if (req.isAuthenticated() && req.user && req.user.id === ADMIN_STEAM_ID) {
+  if (req.isAuthenticated() && req.user && ADMIN_STEAM_IDS.includes(req.user.id)) {
     return next();
   }
   res.status(403).json({ error: 'Forbidden' });

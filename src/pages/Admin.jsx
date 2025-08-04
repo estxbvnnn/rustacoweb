@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const ADMIN_STEAM_ID = '76561198416933402'; // Usa el mismo SteamID que en backend y Home.jsx
+const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042']; // Agrega ambos SteamID
 
 const ApplyDetailModal = ({ apply, user, onClose }) => {
   if (!apply) return null;
@@ -154,7 +154,7 @@ const Admin = () => {
   }, []);
 
   useEffect(() => {
-    if (user && user.steamid === ADMIN_STEAM_ID) {
+    if (user && ADMIN_STEAM_IDS.includes(user.steamid)) {
       fetch('https://www.rustaco.site/api/admin/users', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
@@ -194,7 +194,7 @@ const Admin = () => {
     return <div style={{ color: '#fff', textAlign: 'center', margin: '2rem' }}>Cargando...</div>;
   }
 
-  if (!user || user.steamid !== ADMIN_STEAM_ID) {
+  if (!user || !ADMIN_STEAM_IDS.includes(user.steamid)) {
     return (
       <div style={{
         maxWidth: 600,
