@@ -267,10 +267,15 @@ const LoginSteam = () => {
     fetch('/api/user', {
       credentials: 'include',
       headers: {
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
+        'Accept': 'application/json'
       }
     })
-      .then(res => res.json())
+      .then(res => {
+        // Fuerza recarga si la cookie no está presente
+        if (res.status === 401 || res.status === 403) return { steamid: null };
+        return res.json();
+      })
       .then(data => {
         if (isMounted) {
           setUser(data && data.steamid ? data : null);
@@ -443,10 +448,14 @@ const InscripcionBanner = () => {
     fetch('/api/user', {
       credentials: 'include',
       headers: {
-        'Cache-Control': 'no-cache'
+        'Cache-Control': 'no-cache',
+        'Accept': 'application/json'
       }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (res.status === 401 || res.status === 403) return { steamid: null };
+        return res.json();
+      })
       .then(data => setUser(data && data.steamid ? data : null))
       .catch(() => setUser(null));
   }, []);
