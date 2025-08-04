@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const initialPlayers = Array.from({ length: 8 }, () => ({
@@ -34,13 +34,13 @@ const Applys = () => {
   }, []);
 
   // Corrige el bug de edición de jugadores usando un estado local para cada input
-  const handlePlayerChange = (idx, field, value) => {
+  const handlePlayerChange = useCallback((idx, field, value) => {
     setPlayers(players => {
       const updated = [...players];
       updated[idx] = { ...updated[idx], [field]: value };
       return updated;
     });
-  };
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -343,7 +343,7 @@ const Applys = () => {
   );
 
   // Nuevo: card para cada jugador
-  const PlayerCard = ({ idx, player, onChange }) => (
+  const PlayerCard = React.memo(({ idx, player, onChange }) => (
     <div style={{
       background: 'linear-gradient(120deg, #23201a 80%, #7289da 100%)',
       borderRadius: 14,
@@ -409,7 +409,7 @@ const Applys = () => {
         placeholder="Canal de Twitch"
       />
     </div>
-  );
+  ));
 
   // Nuevo: layout profesional para el formulario, con checkbox de términos abajo
   if (user && !submitted && acceptTerms) {
