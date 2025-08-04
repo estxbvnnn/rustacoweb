@@ -264,7 +264,7 @@ const LoginSteam = () => {
 
   React.useEffect(() => {
     let isMounted = true;
-    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
+    fetch('/api/user', { credentials: 'include' }) // <-- usa ruta relativa para asegurar que la cookie se envía correctamente
       .then(res => res.json())
       .then(data => {
         if (isMounted) {
@@ -435,7 +435,7 @@ const InscripcionBanner = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
+    fetch('/api/user', { credentials: 'include' }) // <-- usa ruta relativa aquí también
       .then(res => res.json())
       .then(data => setUser(data && data.steamid ? data : null))
       .catch(() => setUser(null));
