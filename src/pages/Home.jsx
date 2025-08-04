@@ -264,7 +264,7 @@ const LoginSteam = () => {
 
   React.useEffect(() => {
     let isMounted = true;
-    fetch('http://177.71.253.85:3001/api/user', { credentials: 'include' })
+    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (isMounted) {
@@ -280,7 +280,7 @@ const LoginSteam = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    fetch('http://177.71.253.85:3001/api/logout', {
+    fetch('https://www.rustaco.site/api/logout', {
       method: 'POST',
       credentials: 'include'
     })
@@ -376,7 +376,7 @@ const LoginSteam = () => {
   // Botón de Login Steam como <a> normal, sin overlays ni eventos extra
   return (
     <a
-      href="http://177.71.253.85:3001/auth/steam"
+      href="https://www.rustaco.site/auth/steam"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -435,7 +435,7 @@ const InscripcionBanner = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('http://177.71.253.85:3001/api/user', { credentials: 'include' })
+    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setUser(data && data.steamid ? data : null))
       .catch(() => setUser(null));

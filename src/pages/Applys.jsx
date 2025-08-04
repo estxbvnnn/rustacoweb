@@ -27,7 +27,7 @@ const Applys = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('http://177.71.253.85:3001/api/user', { credentials: 'include' })
+    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setUser(data && data.steamid ? data : null))
       .catch(() => setUser(null));
@@ -51,7 +51,7 @@ const Applys = () => {
       return;
     }
     // --- Enviar solicitud al backend ---
-    fetch('http://177.71.253.85:3001/api/apply', {
+    fetch('https://www.rustaco.site/api/apply', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
