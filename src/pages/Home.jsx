@@ -351,8 +351,8 @@ const LoginSteam = () => {
         <span style={{ color: '#b3cfff', fontWeight: 700, fontSize: '1rem', marginRight: 8 }}>
           {user.name}
         </span>
-        {/* Solo muestra el botón Admin Panel si el usuario es el admin */}
-        {user.steamid === ADMIN_STEAM_ID && (
+        {/* Solo muestra el botón Admin Panel si el usuario es admin */}
+        {ADMIN_STEAM_IDS.includes(user.steamid) && (
           <a
             href="/admin"
             style={{
