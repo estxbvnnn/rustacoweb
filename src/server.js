@@ -8,6 +8,9 @@ const os = require('os');
 
 const app = express();
 
+// --- AGREGAR ESTA LÍNEA PARA PRODUCCIÓN DETRÁS DE NGINX ---
+app.set('trust proxy', 1);
+
 // Cambia la IP de binding y los orígenes CORS para desarrollo local
 // Usa localhost y 127.0.0.1 en vez de la IP de red si solo trabajas en tu PC
 
@@ -24,8 +27,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    sameSite: 'none', // <-- usa 'none' para cross-site cookies con HTTPS
-    secure: true      // <-- usa true para HTTPS
+    sameSite: 'none',
+    secure: true
   }
 }));
 app.use(passport.initialize());
@@ -34,12 +37,7 @@ app.use(passport.session());
 app.use(express.json()); // Para parsear JSON en POST
 
 passport.serializeUser((user, done) => {
-  // Guarda solo los campos necesarios en la sesión
-  done(null, {
-    steamid: user.id,
-    name: user.displayName,
-    avatar: user.photos?.[2]?.value || user.photos?.[0]?.value || null
-  });
+  done(null, user);
 });
 passport.deserializeUser((obj, done) => {
   // Recupera el usuario en el mismo formato
@@ -126,7 +124,7 @@ app.get('/api/user', (req, res) => {
   }
 });
 
-// --- Almacenamiento en memoria de solicitudes ---
+// --- Almacena solicitudes de inscripción ---
 const applys = []; // [{ teamName, captain, discord, players, why, strategy, submittedBy, submittedAt }]
 
 // --- Endpoint para guardar solicitud de inscripción ---
