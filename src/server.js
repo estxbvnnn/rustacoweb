@@ -41,8 +41,8 @@ const steamUsers = {};
 
 // Modifica el callback de SteamStrategy para guardar usuarios
 passport.use(new SteamStrategy({
-  returnURL: 'http://localhost:3001/auth/steam/return',
-  realm: 'http://localhost:3001/',
+  returnURL: 'https://www.rustaco.site/auth/steam/return',
+  realm: 'https://www.rustaco.site/',
   apiKey: '3E6FB3DF729486B3EF9485399557CC45'
 }, (identifier, profile, done) => {
   process.nextTick(() => {
@@ -62,7 +62,7 @@ passport.use(new SteamStrategy({
 
 // Cambia la ruta de inicio de login Steam para usar localhost
 app.get('/auth/steam', (req, res, next) => {
-  req.headers.host = 'localhost:3001';
+  req.headers.host = 'www.rustaco.site';
   next();
 }, passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }));
 
