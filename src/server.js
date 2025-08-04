@@ -33,8 +33,18 @@ app.use(passport.session());
 
 app.use(express.json()); // Para parsear JSON en POST
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((obj, done) => done(null, obj));
+passport.serializeUser((user, done) => {
+  // Guarda solo los campos necesarios en la sesión
+  done(null, {
+    steamid: user.id,
+    name: user.displayName,
+    avatar: user.photos?.[2]?.value || user.photos?.[0]?.value || null
+  });
+});
+passport.deserializeUser((obj, done) => {
+  // Recupera el usuario en el mismo formato
+  done(null, obj);
+});
 
 // Almacena usuarios autenticados (en memoria, para demo)
 const steamUsers = {};
@@ -56,7 +66,12 @@ passport.use(new SteamStrategy({
         lastLogin: new Date().toISOString()
       };
     }
-    return done(null, profile);
+    // Devuelve el objeto en el formato que espera el frontend
+    return done(null, {
+      steamid: profile.id,
+      name: profile.displayName,
+      avatar: profile.photos?.[2]?.value || profile.photos?.[0]?.value || null
+    });
   });
 }));
 
@@ -100,10 +115,11 @@ app.post('/api/logout', (req, res) => {
 // API para obtener el usuario autenticado (Steam)
 app.get('/api/user', (req, res) => {
   if (req.isAuthenticated() && req.user) {
+    // Devuelve el usuario en el formato correcto
     res.json({
-      steamid: req.user.id,
-      name: req.user.displayName,
-      avatar: req.user.photos?.[2]?.value || req.user.photos?.[0]?.value || null
+      steamid: req.user.steamid,
+      name: req.user.name,
+      avatar: req.user.avatar
     });
   } else {
     res.json({ steamid: null });
