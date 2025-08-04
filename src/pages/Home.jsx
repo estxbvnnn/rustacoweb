@@ -264,7 +264,12 @@ const LoginSteam = () => {
 
   React.useEffect(() => {
     let isMounted = true;
-    fetch('/api/user', { credentials: 'include' }) // <-- usa ruta relativa para asegurar que la cookie se envía correctamente
+    fetch('/api/user', {
+      credentials: 'include',
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
       .then(res => res.json())
       .then(data => {
         if (isMounted) {
@@ -435,7 +440,12 @@ const InscripcionBanner = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('/api/user', { credentials: 'include' }) // <-- usa ruta relativa aquí también
+    fetch('/api/user', {
+      credentials: 'include',
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
       .then(res => res.json())
       .then(data => setUser(data && data.steamid ? data : null))
       .catch(() => setUser(null));
