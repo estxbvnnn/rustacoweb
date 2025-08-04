@@ -486,6 +486,10 @@ const reglas = [
         <b>Todos los jugadores deben estar transmitiendo el evento en stream durante su participación.</b> No es necesario transmitir en calidad Full HD, pero la transmisión debe ser aceptable y que se vea correctamente.
         <br />
         <span style={{ color: "#f39c12" }}>
+          Si por dificultad técnica no puedes stremear, <b>debes grabar tu participación completa</b>. Si la organización solicita evidencia y no tienes grabación, <b>podrás ser sancionado o perjudicado en el evento</b>.
+        </span>
+        <br />
+        <span style={{ color: "#f39c12" }}>
           El incumplimiento de esta norma puede resultar en sanciones o descalificación. El mapa estará lo más optimizado posible para que todos puedan stremear sin problemas de rendimiento.
         </span>
       </div>
