@@ -457,88 +457,37 @@ const InscripcionBanner = () => {
       margin: '2.5rem 0 0 0'
     }}>
       <button
-        onClick={handleClick}
+        disabled
         style={{
-          background: 'linear-gradient(90deg, #27ae60 60%, #e25822 100%)',
-          color: '#fff',
+          background: 'linear-gradient(90deg, #b3cfff 60%, #7289da 100%)',
+          color: '#23201a',
           fontWeight: 900,
           fontSize: '1.35rem',
           padding: '1.1rem 2.8rem',
           border: 'none',
           borderRadius: 18,
-          boxShadow: '0 4px 18px #27ae6088',
-          cursor: 'pointer',
+          boxShadow: '0 4px 18px #7289da88',
+          cursor: 'not-allowed',
           letterSpacing: '1px',
           textDecoration: 'none',
           marginBottom: '1.2rem',
-          transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
+          opacity: 0.7
         }}
-        onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.045)')}
-        onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
-        title={user ? "Ir al formulario de inscripción" : "Debes iniciar sesión con Steam para inscribirte"}
+        title="Las inscripciones comenzarán pronto"
       >
-        Inscripciones para el evento ¡YA!
+        Inscripciones próximamente
       </button>
       <span style={{
-        color: '#b3cfff',
-        fontSize: '1.08rem',
-        fontWeight: 500,
-        marginTop: 2,
-        opacity: 0.92,
+        color: '#e25822',
+        fontSize: '1.18rem',
+        fontWeight: 700,
+        marginTop: 8,
+        opacity: 0.95,
         textAlign: 'center'
       }}>
-        {user
-          ? <>La administración te contactará por Discord si tu equipo es seleccionado.</>
-          : <>Debes iniciar sesión con Steam para inscribirte. Si tienes dudas, contáctanos en <a href={DISCORD_CONTACT} target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>nuestro Discord</a>.</>
-        }
+        Las inscripciones comenzarán pronto. ¡Mantente atento a nuestras redes y Discord!
       </span>
-      {showModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.7)',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <div style={{
-            background: '#23201a',
-            borderRadius: 18,
-            boxShadow: '0 8px 32px #000b',
-            padding: '2.2rem 2.2rem 1.5rem 2.2rem',
-            textAlign: 'center',
-            color: '#fff',
-            fontFamily: 'Montserrat, Arial, sans-serif',
-            maxWidth: 380,
-            minWidth: 260
-          }}>
-            <h2 style={{ color: '#e25822', fontWeight: 900, fontSize: '1.4rem', marginBottom: '1.2rem' }}>
-              Debes estar logeado primero para poder inscribirte
-            </h2>
-            <button
-              onClick={() => setShowModal(false)}
-              style={{
-                marginTop: 12,
-                background: '#27ae60',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: '1rem',
-                padding: '0.7rem 2rem',
-                border: 'none',
-                borderRadius: 10,
-                boxShadow: '0 2px 8px #0007',
-                cursor: 'pointer',
-                letterSpacing: '1px',
-                textDecoration: 'none',
-                transition: 'background 0.2s, transform 0.2s'
-              }}
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      )}
+      {/* ...el resto del modal y mensaje se puede dejar oculto o eliminar si no se usa */}
     </div>
   );
 };

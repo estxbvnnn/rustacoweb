@@ -183,6 +183,11 @@ function getLocalIPv4() {
   return 'localhost';
 }
 
+// IMPORTANTE:
+// Este backend Express debe correr en HTTP (puerto 3001).
+// Nginx debe estar configurado para HTTPS en el dominio www.rustaco.site
+// y redirigir /auth/steam y /api/* al backend en http://localhost:3001
+
 const PORT = 3001;
 const HOST = '0.0.0.0';
 
