@@ -14,7 +14,7 @@ const app = express();
 // 1. Cambia el origin de CORS para aceptar solo localhost y 127.0.0.1
 app.use(cors({
   origin: [
-    'http://localhost:3000'
+    'http://177.71.253.85:3000'
   ],
   credentials: true
 }));
@@ -41,8 +41,8 @@ const steamUsers = {};
 
 // Modifica el callback de SteamStrategy para guardar usuarios
 passport.use(new SteamStrategy({
-  returnURL: 'http://localhost:3001/auth/steam/return',
-  realm: 'http://localhost:3001/',
+  returnURL: 'http://177.71.253.85:3001/auth/steam/return',
+  realm: 'http://177.71.253.85:3001/',
   apiKey: '3E6FB3DF729486B3EF9485399557CC45'
 }, (identifier, profile, done) => {
   process.nextTick(() => {
@@ -62,7 +62,7 @@ passport.use(new SteamStrategy({
 
 // Cambia la ruta de inicio de login Steam para usar localhost
 app.get('/auth/steam', (req, res, next) => {
-  req.headers.host = 'localhost:3001';
+  req.headers.host = '177.71.253.85:3001';
   next();
 }, passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }));
 
@@ -70,7 +70,7 @@ app.get('/auth/steam/return',
   passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }),
   (req, res) => {
     if (req.user && req.user.id) {
-      res.redirect(`http://localhost:3000/?steamid=${req.user.id}&name=${encodeURIComponent(req.user.displayName)}`);
+      res.redirect(`http://177.71.253.85:3000/?steamid=${req.user.id}&name=${encodeURIComponent(req.user.displayName)}`);
     } else {
       res.redirect('/auth/steam/fail');
     }

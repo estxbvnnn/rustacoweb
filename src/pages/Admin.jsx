@@ -13,7 +13,7 @@ const Admin = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/user', { credentials: 'include' })
+    fetch('http://177.71.253.85:3001/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setUser(data && data.steamid ? data : null);
@@ -24,14 +24,14 @@ const Admin = () => {
 
   useEffect(() => {
     if (user && user.steamid === ADMIN_STEAM_ID) {
-      fetch('http://localhost:3001/api/admin/users', { credentials: 'include' })
+      fetch('http://177.71.253.85:3001/api/admin/users', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setUsers(Array.isArray(data) ? data : []);
           setLoadingUsers(false);
         })
         .catch(() => setLoadingUsers(false));
-      fetch('http://localhost:3001/api/admin/applys', { credentials: 'include' })
+      fetch('http://177.71.253.85:3001/api/admin/applys', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setApplys(Array.isArray(data) ? data : []);
