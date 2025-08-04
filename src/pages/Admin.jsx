@@ -13,7 +13,7 @@ const Admin = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('https://www.rustaco.site:3001/api/user', { credentials: 'include' })
+    fetch('http://localhost:3001/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setUser(data && data.steamid ? data : null);
@@ -24,15 +24,14 @@ const Admin = () => {
 
   useEffect(() => {
     if (user && user.steamid === ADMIN_STEAM_ID) {
-      fetch('https://www.rustaco.site:3001/api/admin/users', { credentials: 'include' })
+      fetch('http://localhost:3001/api/admin/users', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setUsers(Array.isArray(data) ? data : []);
           setLoadingUsers(false);
         })
         .catch(() => setLoadingUsers(false));
-      // --- Obtener solicitudes de inscripción ---
-      fetch('https://www.rustaco.site:3001/api/admin/applys', { credentials: 'include' })
+      fetch('http://localhost:3001/api/admin/applys', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setApplys(Array.isArray(data) ? data : []);
