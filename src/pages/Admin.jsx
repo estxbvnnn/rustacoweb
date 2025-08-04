@@ -17,7 +17,7 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
     }}>
       <div style={{
         maxWidth: 700,
-        width: '100%',
+        width: '95vw',
         background: 'linear-gradient(120deg, #23201a 80%, #e25822 100%)',
         borderRadius: 32,
         boxShadow: '0 8px 32px #000b',
@@ -25,7 +25,9 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
         color: '#fff',
         fontFamily: 'Montserrat, Arial, sans-serif',
         border: '2px solid #e25822cc',
-        position: 'relative'
+        position: 'relative',
+        overflowY: 'auto',
+        maxHeight: '90vh'
       }}>
         <button
           onClick={onClose}
@@ -40,7 +42,8 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
             padding: '0.5rem 1.2rem',
             fontWeight: 700,
             cursor: 'pointer',
-            boxShadow: '0 2px 8px #0007'
+            boxShadow: '0 2px 8px #0007',
+            zIndex: 2
           }}
         >
           Cerrar
@@ -77,7 +80,8 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
             borderRadius: 10,
             padding: '0.7rem 1.2rem',
             marginTop: 6,
-            color: '#fff'
+            color: '#fff',
+            wordBreak: 'break-word'
           }}>{apply.why}</div>
         </div>
         <div style={{ marginBottom: 18 }}>
@@ -87,7 +91,8 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
             borderRadius: 10,
             padding: '0.7rem 1.2rem',
             marginTop: 6,
-            color: '#fff'
+            color: '#fff',
+            wordBreak: 'break-word'
           }}>{apply.strategy}</div>
         </div>
         <div style={{
@@ -115,7 +120,8 @@ const ApplyDetailModal = ({ apply, user, onClose }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 8,
-                borderLeft: '5px solid #7289da'
+                borderLeft: '5px solid #7289da',
+                wordBreak: 'break-word'
               }}>
                 <div style={{ fontWeight: 700, color: '#b3cfff', fontSize: '1.08rem', marginBottom: 4 }}>
                   Jugador {idx + 1}

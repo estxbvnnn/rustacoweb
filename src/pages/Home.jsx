@@ -256,7 +256,7 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
 );
 
 // Botón profesional de Login Steam SOLO en la TopBar
-const ADMIN_STEAM_ID = '76561198416933402';
+const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042'];
 
 const LoginSteam = () => {
   const [user, setUser] = React.useState(null);
