@@ -342,75 +342,6 @@ const Applys = () => {
     </div>
   );
 
-  // Nuevo: card para cada jugador
-  const PlayerCard = React.memo(({ idx, player, onChange }) => (
-    <div style={{
-      background: 'linear-gradient(120deg, #23201a 80%, #7289da 100%)',
-      borderRadius: 14,
-      boxShadow: '0 2px 12px #7289da88',
-      padding: '1.1rem 1rem',
-      marginBottom: 12,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 8,
-      borderLeft: '5px solid #7289da'
-    }}>
-      <div style={{ fontWeight: 700, color: '#b3cfff', fontSize: '1.08rem', marginBottom: 4 }}>
-        Jugador {idx + 1}
-      </div>
-      <input
-        type="text"
-        value={player.name}
-        onChange={e => onChange(idx, 'name', e.target.value)}
-        style={{
-          width: '100%',
-          padding: '0.6rem',
-          borderRadius: 8,
-          border: '1.5px solid #7289da',
-          fontSize: '1.05rem',
-          background: '#181818',
-          color: '#fff',
-          marginBottom: 4
-        }}
-        required
-        placeholder="Nombre"
-      />
-      <input
-        type="text"
-        value={player.steamid}
-        onChange={e => onChange(idx, 'steamid', e.target.value)}
-        style={{
-          width: '100%',
-          padding: '0.6rem',
-          borderRadius: 8,
-          border: '1.5px solid #7289da',
-          fontSize: '1.05rem',
-          background: '#181818',
-          color: '#fff',
-          marginBottom: 4
-        }}
-        required
-        placeholder="SteamID64"
-      />
-      <input
-        type="text"
-        value={player.twitch}
-        onChange={e => onChange(idx, 'twitch', e.target.value)}
-        style={{
-          width: '100%',
-          padding: '0.6rem',
-          borderRadius: 8,
-          border: '1.5px solid #7289da',
-          fontSize: '1.05rem',
-          background: '#181818',
-          color: '#fff'
-        }}
-        required
-        placeholder="Canal de Twitch"
-      />
-    </div>
-  ));
-
   // Nuevo: layout profesional para el formulario, con checkbox de términos abajo
   if (user && !submitted && acceptTerms) {
     return (
@@ -489,15 +420,65 @@ const Applys = () => {
             <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem', marginBottom: 12, display: 'block' }}>
               Participantes del Equipo (8 jugadores, capitán incluido) *
             </label>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '1.2rem'
-            }}>
-              {players.map((p, idx) => (
-                <PlayerCard key={idx} idx={idx} player={p} onChange={handlePlayerChange} />
+            <ol style={{ paddingLeft: '1.2rem', margin: 0 }}>
+              {players.map((player, idx) => (
+                <li key={idx} style={{ marginBottom: 18 }}>
+                  <div style={{ fontWeight: 700, color: '#b3cfff', fontSize: '1.08rem', marginBottom: 6 }}>
+                    Jugador {idx + 1}.
+                  </div>
+                  <input
+                    type="text"
+                    value={player.name}
+                    onChange={e => handlePlayerChange(idx, 'name', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.6rem',
+                      borderRadius: 8,
+                      border: '1.5px solid #7289da',
+                      fontSize: '1.05rem',
+                      background: '#181818',
+                      color: '#fff',
+                      marginBottom: 4
+                    }}
+                    required
+                    placeholder="Nombre"
+                  />
+                  <input
+                    type="text"
+                    value={player.steamid}
+                    onChange={e => handlePlayerChange(idx, 'steamid', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.6rem',
+                      borderRadius: 8,
+                      border: '1.5px solid #7289da',
+                      fontSize: '1.05rem',
+                      background: '#181818',
+                      color: '#fff',
+                      marginBottom: 4
+                    }}
+                    required
+                    placeholder="SteamID64"
+                  />
+                  <input
+                    type="text"
+                    value={player.twitch}
+                    onChange={e => handlePlayerChange(idx, 'twitch', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.6rem',
+                      borderRadius: 8,
+                      border: '1.5px solid #7289da',
+                      fontSize: '1.05rem',
+                      background: '#181818',
+                      color: '#fff'
+                    }}
+                    required
+                    placeholder="Canal de Twitch"
+                  />
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
           {/* Discord del capitán */}
           <div style={{
