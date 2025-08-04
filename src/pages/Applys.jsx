@@ -428,6 +428,7 @@ const Applys = () => {
       }}>
         <Banner />
         <form onSubmit={handleSubmit} style={{ marginTop: 0 }}>
+          {/* Nombre del equipo y capitán */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
@@ -456,6 +457,56 @@ const Applys = () => {
               />
             </div>
             <div>
+              <label style={{ fontWeight: 700, color: '#7289da', fontSize: '1.09rem' }}>Capitán del Equipo *</label>
+              <input
+                type="text"
+                value={captain}
+                onChange={e => setCaptain(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.7rem',
+                  borderRadius: 8,
+                  border: '1.5px solid #7289da',
+                  marginTop: 6,
+                  fontSize: '1.08rem',
+                  background: '#181818',
+                  color: '#fff',
+                  boxShadow: '0 1px 8px #0007'
+                }}
+                required
+                placeholder="Nombre completo del capitán"
+              />
+            </div>
+          </div>
+          {/* Participantes del equipo */}
+          <div style={{
+            marginBottom: 24,
+            background: 'rgba(34,34,34,0.97)',
+            borderRadius: 18,
+            padding: '1.5rem 1.2rem',
+            boxShadow: '0 2px 12px #0007'
+          }}>
+            <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem', marginBottom: 12, display: 'block' }}>
+              Participantes del Equipo (8 jugadores, capitán incluido) *
+            </label>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '1.2rem'
+            }}>
+              {players.map((p, idx) => (
+                <PlayerCard key={idx} idx={idx} player={p} onChange={handlePlayerChange} />
+              ))}
+            </div>
+          </div>
+          {/* Discord del capitán */}
+          <div style={{
+            marginBottom: 24,
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '2rem'
+          }}>
+            <div>
               <label style={{ fontWeight: 700, color: '#7289da', fontSize: '1.09rem' }}>Discord del Capitán *</label>
               <input
                 type="text"
@@ -477,33 +528,13 @@ const Applys = () => {
               />
             </div>
           </div>
+          {/* Preguntas adicionales */}
           <div style={{
             marginBottom: 24,
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '2rem'
           }}>
-            <div>
-              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>Capitán del Equipo *</label>
-              <input
-                type="text"
-                value={captain}
-                onChange={e => setCaptain(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.7rem',
-                  borderRadius: 8,
-                  border: '1.5px solid #e25822',
-                  marginTop: 6,
-                  fontSize: '1.08rem',
-                  background: '#181818',
-                  color: '#fff',
-                  boxShadow: '0 1px 8px #0007'
-                }}
-                required
-                placeholder="Nombre completo del capitán"
-              />
-            </div>
             <div>
               <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>¿Por qué debe participar tu equipo? *</label>
               <textarea
@@ -525,13 +556,6 @@ const Applys = () => {
                 placeholder="Cuéntanos por qué tu equipo merece un lugar en Rustaco II..."
               />
             </div>
-          </div>
-          <div style={{
-            marginBottom: 24,
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '2rem'
-          }}>
             <div>
               <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>Estrategia o preparación especial</label>
               <textarea
@@ -553,27 +577,7 @@ const Applys = () => {
               />
             </div>
           </div>
-          <div style={{
-            marginBottom: 24,
-            background: 'rgba(34,34,34,0.97)',
-            borderRadius: 18,
-            padding: '1.5rem 1.2rem',
-            boxShadow: '0 2px 12px #0007'
-          }}>
-            <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem', marginBottom: 12, display: 'block' }}>
-              Participantes del Equipo (8 jugadores, capitán incluido) *
-            </label>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '1.2rem'
-            }}>
-              {players.map((p, idx) => (
-                <PlayerCard key={idx} idx={idx} player={p} onChange={handlePlayerChange} />
-              ))}
-            </div>
-          </div>
-          {/* Mueve el checkbox de términos aquí abajo, antes del botón */}
+          {/* Checkbox de términos */}
           <div style={{
             marginBottom: 18,
             background: 'rgba(34,34,34,0.97)',
