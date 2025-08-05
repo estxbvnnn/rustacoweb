@@ -475,25 +475,29 @@ const InscripcionBanner = () => {
       margin: '2.5rem 0 0 0'
     }}>
       <button
-        disabled
+        onClick={handleClick}
         style={{
-          background: 'linear-gradient(90deg, #b3cfff 60%, #7289da 100%)',
-          color: '#23201a',
+          background: 'linear-gradient(90deg, #27ae60 60%, #e25822 100%)',
+          color: '#fff',
           fontWeight: 900,
           fontSize: '1.35rem',
           padding: '1.1rem 2.8rem',
           border: 'none',
           borderRadius: 18,
-          boxShadow: '0 4px 18px #7289da88',
-          cursor: 'not-allowed',
+          boxShadow: '0 4px 18px #27ae6088',
+          cursor: 'pointer',
           letterSpacing: '1px',
           textDecoration: 'none',
           marginBottom: '1.2rem',
-          opacity: 0.7
+          opacity: 1,
+          transition: 'background 0.2s, transform 0.2s'
         }}
-        title="Las inscripciones comenzarán pronto"
+        title="Inscríbete ahora"
       >
-        Inscripciones próximamente
+        Inscripciones abiertas ¡YA!<br />
+        <span style={{ fontWeight: 700, fontSize: '1.08rem', color: '#b3cfff' }}>
+          del 6 de Agosto 15:00 GMT-4 hasta el 10 de Septiembre 15:00 GMT-4
+        </span>
       </button>
       <span style={{
         color: '#e25822',
@@ -503,7 +507,7 @@ const InscripcionBanner = () => {
         opacity: 0.95,
         textAlign: 'center'
       }}>
-        Las inscripciones comenzarán pronto. ¡Mantente atento a nuestras redes y Discord!
+        ¡No te quedes fuera! Inscribe tu equipo y participa en Rustaco II.
       </span>
       {/* ...el resto del modal y mensaje se puede dejar oculto o eliminar si no se usa */}
     </div>

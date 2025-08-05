@@ -5,6 +5,8 @@ const passport = require('passport');
 const SteamStrategy = require('passport-steam').Strategy;
 const cors = require('cors');
 const os = require('os');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 
@@ -125,7 +127,21 @@ app.get('/api/user', (req, res) => {
 });
 
 // --- Almacena solicitudes de inscripción ---
-const applys = []; // [{ teamName, captain, discord, players, why, strategy, submittedBy, submittedAt }]
+// Usar archivo JSON para persistencia
+const applysFile = path.join(__dirname, '..', 'applys.json');
+let applys = [];
+// Cargar applys al iniciar el servidor
+if (fs.existsSync(applysFile)) {
+  try {
+    applys = JSON.parse(fs.readFileSync(applysFile, 'utf8'));
+  } catch (e) {
+    applys = [];
+  }
+}
+// Función para guardar applys en archivo
+function saveApplys() {
+  fs.writeFileSync(applysFile, JSON.stringify(applys, null, 2), 'utf8');
+}
 
 // --- Endpoint para guardar solicitud de inscripción ---
 app.post('/api/apply', (req, res) => {
@@ -133,7 +149,6 @@ app.post('/api/apply', (req, res) => {
     return res.status(401).json({ error: 'No autenticado' });
   }
   const { teamName, captain, discord, players, why, strategy } = req.body;
-  // Corrige la validación para permitir que los campos 'why' y 'strategy' sean opcionales (si lo deseas)
   if (
     !teamName ||
     !captain ||
@@ -156,6 +171,18 @@ app.post('/api/apply', (req, res) => {
     submittedByName: req.user.name,
     submittedAt: new Date().toISOString()
   });
+  saveApplys();
+  res.json({ ok: true });
+});
+
+// --- Endpoint para eliminar apply por índice (solo admin) ---
+app.delete('/api/admin/applys/:idx', requireAdmin, (req, res) => {
+  const idx = parseInt(req.params.idx, 10);
+  if (isNaN(idx) || idx < 0 || idx >= applys.length) {
+    return res.status(400).json({ ok: false, error: 'Índice inválido' });
+  }
+  applys.splice(idx, 1);
+  saveApplys();
   res.json({ ok: true });
 });
 
