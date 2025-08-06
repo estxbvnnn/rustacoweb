@@ -190,6 +190,7 @@ app.delete('/api/admin/applys/:idx', requireAdmin, (req, res) => {
 const ADMIN_STEAM_IDS = [
   '76561198416933402',
   '76561198067186042',
+  '76561199167906871',
   '76561199220103836',
   '76561198301561047'
 ]; // Agrega todos los SteamID
