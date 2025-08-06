@@ -28,8 +28,8 @@ const translations = {
     infoAdicional: 'Información adicional',
     infoAdicionalTexto: 'Pronto anunciaremos más detalles sobre premios, invitados especiales y sorpresas para la comunidad. ¡Mantente atento a nuestras redes sociales!',
     formatoTitulo: 'Formato - Rustaco II',
-    formato1: 'Rustaco II contará con <b>112 jugadores</b> participando en el evento.',
-    formato2: '14 equipos formados por 8 jugadores lucharán por el primer puesto.',
+    formato1: 'Rustaco II contará con <b>128 jugadores</b> participando en el evento.',
+    formato2: '16 equipos formados por 8 jugadores lucharán por el primer puesto.',
     formato3: 'Cada equipo tendrá su propia isla donde podrán construir y equiparse estratégicamente para el enfrentamiento final.',
     sobreTitulo: 'Sobre Rustaco',
     sobreTexto: 'Rustaco fue formado por un grupo de amigos con experiencia brutal en Rust, que han decidido crear torneos y eventos competitivos para la comunidad LATAM.',
@@ -79,8 +79,8 @@ const translations = {
     infoAdicional: 'Additional Information',
     infoAdicionalTexto: 'We will soon announce more details about prizes, special guests, and surprises for the community. Stay tuned to our social networks!',
     formatoTitulo: 'Format - Rustaco II',
-    formato1: 'Rustaco II will feature <b>112 players</b> participating in the event.',
-    formato2: '14 teams of 8 players will compete for first place.',
+    formato1: 'Rustaco II will feature <b>128 players</b> participating in the event.',
+    formato2: '16 teams of 8 players will compete for first place.',
     formato3: 'Each team will have its own island to build and prepare strategically for the final showdown.',
     sobreTitulo: 'About Rustaco',
     sobreTexto: 'Rustaco was formed by a group of friends with brutal Rust experience, who decided to create tournaments and competitive events for the LATAM community.',
@@ -130,8 +130,8 @@ const translations = {
     infoAdicional: 'Informações adicionais',
     infoAdicionalTexto: 'Em breve anunciaremos mais detalhes sobre prêmios, convidados especiais e surpresas para a comunidade. Fique ligado em nossas redes sociais!',
     formatoTitulo: 'Formato - Rustaco II',
-    formato1: 'O Rustaco II contará com <b>112 jogadores</b> participando do evento.',
-    formato2: '14 equipes formadas por 8 jogadores disputarão o primeiro lugar.',
+    formato1: 'O Rustaco II contará com <b>128 jogadores</b> participando do evento.',
+    formato2: '16 equipes formadas por 8 jogadores disputarão o primeiro lugar.',
     formato3: 'Cada equipe terá sua própria ilha para construir e se equipar estrategicamente para o confronto final.',
     sobreTitulo: 'Sobre o Rustaco',
     sobreTexto: 'O Rustaco foi formado por um grupo de amigos com grande experiência em Rust, que decidiram criar torneios e eventos competitivos para a comunidade LATAM.',
@@ -1090,38 +1090,7 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
       }}>
         {translations[lang].infoAdicionalTexto}
       </p>
-      {/* Nueva información: transmisión oficial */}
-      <div style={{
-        marginTop: '1.2rem',
-        background: 'rgba(34,34,34,0.97)',
-        borderRadius: 18,
-        padding: '1.1rem 1.2rem',
-        boxShadow: '0 2px 12px #0007',
-        color: '#fff',
-        fontWeight: 700,
-        fontSize: '1.12rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        justifyContent: 'center'
-      }}>
-        <i className="bi bi-twitch" style={{ fontSize: 28, color: '#9147ff' }}></i>
-        <span>
-          Todo el evento será transmitido por la administración en&nbsp;
-          <a
-            href="https://www.twitch.tv/rustacoeventos"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: '#9147ff',
-              fontWeight: 800,
-              textDecoration: 'underline'
-            }}
-          >
-            twitch.tv/rustacoeventos
-          </a>
-        </span>
-      </div>
+      {/* No agregar mensaje de Twitch aquí */}
     </motion.section>
   );
 });
@@ -1137,7 +1106,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
   const infoCards = [
     {
       label: translations[lang].equiposLabel,
-      value: '14',
+      value: '16',
       icon: '👥',
       description: translations[lang].equiposDesc
     },
@@ -1149,7 +1118,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
     },
     {
       label: translations[lang].jugadores,
-      value: lang === 'es' ? '112' : '112',
+      value: lang === 'es' ? '128' : '128',
       icon: '🎮',
       description: translations[lang].jugadoresDesc
     },
@@ -1309,13 +1278,13 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
     if (ref) ref.current = sectionRef.current;
   }, [ref]);
 
-  const teams = Array.from({ length: 14 }, (_, i) => ({
+  const teams = Array.from({ length: 16 }, (_, i) => ({
     name: `${translations[lang].equipo} ${i + 1}`,
     status: translations[lang].aConfirmar
   }));
 
-  const firstRow = teams.slice(0, 7);
-  const secondRow = teams.slice(7, 14);
+  const firstRow = teams.slice(0, 8);
+  const secondRow = teams.slice(8, 16);
 
   return (
     <motion.section
@@ -1369,7 +1338,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
+          gridTemplateColumns: 'repeat(8, 1fr)',
           gap: '1.7rem',
           width: '100%',
           marginTop: '1.2rem'
@@ -1426,7 +1395,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
+          gridTemplateColumns: 'repeat(8, 1fr)',
           gap: '1.7rem',
           width: '100%',
           marginTop: '1.2rem'
@@ -1434,7 +1403,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
       >
         {secondRow.map((team, idx) => (
           <div
-            key={team.name + '-' + (idx + 7)}
+            key={team.name + '-' + (idx + 8)}
             className="reveal"
             style={{
               background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
@@ -2294,7 +2263,7 @@ const MapaSection = React.forwardRef((props, ref) => {
           boxShadow: '0 8px 32px #e2582288'
         }}
       />
-      {/* Información del canal oficial debajo del mapa */}
+      {/* Mensaje de transmisión oficial debajo del mapa */}
       <div style={{
         marginTop: '1.2rem',
         background: 'rgba(34,34,34,0.97)',

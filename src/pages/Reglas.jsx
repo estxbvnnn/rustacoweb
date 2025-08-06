@@ -163,7 +163,7 @@ const reglas = [
     descripcion: {
       es: (
         <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
-          <li><b>112 jugadores</b> en total.</li>
+          <li><b>128 jugadores</b> en total.</li>
           <li><b>Equipos de 8 participantes</b>.</li>
           <li>Se realizarán <b>diversos eventos especiales</b> durante el evento.</li>
           <li><b>Fishing Bandits</b>.</li>
@@ -171,7 +171,7 @@ const reglas = [
       ),
       en: (
         <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
-          <li><b>112 players</b> in total.</li>
+          <li><b>128 players</b> in total.</li>
           <li><b>Teams of 8 participants</b>.</li>
           <li><b>Various special events</b> will be held during the event.</li>
           <li><b>Fishing Bandits</b>.</li>
@@ -179,7 +179,7 @@ const reglas = [
       ),
       pt: (
         <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
-          <li><b>112 jogadores</b> no total.</li>
+          <li><b>128 jogadores</b> no total.</li>
           <li><b>Equipes de 8 participantes</b>.</li>
           <li><b>Diversos eventos especiais</b> serão realizados durante o evento.</li>
           <li><b>Fishing Bandits</b>.</li>
@@ -1009,7 +1009,7 @@ const reglas = [
           Alianças (merge) são permitidas apenas para raids, com um máximo de 3 equipes aliadas. Não é permitido o merge raid de mais de 3 equipes sob nenhuma circunstância.
           <br />
           <span style={{ color: "#f39c12" }}>
-            A comunicação entre equipes aliadas durante os raids deve ser feita exclusivamente pelo chat de voz do jogo. Não é permitido o uso de outros meios de comunicação externos para coordenar raids.
+            A comunicação entre equipes aliadas durante os raids deve ser feita exclusivamente pelo chat de voz do jogo. Não é permitido o uso de outros meios de comunicação externos para coordeninar raids.
           </span>
         </div>
       )
