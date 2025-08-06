@@ -145,10 +145,10 @@ const translations = {
     footer: 'Rustaco Eventos — Inspirado em Rust. Todos os direitos reservados.',
     equiposLabel: 'Equipes',
     equiposDesc: 'Total de equipes participantes no evento.',
-    jugadoresEquipo: 'Jogadores por equipe',
+    jogadoresEquipo: 'Jogadores por equipe',
     jugadoresEquipoDesc: 'Cada equipe será composta por 8 jogadores.',
-    jugadores: 'Jogadores',
-    jugadoresDesc: 'Participantes confirmados para o Rustaco 2.',
+    jogadores: 'Jogadores',
+    jogadoresDesc: 'Participantes confirmados para o Rustaco 2.',
     hora: 'Hora',
     horaDesc: 'Horário de início do evento (horário do Chile).',
     modo: 'Modo',
@@ -1062,8 +1062,8 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
         marginBottom: '3rem',
         padding: '2.5rem 1.5rem',
         borderRadius: '24px',
-        boxShadow: 'none', // Elimina sombra
-        background: 'none', // Elimina fondo negro
+        boxShadow: 'none',
+        background: 'none',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1090,6 +1090,38 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
       }}>
         {translations[lang].infoAdicionalTexto}
       </p>
+      {/* Nueva información: transmisión oficial */}
+      <div style={{
+        marginTop: '1.2rem',
+        background: 'rgba(34,34,34,0.97)',
+        borderRadius: 18,
+        padding: '1.1rem 1.2rem',
+        boxShadow: '0 2px 12px #0007',
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: '1.12rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        justifyContent: 'center'
+      }}>
+        <i className="bi bi-twitch" style={{ fontSize: 28, color: '#9147ff' }}></i>
+        <span>
+          Todo el evento será transmitido por la administración en&nbsp;
+          <a
+            href="https://www.twitch.tv/rustacoeventos"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: '#9147ff',
+              fontWeight: 800,
+              textDecoration: 'underline'
+            }}
+          >
+            twitch.tv/rustacoeventos
+          </a>
+        </span>
+      </div>
     </motion.section>
   );
 });
@@ -1882,7 +1914,7 @@ const Home = () => {
         marginBottom: '2.5rem'
       }}>
         <div
-          className="animate__animated animate__fadeInUp"
+          className="animate__animated animate__fadeIn"
           style={{
             background: 'none', // Quita el fondo negro
             borderRadius: 28,
@@ -2262,7 +2294,38 @@ const MapaSection = React.forwardRef((props, ref) => {
           boxShadow: '0 8px 32px #e2582288'
         }}
       />
-      {/* Elimina el cuadro de sponsor Poionako debajo del mapa */}
+      {/* Información del canal oficial debajo del mapa */}
+      <div style={{
+        marginTop: '1.2rem',
+        background: 'rgba(34,34,34,0.97)',
+        borderRadius: 18,
+        padding: '1.1rem 1.2rem',
+        boxShadow: '0 2px 12px #0007',
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: '1.12rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        justifyContent: 'center'
+      }}>
+        <i className="bi bi-twitch" style={{ fontSize: 28, color: '#9147ff' }}></i>
+        <span>
+          Todo el evento será transmitido por la administración en&nbsp;
+          <a
+            href="https://www.twitch.tv/rustacoeventos"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: '#9147ff',
+              fontWeight: 800,
+              textDecoration: 'underline'
+            }}
+          >
+            twitch.tv/rustacoeventos
+          </a>
+        </span>
+      </div>
     </motion.section>
   );
 });
