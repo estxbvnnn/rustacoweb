@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042']; // Agrega ambos SteamID
+const ADMIN_STEAM_IDS = [
+  '76561198416933402',
+  '76561198067186042',
+  '76561199220103836',
+  '76561198301561047'
+]; // Agrega ambos SteamID
 
 const ApplyDetailModal = ({ apply, user, onClose }) => {
   if (!apply) return null;
@@ -396,26 +401,6 @@ const Admin = () => {
                       }}
                     >
                       Ver Apply
-                    </button>
-                    <button
-                      onClick={() => handleDeleteApply(idx)}
-                      disabled={deletingIdx === idx}
-                      style={{
-                        background: deletingIdx === idx ? '#aaa' : 'linear-gradient(90deg, #e25822 60%, #27ae60 100%)',
-                        color: '#fff',
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        padding: '0.5rem 1.2rem',
-                        border: 'none',
-                        borderRadius: 8,
-                        boxShadow: '0 2px 8px #0007',
-                        cursor: deletingIdx === idx ? 'not-allowed' : 'pointer',
-                        letterSpacing: '1px',
-                        textDecoration: 'none',
-                        transition: 'background 0.2s, transform 0.2s'
-                      }}
-                    >
-                      {deletingIdx === idx ? 'Eliminando...' : 'Eliminar'}
                     </button>
                   </td>
                 </tr>

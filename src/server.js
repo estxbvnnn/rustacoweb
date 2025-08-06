@@ -187,7 +187,12 @@ app.delete('/api/admin/applys/:idx', requireAdmin, (req, res) => {
 });
 
 // Define aquí los SteamID de los admins
-const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042']; // Agrega ambos SteamID
+const ADMIN_STEAM_IDS = [
+  '76561198416933402',
+  '76561198067186042',
+  '76561199220103836',
+  '76561198301561047'
+]; // Agrega todos los SteamID
 
 // Middleware para proteger rutas de admin
 function requireAdmin(req, res, next) {

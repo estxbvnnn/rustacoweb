@@ -45,7 +45,12 @@ const translations = {
     horaDesc: 'Horario de inicio del evento (hora chilena).',
     modo: 'Modo',
     modoDesc: 'El evento se desarrollará en formato competitivo.',
-    verReglas: 'Ver Reglas'
+    verReglas: 'Ver Reglas',
+    fecha: 'Fechas',
+    fechaDesc: 'Fechas del evento Rustaco II.',
+    inscripcionesBtn: 'Inscripciones abiertas ¡YA!',
+    inscripcionesFechas: 'del 6 de Agosto 15:00 GMT-4 hasta el 10 de Septiembre 16:00 GMT-4',
+    inscripcionesMsg: '¡No te quedes fuera! Inscribe tu equipo y participa en Rustaco II.',
   },
   en: {
     formato: 'Format',
@@ -78,7 +83,12 @@ const translations = {
     horaDesc: 'Event start time (Chile time).',
     modo: 'Mode',
     modoDesc: 'The event will be held in competitive format.',
-    verReglas: 'See Rules'
+    verReglas: 'See Rules',
+    fecha: 'Dates',
+    fechaDesc: 'Dates of the Rustaco II event.',
+    inscripcionesBtn: 'Registrations open NOW!',
+    inscripcionesFechas: 'from August 6th 15:00 GMT-4 to September 10th 16:00 GMT-4',
+    inscripcionesMsg: "Don't miss out! Register your team and participate in Rustaco II.",
   },
   pt: {
     formato: 'Formato',
@@ -111,7 +121,12 @@ const translations = {
     horaDesc: 'Horário de início do evento (horário do Chile).',
     modo: 'Modo',
     modoDesc: 'O evento será realizado em formato competitivo.',
-    verReglas: 'Ver Regras'
+    verReglas: 'Ver Regras',
+    fecha: 'Datas',
+    fechaDesc: 'Datas do evento Rustaco II.',
+    inscripcionesBtn: 'Inscrições abertas AGORA!',
+    inscripcionesFechas: 'de 6 de agosto 15:00 GMT-4 até 10 de setembro 16:00 GMT-4',
+    inscripcionesMsg: 'Não fique de fora! Inscreva sua equipe e participe do Rustaco II.',
   }
 };
 
@@ -256,7 +271,12 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
 );
 
 // Botón profesional de Login Steam SOLO en la TopBar
-const ADMIN_STEAM_IDS = ['76561198416933402', '76561198067186042'];
+const ADMIN_STEAM_IDS = [
+  '76561198416933402',
+  '76561198067186042',
+  '76561199220103836',
+  '76561198301561047'
+];
 
 const LoginSteam = () => {
   const [user, setUser] = React.useState(null);
@@ -436,12 +456,13 @@ const LoginSteam = () => {
   );
 };
 
-const DISCORD_CONTACT = "https://discord.gg/rustaco"; // Cambia por el Discord oficial si es otro
+const DISCORD_CONTACT = "https://discord.rustaco.site"; // Cambia por el Discord oficial si es otro
 
 const InscripcionBanner = () => {
   const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const history = useHistory();
+  const [lang, setLang] = useState('es'); // Añade el estado de idioma aquí si no lo tienes
 
   useEffect(() => {
     fetch('/api/user', {
@@ -466,6 +487,9 @@ const InscripcionBanner = () => {
       setShowModal(true);
     }
   };
+
+  // Usa el idioma del Home si lo tienes, si no, usa el estado local
+  const currentLang = typeof window !== 'undefined' && window.__LANG ? window.__LANG : lang;
 
   return (
     <div style={{
@@ -492,11 +516,11 @@ const InscripcionBanner = () => {
           opacity: 1,
           transition: 'background 0.2s, transform 0.2s'
         }}
-        title="Inscríbete ahora"
+        title={translations[currentLang].inscripcionesBtn}
       >
-        Inscripciones abiertas ¡YA!<br />
+        {translations[currentLang].inscripcionesBtn}<br />
         <span style={{ fontWeight: 700, fontSize: '1.08rem', color: '#b3cfff' }}>
-          del 6 de Agosto 15:00 GMT-4 hasta el 10 de Septiembre 15:00 GMT-4
+          {translations[currentLang].inscripcionesFechas}
         </span>
       </button>
       <span style={{
@@ -507,7 +531,7 @@ const InscripcionBanner = () => {
         opacity: 0.95,
         textAlign: 'center'
       }}>
-        ¡No te quedes fuera! Inscribe tu equipo y participa en Rustaco II.
+        {translations[currentLang].inscripcionesMsg}
       </span>
       {/* ...el resto del modal y mensaje se puede dejar oculto o eliminar si no se usa */}
     </div>
@@ -1497,7 +1521,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
 
 const DiscordBanner = ({ lang }) => (
   <a
-    href="https://discord.gg/rustaco"
+    href="https://discord.rustaco.site"
     target="_blank"
     rel="noopener noreferrer"
     style={{
