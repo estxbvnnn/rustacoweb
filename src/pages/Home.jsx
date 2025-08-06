@@ -11,6 +11,10 @@ const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
 import '../assets/styles.css';
 import { Link, useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+// Importa el fondo
+import fondo from '../assets/img/fondo.jpg';
 
 // Traducciones
 const translations = {
@@ -152,6 +156,32 @@ function useRevealOnScroll(ref, options = {}) {
   }, [ref, options.threshold]);
 }
 
+const logoAnim = {
+  initial: { scale: 1, rotate: 0 },
+  animate: {
+    scale: [1, 1.08, 1],
+    rotate: [0, 8, -8, 0],
+    transition: {
+      duration: 2.5,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
+
+const btnAnim = {
+  initial: { scale: 1 },
+  animate: {
+    scale: [1, 1.07, 1],
+    transition: {
+      duration: 1.8,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
+
+// Modifica el logo y los botones en TopBar para usar motion
 const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) => (
   <div
     style={{
@@ -183,9 +213,12 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
         gap: '2rem',
         minWidth: 0,
       }}>
-        <img
+        <motion.img
           src={logo}
           alt="Rustaco Logo"
+          variants={logoAnim}
+          initial="initial"
+          animate="animate"
           style={{
             borderRadius: '50%',
             width: 64,
@@ -200,14 +233,26 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           gap: '2rem',
           marginLeft: '2rem'
         }}>
-          <button className="nav-btn" onClick={onFormatoClick}>{translations[lang].formato}</button>
-          <button className="nav-btn" onClick={onInfoClick}>{translations[lang].sobre}</button>
-          <button className="nav-btn" onClick={onTeamsClick}>{translations[lang].equipos}</button>
-          <a href="/events" className="nav-btn">{translations[lang].stats}</a>
-          <Link to="/reglas" className="nav-btn">
-            {translations[lang].verReglas}
-          </Link>
-          <LoginSteam />
+          <motion.button className="nav-btn" onClick={onFormatoClick} variants={btnAnim} initial="initial" animate="animate">
+            {translations[lang].formato}
+          </motion.button>
+          <motion.button className="nav-btn" onClick={onInfoClick} variants={btnAnim} initial="initial" animate="animate">
+            {translations[lang].sobre}
+          </motion.button>
+          <motion.button className="nav-btn" onClick={onTeamsClick} variants={btnAnim} initial="initial" animate="animate">
+            {translations[lang].equipos}
+          </motion.button>
+          <motion.a href="/events" className="nav-btn" variants={btnAnim} initial="initial" animate="animate">
+            {translations[lang].stats}
+          </motion.a>
+          <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
+            <Link to="/reglas" className="nav-btn">
+              {translations[lang].verReglas}
+            </Link>
+          </motion.div>
+          <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
+            <LoginSteam />
+          </motion.div>
         </div>
       </div>
       <div
@@ -218,8 +263,11 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
         }}
       >
         {/* ...selector de idioma... */}
-        <button
+        <motion.button
           onClick={() => setLang('es')}
+          variants={btnAnim}
+          initial="initial"
+          animate="animate"
           style={{
             background: lang === 'es' ? '#e25822' : '#23201a',
             border: 'none',
@@ -233,9 +281,12 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           title="Español LATAM"
         >
           <img src={flagChile} alt="Chile" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={() => setLang('en')}
+          variants={btnAnim}
+          initial="initial"
+          animate="animate"
           style={{
             background: lang === 'en' ? '#3a4bd8' : '#23201a',
             border: 'none',
@@ -249,9 +300,12 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           title="English USA"
         >
           <img src={flagUSA} alt="USA" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           onClick={() => setLang('pt')}
+          variants={btnAnim}
+          initial="initial"
+          animate="animate"
           style={{
             background: lang === 'pt' ? '#27ae60' : '#23201a',
             border: 'none',
@@ -264,7 +318,7 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           title="Português Brasil"
         >
           <img src={flagBrazil} alt="Brasil" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
-        </button>
+        </motion.button>
       </div>
     </div>
   </div>
@@ -492,12 +546,17 @@ const InscripcionBanner = () => {
   const currentLang = typeof window !== 'undefined' && window.__LANG ? window.__LANG : lang;
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      margin: '2.5rem 0 0 0'
-    }}>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={fadeVariants}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        margin: '2.5rem 0 0 0'
+      }}
+    >
       <button
         onClick={handleClick}
         style={{
@@ -534,18 +593,27 @@ const InscripcionBanner = () => {
         {translations[currentLang].inscripcionesMsg}
       </span>
       {/* ...el resto del modal y mensaje se puede dejar oculto o eliminar si no se usa */}
-    </div>
+    </motion.div>
   );
 };
 
+const fadeVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.39, 0.575, 0.565, 1] } }
+};
+
+// Reemplaza los principales bloques por motion.div/motion.section/motion.header
 const Header = () => {
   const headerRef = useRef(null);
   useRevealOnScroll(headerRef, { threshold: 0.2 });
 
   return (
-    <header
+    <motion.header
       ref={headerRef}
       className="header reveal"
+      initial="hidden"
+      animate="visible"
+      variants={fadeVariants}
       style={{
         marginTop: '0',
         padding: '3rem 0 1.2rem 0',
@@ -556,11 +624,17 @@ const Header = () => {
         justifyContent: 'center'
       }}
     >
-      <div className="logo-glow-container" style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
+      <motion.div
+        className="logo-glow-container"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
         <img
           src={logo}
           alt="Rustaco Logo"
@@ -577,324 +651,13 @@ const Header = () => {
           }}
         />
         <div className="logo-glow-bg"></div>
-      </div>
-      {/* Banner de inscripción debajo del logo grande */}
+      </motion.div>
       <InscripcionBanner />
-    </header>
+    </motion.header>
   );
 };
 
-const SponsorSection = () => (
-  <div
-    className="sponsor-section"
-    style={{
-      maxWidth: 440,
-      margin: '2.5rem auto 0 auto',
-      background: 'linear-gradient(120deg, #23201a 80%, #e25822 100%)',
-      borderRadius: 22,
-      boxShadow: '0 8px 32px #000b',
-      padding: '2.2rem 2rem 1.5rem 2rem',
-      textAlign: 'center',
-      fontFamily: 'Montserrat, Arial, sans-serif',
-      color: '#fff',
-      position: 'relative',
-      border: '2px solid #e25822cc',
-      zIndex: 2
-    }}
-  >
-<div style={{ marginBottom: '1.2rem' }}>
-  <img
-    src={poionakologo}
-    alt="Poionako Logo"
-    style={{
-      width: '100%',
-      height: 'auto',
-      maxWidth: 120,
-      borderRadius: 0,
-      objectFit: 'contain',
-      boxShadow: 'none',
-      background: 'none',
-      border: 'none',
-      display: 'block',
-      margin: '0 auto'
-    }}
-  />
-</div>
-    <h3
-      style={{
-        fontWeight: 900,
-        fontSize: '1.35rem',
-        color: '#e25822',
-        marginBottom: '0.7rem',
-        letterSpacing: '1px',
-        textShadow: '0 1px 8px #000a'
-      }}
-    >
-      Evento sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
-    </h3>
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      gap: 16,
-      marginTop: '1.2rem',
-      flexWrap: 'wrap'
-    }}>
-{/* Kick */}
-<a
-  href="https://kick.com/poionako"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    background: '#23201a',
-    color: '#53fc18',
-    fontWeight: 700,
-    fontSize: '1.09rem',
-    padding: '0.85rem 1.7rem',
-    borderRadius: 14,
-    textDecoration: 'none',
-    boxShadow: '0 4px 18px #53fc1888',
-    border: '2px solid #53fc18',
-    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
-  }}
-  onMouseOver={e => {
-    e.currentTarget.style.transform = 'scale(1.08)';
-    e.currentTarget.style.background = '#53fc18';
-    e.currentTarget.style.color = '#23201a';
-    e.currentTarget.style.boxShadow = '0 8px 24px #53fc18cc';
-  }}
-  onMouseOut={e => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.background = '#23201a';
-    e.currentTarget.style.color = '#53fc18';
-    e.currentTarget.style.boxShadow = '0 4px 18px #53fc1888';
-  }}
->
-  <svg width="28" height="28" viewBox="0 0 32 32" style={{ borderRadius: 6, background: '#fff' }}>
-    <rect width="32" height="32" rx="6" fill="#53fc18"/>
-    <text x="16" y="22" textAnchor="middle" fontWeight="bold" fontSize="16" fill="#23201a" fontFamily="Arial">K</text>
-  </svg>
-  Kick
-</a>
-{/* TikTok */}
-<a
-  href="https://www.tiktok.com/@poionako"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    background: '#23201a',
-    color: '#FE2C55',
-    fontWeight: 700,
-    fontSize: '1.09rem',
-    padding: '0.85rem 1.7rem',
-    borderRadius: 14,
-    textDecoration: 'none',
-    boxShadow: '0 4px 18px #FE2C5588',
-    border: '2px solid #FE2C55',
-    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
-  }}
-  onMouseOver={e => {
-    e.currentTarget.style.transform = 'scale(1.08)';
-    e.currentTarget.style.background = '#FE2C55';
-    e.currentTarget.style.color = '#23201a';
-    e.currentTarget.style.boxShadow = '0 8px 24px #FE2C55cc';
-  }}
-  onMouseOut={e => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.background = '#23201a';
-    e.currentTarget.style.color = '#FE2C55';
-    e.currentTarget.style.boxShadow = '0 4px 18px #FE2C5588';
-  }}
->
-  {/* TikTok SVG sin fondo blanco, solo el logo */}
-  <svg width="28" height="28" viewBox="0 0 48 48" style={{ display: 'block' }}>
-    <g>
-      <path d="M33.5 18.5c-2.2 0-4-1.8-4-4V10h-4v18.5c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4c.7 0 1.3.2 1.9.5v-4.2c-.6-.1-1.3-.2-1.9-.2-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8V22.5c1.2.7 2.6 1 4 1v-5z" fill="#fff"/>
-      <path d="M33.5 18.5v5c-1.4 0-2.8-.3-4-1V10h4v4.5c0 2.2 1.8 4 4 4z" fill="#25F4EE"/>
-      <path d="M29.5 22.5v4.2c-.6-.3-1.2-.5-1.9-.5-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4V22.5c-1.2-.7-2.6-1-4-1z" fill="#FE2C55"/>
-    </g>
-  </svg>
-  TikTok
-</a>
-{/* X (Twitter) */}
-<a
-  href="https://x.com/poionako"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    background: '#23201a',
-    color: '#fff',
-    fontWeight: 700,
-    fontSize: '1.09rem',
-    padding: '0.85rem 1.7rem',
-    borderRadius: 14,
-    textDecoration: 'none',
-    boxShadow: '0 4px 18px #0008',
-    border: '2px solid #fff',
-    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
-  }}
-  onMouseOver={e => {
-    e.currentTarget.style.transform = 'scale(1.08)';
-    e.currentTarget.style.background = '#fff';
-    e.currentTarget.style.color = '#23201a';
-    e.currentTarget.style.boxShadow = '0 8px 24px #000c';
-  }}
-  onMouseOut={e => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.background = '#23201a';
-    e.currentTarget.style.color = '#fff';
-    e.currentTarget.style.boxShadow = '0 4px 18px #0008';
-  }}
->
-  {/* X SVG logo */}
-  <svg width="28" height="28" viewBox="0 0 32 32" style={{ display: 'block' }}>
-    <rect width="32" height="32" rx="7" fill="#23201a"/>
-    <path d="M9 9L23 23M23 9L9 23" stroke="#fff" strokeWidth="3" strokeLinecap="round"/>
-  </svg>
-  X
-</a>
-{/* YouTube */}
-<a
-  href="https://www.youtube.com/channel/UCO-XYXftKBvoiOiqeCQ4R4Q"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    background: '#23201a',
-    color: '#ff0000',
-    fontWeight: 700,
-    fontSize: '1.09rem',
-    padding: '0.85rem 1.7rem',
-    borderRadius: 14,
-    textDecoration: 'none',
-    boxShadow: '0 4px 18px #ff000088',
-    border: '2px solid #ff0000',
-    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
-  }}
-  onMouseOver={e => {
-    e.currentTarget.style.transform = 'scale(1.08)';
-    e.currentTarget.style.background = '#ff0000';
-    e.currentTarget.style.color = '#fff';
-    e.currentTarget.style.boxShadow = '0 8px 24px #ff0000cc';
-  }}
-  onMouseOut={e => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.background = '#23201a';
-    e.currentTarget.style.color = '#ff0000';
-    e.currentTarget.style.boxShadow = '0 4px 18px #ff000088';
-  }}
->
-  <svg width="28" height="28" viewBox="0 0 48 48" style={{ borderRadius: 6, background: '#fff' }}>
-    <rect width="48" height="48" rx="10" fill="#ff0000"/>
-    <polygon points="19,15 36,24 19,33" fill="#fff"/>
-  </svg>
-  YouTube
-</a>
-{/* Twitch */}
-<a
-  href="https://www.twitch.tv/poionako"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    background: '#23201a',
-    color: '#9147ff',
-    fontWeight: 700,
-    fontSize: '1.09rem',
-    padding: '0.85rem 1.7rem',
-    borderRadius: 14,
-    textDecoration: 'none',
-    boxShadow: '0 4px 18px #9147ff88',
-    border: '2px solid #9147ff',
-    transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s'
-  }}
-  onMouseOver={e => {
-    e.currentTarget.style.transform = 'scale(1.08)';
-    e.currentTarget.style.background = '#9147ff';
-    e.currentTarget.style.color = '#fff';
-    e.currentTarget.style.boxShadow = '0 8px 24px #9147ffcc';
-  }}
-  onMouseOut={e => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.background = '#23201a';
-    e.currentTarget.style.color = '#9147ff';
-    e.currentTarget.style.boxShadow = '0 4px 18px #9147ff88';
-  }}
->
-  <svg width="28" height="28" viewBox="0 0 32 32" style={{ borderRadius: 6, background: '#fff' }}>
-    <rect width="32" height="32" rx="7" fill="#9147ff"/>
-    <path d="M8 8v14h4v2h4v-2h4l4-4V8H8zm18 10.586L22.586 20H16v2h-2v-2H8V8h18v10.586z" fill="#fff"/>
-    <rect x="13" y="13" width="2" height="5" fill="#fff"/>
-    <rect x="18" y="13" width="2" height="5" fill="#fff"/>
-  </svg>
-  Twitch
-</a>
-    </div>
-  </div>
-);
-
-const MapaSection = React.forwardRef((props, ref) => {
-  const sectionRef = useRef(null);
-  useRevealOnScroll(sectionRef, { threshold: 0.15 });
-
-  useEffect(() => {
-    if (ref) ref.current = sectionRef.current;
-  }, [ref]);
-
-  return (
-    <section
-      ref={sectionRef}
-      className="reveal"
-      style={{
-        maxWidth: 900,
-        margin: '0 auto',
-        marginTop: '2.5rem',
-        marginBottom: '2.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '1.5rem'
-      }}
-    >
-      <h2 style={{
-        color: 'var(--rust-orange)',
-        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
-        fontWeight: 900,
-        fontSize: '2rem',
-        marginBottom: '1rem',
-        letterSpacing: '1px',
-        textAlign: 'center'
-      }}>
-      </h2>
-      <img
-        src={mapaRustacooo}
-        alt=""
-        style={{
-          width: '100%',
-          maxWidth: 520,
-          height: 'auto',
-          borderRadius: 18,
-          boxShadow: '0 4px 24px #000a',
-          background: '#181818'
-        }}
-      />
-    </section>
-  );
-});
-
-// --- Secciones con forwardRef ---
+// Ejemplo para FormatoSection (aplica igual a otras secciones principales)
 const FormatoSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
@@ -904,9 +667,13 @@ const FormatoSection = React.forwardRef(({ lang }, ref) => {
   }, [ref]);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       className="reveal"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeVariants}
       style={{
         maxWidth: 1600,
         minHeight: '60vh',
@@ -993,7 +760,7 @@ const FormatoSection = React.forwardRef(({ lang }, ref) => {
           <div className="logo-glow-bg"></div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 });
 
@@ -1006,9 +773,13 @@ const AboutSection = React.forwardRef(({ lang }, ref) => {
   }, [ref]);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       className="reveal"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeVariants}
       style={{
         maxWidth: 1600,
         minHeight: '60vh',
@@ -1115,7 +886,7 @@ const AboutSection = React.forwardRef(({ lang }, ref) => {
           {translations[lang].verReglas}
         </Link>
       </div>
-    </section>
+    </motion.section>
   );
 });
 
@@ -1128,9 +899,13 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
   }, [ref]);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       className="reveal"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeVariants}
       style={{
         maxWidth: 900,
         margin: '0 auto',
@@ -1166,7 +941,7 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
       }}>
         {translations[lang].infoAdicionalTexto}
       </p>
-    </section>
+    </motion.section>
   );
 });
 
@@ -1218,9 +993,13 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
   ];
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       className="reveal"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeVariants}
       style={{
         maxWidth: 1100,
         margin: '0 auto',
@@ -1337,7 +1116,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 });
 
@@ -1358,9 +1137,13 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
   const secondRow = teams.slice(7, 14);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       className="reveal"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeVariants}
       style={{
         maxWidth: 1100,
         margin: '0 auto',
@@ -1515,7 +1298,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 });
 
@@ -1597,6 +1380,73 @@ const Footer = ({ lang }) => (
   </footer>
 );
 
+// Componente para el fondo animado
+const AnimatedBackground = () => (
+  <div
+    style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      zIndex: 0,
+      pointerEvents: 'none',
+      overflow: 'hidden'
+    }}
+  >
+    {/* Fondo suavizado */}
+    <div
+      style={{
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${fondo})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'blur(8px) brightness(0.45) grayscale(0.1)',
+        opacity: 0.7,
+        zIndex: 1
+      }}
+    />
+    {/* Animación profesional: partículas flotando */}
+    <svg
+      width="100vw"
+      height="100vh"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 2,
+        pointerEvents: 'none'
+      }}
+    >
+      {[...Array(18)].map((_, i) => (
+        <circle
+          key={i}
+          cx={Math.random() * window.innerWidth}
+          cy={Math.random() * window.innerHeight}
+          r={18 + Math.random() * 22}
+          fill={i % 3 === 0 ? "#e25822" : i % 2 === 0 ? "#7289da" : "#27ae60"}
+          opacity={0.13 + Math.random() * 0.09}
+        >
+          <animate
+            attributeName="cy"
+            values={`0;${window.innerHeight};0`}
+            dur={`${6 + Math.random() * 6}s`}
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="cx"
+            values={`${Math.random() * window.innerWidth};${Math.random() * window.innerWidth};${Math.random() * window.innerWidth}`}
+            dur={`${8 + Math.random() * 8}s`}
+            repeatCount="indefinite"
+          />
+        </circle>
+      ))}
+    </svg>
+  </div>
+);
+
 // Home component
 const Home = () => {
   const [lang, setLang] = useState('es');
@@ -1618,6 +1468,7 @@ const Home = () => {
 
   return (
     <>
+      <AnimatedBackground />
       <TopBar
         onFormatoClick={scrollToFormato}
         onInfoClick={scrollToAbout}
@@ -1783,3 +1634,113 @@ const Home = () => {
 };
 
 export default Home;
+
+const MapaSection = React.forwardRef((props, ref) => {
+  const sectionRef = useRef(null);
+  useRevealOnScroll(sectionRef, { threshold: 0.15 });
+
+  useEffect(() => {
+    if (ref) ref.current = sectionRef.current;
+  }, [ref]);
+
+  return (
+    <motion.section
+      ref={sectionRef}
+      className="reveal"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={fadeVariants}
+      style={{
+        maxWidth: 900,
+        margin: '0 auto',
+        marginTop: '2.5rem',
+        marginBottom: '2.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1.5rem'
+      }}
+    >
+      <h2 style={{
+        color: 'var(--rust-orange)',
+        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+        fontWeight: 900,
+        fontSize: '2rem',
+        marginBottom: '1rem',
+        letterSpacing: '1px',
+        textAlign: 'center'
+      }}>
+      </h2>
+      <img
+        src={mapaRustacooo}
+        alt=""
+        style={{
+          width: '100%',
+          maxWidth: 520,
+          height: 'auto',
+          borderRadius: 18,
+          boxShadow: '0 4px 24px #000a',
+          background: '#181818'
+        }}
+      />
+    </motion.section>
+  );
+});
+
+// SponsorSection animado
+const SponsorSection = () => (
+  <motion.section
+    className="sponsor-section"
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, amount: 0.2 }}
+    variants={fadeVariants}
+    style={{
+      maxWidth: 440,
+      margin: '2.5rem auto 0 auto',
+      background: 'linear-gradient(120deg, #23201a 80%, #e25822 100%)',
+      borderRadius: 22,
+      boxShadow: '0 8px 32px #000b',
+      padding: '2.2rem 2rem 1.5rem 2rem',
+      textAlign: 'center',
+      fontFamily: 'Montserrat, Arial, sans-serif',
+      color: '#fff',
+      position: 'relative',
+      border: '2px solid #e25822cc',
+      zIndex: 2
+    }}
+  >
+    <div style={{ marginBottom: '1.2rem' }}>
+      <img
+        src={poionakologo}
+        alt="Poionako Logo"
+        style={{
+          width: '100%',
+          height: 'auto',
+          maxWidth: 120,
+          borderRadius: 0,
+          objectFit: 'contain',
+          boxShadow: 'none',
+          background: 'none',
+          border: 'none',
+          display: 'block',
+          margin: '0 auto'
+        }}
+      />
+    </div>
+    <h3
+      style={{
+        fontWeight: 900,
+        fontSize: '1.35rem',
+        color: '#e25822',
+        marginBottom: '0.7rem',
+        letterSpacing: '1px',
+        textShadow: '0 1px 8px #000a'
+      }}
+    >
+      Evento sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
+    </h3>
+    {/* ...existing code for sponsor links... */}
+  </motion.section>
+);

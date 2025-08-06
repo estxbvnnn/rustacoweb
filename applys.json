@@ -1,0 +1,55 @@
+[
+  {
+    "teamName": "MCV",
+    "captain": "McompanyV",
+    "discord": "mcompanyv",
+    "players": [
+      {
+        "name": "McompanyV",
+        "steamid": "76561199099896172",
+        "twitch": "https://www.twitch.tv/mcompanyv"
+      },
+      {
+        "name": "RenePilon",
+        "steamid": "76561199436066649",
+        "twitch": "https://www.twitch.tv/renepilon"
+      },
+      {
+        "name": "Mikel33",
+        "steamid": "76561199051181335",
+        "twitch": "https://www.twitch.tv/mk33l"
+      },
+      {
+        "name": "Joe",
+        "steamid": "76561199245383283",
+        "twitch": "https://www.twitch.tv/joe100val"
+      },
+      {
+        "name": "Ivan",
+        "steamid": "76561199184307759",
+        "twitch": "https://www.twitch.tv/naviix19"
+      },
+      {
+        "name": "Craza",
+        "steamid": "76561199120562291",
+        "twitch": "https://www.twitch.tv/crazita"
+      },
+      {
+        "name": "Fuego",
+        "steamid": "76561199142739552",
+        "twitch": "https://www.twitch.tv/fuegales"
+      },
+      {
+        "name": "Tilteada",
+        "steamid": "76561199003472898",
+        "twitch": "https://www.twitch.tv/tilteada"
+      }
+    ],
+    "why": "Porque nos lo pasamos bastante bien en el anterior rustaco y nos molaria repetir, ademas venimos con chica al facecheck.\n",
+    "strategy": "",
+    "submittedBy": "76561199099896172",
+    "submittedByName": "McompanyV",
+    "submittedAt": "2025-08-06T04:50:53.380Z"
+  }
+]
+
