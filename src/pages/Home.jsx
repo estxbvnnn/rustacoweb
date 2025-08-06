@@ -15,6 +15,8 @@ import { motion } from 'framer-motion';
 
 // Importa el fondo
 import fondo from '../assets/img/fondo.jpg';
+import rustaco2logo from '../assets/img/rustaco2.png'; // Nuevo logo Rustaco II
+import kicklogo from '../assets/img/kick.png'; // Logo Kick optimizado
 
 // Traducciones
 const translations = {
@@ -55,6 +57,19 @@ const translations = {
     inscripcionesBtn: 'Inscripciones abiertas ¡YA!',
     inscripcionesFechas: 'del 6 de Agosto 15:00 GMT-4 hasta el 10 de Septiembre 16:00 GMT-4',
     inscripcionesMsg: '¡No te quedes fuera! Inscribe tu equipo y participa en Rustaco II.',
+    // Añade traducciones para el sponsor Poionako
+    sponsorTitle: 'Patrocinado por',
+    sponsorDesc: 'Poionako es streamer y creador de contenido.',
+    sponsorFollow: '¡Síguelo y apóyalo en sus canales!',
+    sponsorName: 'Nombre',
+    sponsorGames: 'Juegos',
+    sponsorLang: 'Idioma',
+    sponsorLocation: 'Ubicación',
+    sponsorGamesList: 'Rust, variedad',
+    sponsorLangValue: 'Español',
+    sponsorLocationValue: 'España',
+    sponsorAbout: 'Sobre el streamer:',
+    sponsorLive: 'Transmite en vivo, crea contenido en YouTube y comparte clips en X (Twitter) y Kick.',
   },
   en: {
     formato: 'Format',
@@ -93,6 +108,19 @@ const translations = {
     inscripcionesBtn: 'Registrations open NOW!',
     inscripcionesFechas: 'from August 6th 15:00 GMT-4 to September 10th 16:00 GMT-4',
     inscripcionesMsg: "Don't miss out! Register your team and participate in Rustaco II.",
+    // Sponsor Poionako translations
+    sponsorTitle: 'Sponsored by',
+    sponsorDesc: 'Poionako is a streamer and content creator.',
+    sponsorFollow: 'Follow and support him on his channels!',
+    sponsorName: 'Name',
+    sponsorGames: 'Games',
+    sponsorLang: 'Language',
+    sponsorLocation: 'Location',
+    sponsorGamesList: 'Rust, variety',
+    sponsorLangValue: 'Spanish',
+    sponsorLocationValue: 'Spain',
+    sponsorAbout: 'About the streamer:',
+    sponsorLive: 'Streams live, creates content on YouTube and shares clips on X (Twitter) and Kick.',
   },
   pt: {
     formato: 'Formato',
@@ -131,6 +159,19 @@ const translations = {
     inscripcionesBtn: 'Inscrições abertas AGORA!',
     inscripcionesFechas: 'de 6 de agosto 15:00 GMT-4 até 10 de setembro 16:00 GMT-4',
     inscripcionesMsg: 'Não fique de fora! Inscreva sua equipe e participe do Rustaco II.',
+    // Sponsor Poionako translations
+    sponsorTitle: 'Patrocinado por',
+    sponsorDesc: 'Poionako é streamer e criador de conteúdo.',
+    sponsorFollow: 'Siga e apoie ele em seus canais!',
+    sponsorName: 'Nome',
+    sponsorGames: 'Jogos',
+    sponsorLang: 'Idioma',
+    sponsorLocation: 'Localização',
+    sponsorGamesList: 'Rust, variedade',
+    sponsorLangValue: 'Espanhol',
+    sponsorLocationValue: 'Espanha',
+    sponsorAbout: 'Sobre o streamer:',
+    sponsorLive: 'Transmite ao vivo, cria conteúdo no YouTube e compartilha clipes no X (Twitter) e Kick.',
   }
 };
 
@@ -724,7 +765,8 @@ const Header = () => {
         minHeight: '30vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        background: 'none' // Quita fondo del header
       }}
     >
       <motion.div
@@ -732,28 +774,31 @@ const Header = () => {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          background: 'none' // Quita fondo del logo
         }}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <img
-          src={logo}
-          alt="Rustaco Logo"
+          src={rustaco2logo}
+          alt="Rustaco II Logo"
           style={{
             width: 320,
             height: 320,
             borderRadius: '50%',
-            objectFit: 'cover',
-            boxShadow: '0 2px 18px #000a',
+            objectFit: 'contain',
+            background: 'none', // Sin fondo
+            boxShadow: 'none', // Sin sombra
             margin: '0 auto',
             marginBottom: '1.5rem',
             position: 'relative',
             zIndex: 2
           }}
         />
-        <div className="logo-glow-bg"></div>
+        {/* Elimina el fondo glow */}
+        {/* <div className="logo-glow-bg"></div> */}
       </motion.div>
       <InscripcionBanner />
     </motion.header>
@@ -1550,7 +1595,249 @@ const AnimatedBackground = () => (
   </div>
 );
 
-// Home component
+// Chatbot notification and widget
+import { useRef as useRefChatbot } from 'react';
+
+const chatbotMessages = {
+  es: {
+    welcome: "¡Bienvenido a Rustaco II! ¿En qué podemos ayudarte?",
+    options: [
+      "¿Cómo me inscribo?",
+      "¿Cuál es el formato?",
+      "Tengo un problema"
+    ],
+    inscripcion: "Para inscribirte, primero debes iniciar sesión en la web con Steam. Luego, haz clic en el botón grande de 'Inscripciones abiertas ¡YA!' en la página principal y sigue los pasos.",
+    formato: "El formato es de 8 jugadores por equipo. Cada team tiene su propia isla donde debe construir una base y prepararse estratégicamente para el enfrentamiento final.",
+    problema: "Si tienes algún problema, contacta al staff en nuestro Discord: https://discord.rustaco.site"
+  },
+  en: {
+    welcome: "Welcome to Rustaco II! How can we help you?",
+    options: [
+      "How do I register?",
+      "What is the format?",
+      "I have a problem"
+    ],
+    inscripcion: "To register, you must first log in to the website with Steam. Then, click the big 'Registrations open NOW!' button on the main page and follow the steps.",
+    formato: "The format is 8 players per team. Each team has its own island to build a base and prepare strategically for the final showdown.",
+    problema: "If you have any issues, contact the staff on our Discord: https://discord.rustaco.site"
+  },
+  pt: {
+    welcome: "Bem-vindo ao Rustaco II! Como podemos ajudar?",
+    options: [
+      "Como me inscrevo?",
+      "Qual é o formato?",
+      "Tenho um problema"
+    ],
+    inscripcion: "Para se inscrever, primeiro faça login no site com Steam. Depois, clique no botão grande 'Inscrições abertas AGORA!' na página principal e siga os passos.",
+    formato: "O formato é de 8 jogadores por equipe. Cada equipe tem sua própria ilha para construir uma base e se preparar estrategicamente para o confronto final.",
+    problema: "Se você tiver algum problema, entre em contato com a equipe no nosso Discord: https://discord.rustaco.site"
+  }
+};
+
+function ChatbotWidget({ lang }) {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { from: "bot", text: chatbotMessages[lang].welcome }
+  ]);
+  const [showNotif, setShowNotif] = useState(true);
+  const chatEndRef = useRefChatbot(null);
+
+  // Scroll to bottom on new message
+  useEffect(() => {
+    if (open && chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, open]);
+
+  // Show notification on mount
+  useEffect(() => {
+    setShowNotif(true);
+  }, [lang]);
+
+  const handleOption = idx => {
+    let reply = "";
+    if (idx === 0) reply = chatbotMessages[lang].inscripcion;
+    if (idx === 1) reply = chatbotMessages[lang].formato;
+    if (idx === 2) reply = chatbotMessages[lang].problema;
+    setMessages(msgs => [
+      ...msgs,
+      { from: "user", text: chatbotMessages[lang].options[idx] },
+      { from: "bot", text: reply }
+    ]);
+  };
+
+  return (
+    <>
+      {/* Notification bubble */}
+      {showNotif && !open && (
+        <div
+          onClick={() => { setOpen(true); setShowNotif(false); }}
+          style={{
+            position: "fixed",
+            bottom: 110,
+            right: 32,
+            background: "#e25822",
+            color: "#fff",
+            borderRadius: 18,
+            boxShadow: "0 2px 12px #000a",
+            padding: "0.9rem 1.5rem",
+            cursor: "pointer",
+            zIndex: 99999,
+            fontWeight: 700,
+            fontSize: "1.08rem",
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            animation: "notifPop 0.7s"
+          }}
+        >
+          <i className="bi bi-chat-dots" style={{ fontSize: 22, marginRight: 8 }}></i>
+          {chatbotMessages[lang].welcome}
+          <style>
+            {`
+              @keyframes notifPop {
+                0% { transform: scale(0.7); opacity: 0; }
+                100% { transform: scale(1); opacity: 1; }
+              }
+            `}
+          </style>
+        </div>
+      )}
+      {/* Chatbot floating button */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 32,
+          right: 32,
+          zIndex: 99999
+        }}
+      >
+        <button
+          onClick={() => { setOpen(o => !o); setShowNotif(false); }}
+          style={{
+            width: 64,
+            height: 64,
+            borderRadius: "50%",
+            background: "#e25822",
+            color: "#fff",
+            border: "none",
+            boxShadow: "0 2px 12px #000a",
+            fontSize: 32,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "background 0.2s"
+          }}
+          title="Abrir chat"
+        >
+          <i className="bi bi-chat-dots"></i>
+        </button>
+        {/* Chatbot window */}
+        {open && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: 110,
+              right: 32,
+              width: 340,
+              maxWidth: "95vw",
+              background: "#23201a",
+              borderRadius: 18,
+              boxShadow: "0 8px 32px #000b",
+              padding: "1.2rem 1rem 1rem 1rem",
+              zIndex: 99999,
+              color: "#fff",
+              fontFamily: "Montserrat, Arial, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: 12
+            }}
+          >
+            <div style={{ fontWeight: 800, fontSize: "1.15rem", color: "#e25822", marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
+              <i className="bi bi-robot" style={{ fontSize: 22 }}></i>
+              RustacoBot
+              <button
+                onClick={() => setOpen(false)}
+                style={{
+                  marginLeft: "auto",
+                  background: "none",
+                  border: "none",
+                  color: "#fff",
+                  fontSize: 22,
+                  cursor: "pointer"
+                }}
+                title="Cerrar"
+              >
+                ×
+              </button>
+            </div>
+            <div style={{
+              flex: 1,
+              minHeight: 90,
+              maxHeight: 220,
+              overflowY: "auto",
+              marginBottom: 8,
+              paddingRight: 4
+            }}>
+              {messages.map((msg, i) => (
+                <div key={i} style={{
+                  margin: "0.3rem 0",
+                  textAlign: msg.from === "bot" ? "left" : "right"
+                }}>
+                  <span style={{
+                    display: "inline-block",
+                    background: msg.from === "bot" ? "#181818" : "#27ae60",
+                    color: "#fff",
+                    borderRadius: 12,
+                    padding: "0.6rem 1rem",
+                    fontSize: "1rem",
+                    marginBottom: 2,
+                    maxWidth: 260,
+                    wordBreak: "break-word"
+                  }}>
+                    {msg.text}
+                  </span>
+                </div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+            {/* Options only if last message is from bot and less than 8 messages */}
+            {messages.length < 8 && messages[messages.length - 1]?.from === "bot" && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {chatbotMessages[lang].options.map((opt, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleOption(idx)}
+                    style={{
+                      background: "#7289da",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "0.7rem 1rem",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      cursor: "pointer",
+                      transition: "background 0.2s"
+                    }}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      {/* Bootstrap icons CDN (solo una vez en tu index.html si no está) */}
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      />
+    </>
+  );
+}
+
 const Home = () => {
   const [lang, setLang] = useState('es');
   const formatoRef = useRef(null);
@@ -1585,11 +1872,176 @@ const Home = () => {
       <FormatoSection ref={formatoRef} lang={lang} />
       <AboutSection ref={aboutRef} lang={lang} />
       <ExtraInfoSection ref={extraInfoRef} lang={lang} />
-      <SponsorSection /> 
+      {/* SponsorSection debajo de Información adicional, en cuadro destacado, fondo sólido para legibilidad */}
+      <div style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '0',
+        marginBottom: '2.5rem'
+      }}>
+        <div
+          className="animate__animated animate__fadeInUp"
+          style={{
+            background: 'none', // Quita el fondo negro
+            borderRadius: 28,
+            boxShadow: 'none', // Quita la sombra
+            padding: '2.5rem 1.5rem 2rem 1.5rem',
+            maxWidth: 540,
+            width: '100%',
+            border: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1.3rem',
+            justifyContent: 'center',
+            position: 'relative',
+            overflow: 'visible'
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: -30,
+              left: -30,
+              width: 120,
+              height: 120,
+              background: 'radial-gradient(circle, #e25822 0%, #23201a 80%)',
+              opacity: 0.18,
+              borderRadius: '50%',
+              zIndex: 0
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: -40,
+              right: -40,
+              width: 140,
+              height: 140,
+              background: 'radial-gradient(circle, #fff 0%, #e25822 80%)',
+              opacity: 0.12,
+              borderRadius: '50%',
+              zIndex: 0
+            }}
+          />
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            style={{
+              zIndex: 2,
+              background: 'rgba(255,255,255,0.08)',
+              borderRadius: '50%',
+              padding: '0.5rem'
+            }}
+          >
+            <img
+              src={poionakologo}
+              alt="Poionako Logo"
+              style={{
+                width: 110,
+                height: 110,
+                objectFit: 'contain',
+                marginBottom: '0.7rem',
+                boxShadow: '0 4px 24px #e25822cc, 0 0 0 4px #fff2'
+              }}
+            />
+          </motion.div>
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            style={{
+              color: '#fff',
+              fontWeight: 900,
+              fontSize: '1.7rem',
+              marginBottom: '0.5rem',
+              letterSpacing: '2px',
+              textShadow: '0 2px 18px #e25822, 0 1px 8px #000a',
+              background: 'linear-gradient(90deg, #e25822 60%, #fff 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}
+          >
+            <span style={{ color: '#fff', fontWeight: 700, WebkitTextFillColor: 'unset' }}>Sponsored by</span> Poionako
+          </motion.h3>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            style={{
+              fontSize: '1.18rem',
+              color: '#fff',
+              textAlign: 'center',
+              lineHeight: 1.6,
+              marginBottom: '0.7rem',
+              fontWeight: 600,
+              textShadow: '0 1px 8px #000a'
+            }}
+          >
+            Poionako es streamer y creador de contenido.<br />
+            <span style={{ color: '#f39c12', fontWeight: 700 }}>¡Síguelo y apóyalo en sus canales!</span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '1.5rem',
+              marginTop: '0.5rem',
+              zIndex: 2
+            }}
+          >
+            <a href="https://www.twitch.tv/poionako" target="_blank" rel="noopener noreferrer" title="Twitch Poionako"
+              className="btn btn-outline-light animate__animated animate__fadeIn"
+              style={{ borderRadius: '50%', padding: 0, width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #9147ff88', fontSize: 32 }}>
+              <i className="bi bi-twitch" style={{ color: '#9147ff' }}></i>
+            </a>
+            <a href="https://kick.com/poionako" target="_blank" rel="noopener noreferrer" title="Kick Poionako"
+              className="btn btn-outline-light animate__animated animate__fadeIn"
+              style={{ borderRadius: '50%', padding: 0, width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #53fc1888', fontSize: 32 }}>
+              {/* Logo Kick estilo bootstrap */}
+              <i className="bi bi-play-circle" style={{ color: '#53fc18' }}></i>
+            </a>
+            <a href="https://www.youtube.com/@poionako" target="_blank" rel="noopener noreferrer" title="YouTube Poionako"
+              className="btn btn-outline-light animate__animated animate__fadeIn"
+              style={{ borderRadius: '50%', padding: 0, width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #ff000088', fontSize: 32 }}>
+              <i className="bi bi-youtube" style={{ color: '#ff0000' }}></i>
+            </a>
+            <a href="https://twitter.com/poionako" target="_blank" rel="noopener noreferrer" title="X (Twitter) Poionako"
+              className="btn btn-outline-light animate__animated animate__fadeIn"
+              style={{ borderRadius: '50%', padding: 0, width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #fff8', fontSize: 32 }}>
+              {/* Usa el logo SVG de X (Twitter) directamente */}
+              <svg width="28" height="28" viewBox="0 0 1200 1227" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1199.97 0H1079.97L600 529.97L120 0H0L492.03 627.97L0 1227H120L600 697.03L1080 1227H1200L707.97 599.03L1199.97 0Z" fill="#fff"/>
+              </svg>
+            </a>
+            <a href="https://www.tiktok.com/@poionako" target="_blank" rel="noopener noreferrer" title="TikTok Poionako"
+              className="btn btn-outline-light animate__animated animate__fadeIn"
+              style={{ borderRadius: '50%', padding: 0, width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #fff8', fontSize: 32 }}>
+              <i className="bi bi-tiktok" style={{ color: '#fff' }}></i>
+            </a>
+          </motion.div>
+          {/* Bootstrap icons CDN (solo una vez en tu index.html si no está) */}
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+          />
+          {/* Animate.css CDN (solo una vez en tu index.html si no está) */}
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+          />
+        </div>
+      </div>
       <EventoInfoSection ref={eventoInfoRef} lang={lang} />
       <TeamsSection ref={teamsRef} lang={lang} />
       <DiscordBanner lang={lang} />
       <Footer lang={lang} />
+      <ChatbotWidget lang={lang} />
       {/* --- CSS RESPONSIVO PARA MOVIL --- */}
       <style>
         {`
@@ -1642,7 +2094,7 @@ const Home = () => {
               font-size: 0.97rem !important;
             }
             .footer {
-              font-size: 0.95rem !important;
+              font-size: 0.85rem !important;
               padding: 0.7rem 0.2rem !important;
             }
             .discord-banner {
@@ -1776,9 +2228,9 @@ const MapaSection = React.forwardRef((props, ref) => {
         flexDirection: 'column',
         alignItems: 'center',
         gap: '1.5rem',
-        background: 'none',
-        boxShadow: 'none',
-        borderRadius: 0
+        background: '#23201a',
+        boxShadow: '0 8px 32px #000b',
+        borderRadius: 24
       }}
     >
       <h2 style={{
@@ -1790,7 +2242,7 @@ const MapaSection = React.forwardRef((props, ref) => {
         letterSpacing: '1px',
         textAlign: 'center'
       }}>
-        {/* Puedes poner aquí un título si lo deseas */}
+        Mapa Rustaco II
       </h2>
       <motion.img
         src={mapaRustacooo}
@@ -1809,11 +2261,12 @@ const MapaSection = React.forwardRef((props, ref) => {
           boxShadow: '0 8px 32px #e2582288'
         }}
       />
+      {/* Elimina el cuadro de sponsor Poionako debajo del mapa */}
     </motion.section>
   );
 });
 
-// SponsorSection animado
+// SponsorSection animado con links y logos bootstrap
 const SponsorSection = () => (
   <motion.section
     className="sponsor-section"
@@ -1822,7 +2275,7 @@ const SponsorSection = () => (
     viewport={{ once: true, amount: 0.2 }}
     variants={fadeVariants}
     style={{
-      maxWidth: 440,
+      maxWidth: 480,
       margin: '2.5rem auto 0 auto',
       background: 'linear-gradient(120deg, #23201a 80%, #e25822 100%)',
       borderRadius: 22,
@@ -1864,8 +2317,51 @@ const SponsorSection = () => (
         textShadow: '0 1px 8px #000a'
       }}
     >
-      Evento sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
+      Sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
     </h3>
-    {/* ...existing code for sponsor links... */}
+    <div style={{
+      fontSize: '1.08rem',
+      color: '#fff',
+      margin: '1.2rem 0 0.7rem 0',
+      textAlign: 'center',
+      lineHeight: 1.5
+    }}>
+      <b style={{ color: '#f39c12', fontSize: '1.15rem' }}>Sobre el streamer:</b><br />
+      Poionako es creador de contenido y streamer de Rust y otros juegos.<br />
+      <span style={{ color: '#b3cfff' }}>Transmite en vivo, crea contenido en YouTube y comparte clips en X (Twitter) y Kick.</span><br />
+      <span style={{ color: '#e25822', fontWeight: 700 }}>¡Síguelo y apóyalo en sus redes!</span>
+      <br /><br />
+      <span style={{ color: '#f39c12', fontWeight: 700 }}>Nombre:</span> Poionako<br />
+      <span style={{ color: '#f39c12', fontWeight: 700 }}>Juegos:</span> Rust, variedad<br />
+      <span style={{ color: '#f39c12', fontWeight: 700 }}>Idioma:</span> Español<br />
+      <span style={{ color: '#f39c12', fontWeight: 700 }}>Ubicación:</span> España<br />
+    </div>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '1.2rem',
+      marginTop: '1.2rem'
+    }}>
+      <a href="https://www.twitch.tv/poionako" target="_blank" rel="noopener noreferrer" title="Twitch Poionako">
+        <i className="bi bi-twitch" style={{ fontSize: 32, color: '#9147ff' }}></i>
+      </a>
+      <a href="https://kick.com/poionako" target="_blank" rel="noopener noreferrer" title="Kick Poionako">
+        <i className="bi bi-play-circle" style={{ fontSize: 32, color: '#53fc18' }}></i>
+      </a>
+      <a href="https://www.youtube.com/@poionako" target="_blank" rel="noopener noreferrer" title="YouTube Poionako">
+        <i className="bi bi-youtube" style={{ fontSize: 32, color: '#ff0000' }}></i>
+      </a>
+      <a href="https://twitter.com/poionako" target="_blank" rel="noopener noreferrer" title="X (Twitter) Poionako">
+        <i className="bi bi-twitter-x" style={{ fontSize: 32, color: '#fff' }}></i>
+      </a>
+      <a href="https://www.tiktok.com/@poionako" target="_blank" rel="noopener noreferrer" title="TikTok Poionako">
+        <i className="bi bi-tiktok" style={{ fontSize: 32, color: '#fff' }}></i>
+      </a>
+    </div>
+    {/* Bootstrap icons CDN (solo una vez en tu index.html si no está) */}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
   </motion.section>
 );
