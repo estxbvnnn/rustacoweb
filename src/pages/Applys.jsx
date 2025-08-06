@@ -1,6 +1,139 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
+// Traducciones para Applys
+const translations = {
+  es: {
+    procesoTitulo: 'Proceso de Inscripción - Rustaco II',
+    aceptarBtn: 'Acepto y deseo inscribir a mi equipo',
+    inscripcionTitulo: 'Inscripción al Torneo Rustaco II',
+    inscripcionDesc: 'Completa todos los campos para inscribir a tu equipo.',
+    inscripcionNota: '¡Recuerda que la inscripción es competitiva y será revisada por el staff!',
+    nombreEquipo: 'Nombre del Equipo *',
+    placeholderEquipo: 'Ejemplo: Rustaco Warriors',
+    capitan: 'Capitán del Equipo *',
+    placeholderCapitan: 'Nombre completo del capitán',
+    participantes: 'Participantes del Equipo (8 jugadores, capitán incluido) *',
+    nombre: 'Nombre',
+    steamid: 'SteamID64',
+    twitch: 'Canal de Transmisión',
+    discord: 'Discord del Capitán *',
+    placeholderDiscord: 'Ejemplo: usuario#1234',
+    porque: '¿Por qué debe participar tu equipo? *',
+    placeholderPorque: 'Cuéntanos por qué tu equipo merece un lugar en Rustaco II...',
+    estrategia: 'Estrategia o preparación especial',
+    placeholderEstrategia: 'Describe brevemente la preparación, entrenamientos, roles, etc.',
+    terminos: 'Confirmo que he leído y acepto los',
+    terminosLink: 'términos y condiciones',
+    terminosFinal: 'y me comprometo a respetar todas las reglas del evento.',
+    enviar: 'Enviar inscripción',
+    errorTerminos: 'Debes aceptar los términos y condiciones para inscribirte.',
+    errorCampos: 'Completa todos los campos obligatorios.',
+    errorEnvio: 'Error al enviar la inscripción.',
+    cargando: 'Cargando...',
+    loginRequerido: 'Debes logearte primero para poder ingresar al proceso de inscripción',
+    volverHome: 'Volver al Home',
+    enviadoTitulo: '¡Inscripción enviada!',
+    enviadoMsg: 'Tu equipo ha sido inscrito correctamente.\nPronto recibirás novedades en Discord o por correo electrónico.\n¡Gracias por confiar en Rustaco Eventos!',
+    aceptarTerminosTitulo: 'Antes de continuar, debes aceptar los términos y condiciones del evento:',
+    aceptarTerminosLista: [
+      'He leído y acepto el reglamento oficial del torneo Rustaco II.',
+      'Me comprometo a que todos los datos entregados son verídicos y que los integrantes del equipo están informados y de acuerdo con la inscripción.',
+      'Entiendo que el incumplimiento de las reglas puede resultar en la descalificación del equipo y/o sanciones.',
+      'Acepto que la administración podrá contactarme vía Discord para cualquier comunicación oficial.',
+      'Declaro que todos los participantes tienen cuenta de Steam y cumplen los requisitos del evento.',
+      'La organización se reserva el derecho de admisión y puede solicitar información adicional si lo estima conveniente.',
+      'Nota: El proceso de inscripción es competitivo y la selección de equipos será realizada por el staff de Rustaco en base a los datos entregados y el cumplimiento de los requisitos.'
+    ]
+  },
+  en: {
+    procesoTitulo: 'Registration Process - Rustaco II',
+    aceptarBtn: 'I accept and want to register my team',
+    inscripcionTitulo: 'Tournament Registration - Rustaco II',
+    inscripcionDesc: 'Fill in all fields to register your team.',
+    inscripcionNota: 'Remember that registration is competitive and will be reviewed by the staff!',
+    nombreEquipo: 'Team Name *',
+    placeholderEquipo: 'Example: Rustaco Warriors',
+    capitan: 'Team Captain *',
+    placeholderCapitan: "Captain's full name",
+    participantes: 'Team Participants (8 players, including captain) *',
+    nombre: 'Name',
+    steamid: 'SteamID64',
+    twitch: 'Streaming Channel',
+    discord: "Captain's Discord *",
+    placeholderDiscord: 'Example: user#1234',
+    porque: 'Why should your team participate? *',
+    placeholderPorque: 'Tell us why your team deserves a spot in Rustaco II...',
+    estrategia: 'Strategy or special preparation',
+    placeholderEstrategia: 'Briefly describe preparation, training, roles, etc.',
+    terminos: 'I confirm that I have read and accept the',
+    terminosLink: 'terms and conditions',
+    terminosFinal: 'and I commit to respect all event rules.',
+    enviar: 'Submit Registration',
+    errorTerminos: 'You must accept the terms and conditions to register.',
+    errorCampos: 'Please complete all required fields.',
+    errorEnvio: 'Error submitting registration.',
+    cargando: 'Loading...',
+    loginRequerido: 'You must log in first to start the registration process',
+    volverHome: 'Back to Home',
+    enviadoTitulo: 'Registration sent!',
+    enviadoMsg: 'Your team has been successfully registered.\nYou will soon receive updates via Discord or email.\nThank you for trusting Rustaco Events!',
+    aceptarTerminosTitulo: 'Before continuing, you must accept the event terms and conditions:',
+    aceptarTerminosLista: [
+      'I have read and accept the official rules of the Rustaco II tournament.',
+      'I commit that all provided data is true and that all team members are informed and agree with the registration.',
+      'I understand that breaking the rules may result in team disqualification and/or sanctions.',
+      'I accept that the administration may contact me via Discord for any official communication.',
+      'I declare that all participants have a Steam account and meet the event requirements.',
+      'The organization reserves the right of admission and may request additional information if deemed necessary.',
+      'Note: The registration process is competitive and team selection will be made by Rustaco staff based on the provided data and compliance with requirements.'
+    ]
+  },
+  pt: {
+    procesoTitulo: 'Processo de Inscrição - Rustaco II',
+    aceptarBtn: 'Aceito e desejo inscrever minha equipe',
+    inscripcionTitulo: 'Inscrição no Torneio Rustaco II',
+    inscripcionDesc: 'Preencha todos os campos para inscrever sua equipe.',
+    inscripcionNota: 'Lembre-se que a inscrição é competitiva e será revisada pela equipe!',
+    nombreEquipo: 'Nome da Equipe *',
+    placeholderEquipo: 'Exemplo: Rustaco Warriors',
+    capitan: 'Capitão da Equipe *',
+    placeholderCapitan: 'Nome completo do capitão',
+    participantes: 'Participantes da Equipe (8 jogadores, incluindo capitão) *',
+    nombre: 'Nome',
+    steamid: 'SteamID64',
+    twitch: 'Canal de Transmissão',
+    discord: 'Discord do Capitão *',
+    placeholderDiscord: 'Exemplo: usuario#1234',
+    porque: 'Por que sua equipe deve participar? *',
+    placeholderPorque: 'Conte por que sua equipe merece uma vaga no Rustaco II...',
+    estrategia: 'Estratégia ou preparação especial',
+    placeholderEstrategia: 'Descreva brevemente a preparação, treinamentos, funções, etc.',
+    terminos: 'Confirmo que li e aceito os',
+    terminosLink: 'termos e condições',
+    terminosFinal: 'e me comprometo a respeitar todas as regras do evento.',
+    enviar: 'Enviar inscrição',
+    errorTerminos: 'Você deve aceitar os termos e condições para se inscrever.',
+    errorCampos: 'Preencha todos os campos obrigatórios.',
+    errorEnvio: 'Erro ao enviar a inscrição.',
+    cargando: 'Carregando...',
+    loginRequerido: 'Você deve fazer login primeiro para iniciar o processo de inscrição',
+    volverHome: 'Voltar ao início',
+    enviadoTitulo: 'Inscrição enviada!',
+    enviadoMsg: 'Sua equipe foi inscrita com sucesso.\nEm breve você receberá novidades no Discord ou por e-mail.\nObrigado por confiar na Rustaco Eventos!',
+    aceptarTerminosTitulo: 'Antes de continuar, você deve aceitar os termos e condições do evento:',
+    aceptarTerminosLista: [
+      'Li e aceito o regulamento oficial do torneio Rustaco II.',
+      'Comprometo-me que todos os dados fornecidos são verdadeiros e que os integrantes da equipe estão informados e de acordo com a inscrição.',
+      'Entendo que o descumprimento das regras pode resultar na desclassificação da equipe e/ou sanções.',
+      'Aceito que a administração poderá me contatar via Discord para qualquer comunicação oficial.',
+      'Declaro que todos os participantes têm conta Steam e cumprem os requisitos do evento.',
+      'A organização reserva o direito de admissão e pode solicitar informações adicionais se considerar necessário.',
+      'Nota: O processo de inscrição é competitivo e a seleção das equipes será feita pela equipe Rustaco com base nos dados fornecidos e no cumprimento dos requisitos.'
+    ]
+  }
+};
+
 const initialPlayers = Array.from({ length: 8 }, () => ({
   name: '',
   steamid: '',
@@ -11,6 +144,10 @@ const fadeIn = (delay = 0) => ({
   animation: `fadeInUp 0.8s cubic-bezier(.39,.575,.565,1) both`,
   animationDelay: `${delay}s`
 });
+
+const flagChile = "https://flagcdn.com/w20/cl.png";
+const flagUSA = "https://flagcdn.com/w20/us.png";
+const flagBrazil = "https://flagcdn.com/w20/br.png";
 
 const Applys = () => {
   const [user, setUser] = useState(undefined); // undefined para loading
@@ -24,6 +161,7 @@ const Applys = () => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [lang, setLang] = useState('es');
   const history = useHistory();
 
   useEffect(() => {
@@ -33,7 +171,6 @@ const Applys = () => {
       .catch(() => setUser(null));
   }, []);
 
-  // Corrige el bug de edición de jugadores usando un estado local para cada input
   const handlePlayerChange = useCallback((idx, field, value) => {
     setPlayers(players => {
       const updated = [...players];
@@ -46,14 +183,13 @@ const Applys = () => {
     e.preventDefault();
     setError('');
     if (!terms) {
-      setError('Debes aceptar los términos y condiciones para inscribirte.');
+      setError(translations[lang].errorTerminos);
       return;
     }
     if (!teamName || !captain || !discord || players.some(p => !p.name || !p.steamid || !p.twitch)) {
-      setError('Completa todos los campos obligatorios.');
+      setError(translations[lang].errorCampos);
       return;
     }
-    // --- Enviar solicitud al backend ---
     fetch('https://www.rustaco.site/api/apply', {
       method: 'POST',
       credentials: 'include',
@@ -72,11 +208,71 @@ const Applys = () => {
         if (data.ok) {
           setSubmitted(true);
         } else {
-          setError(data.error || 'Error al enviar la inscripción.');
+          setError(data.error || translations[lang].errorEnvio);
         }
       })
-      .catch(() => setError('Error al enviar la inscripción.'));
+      .catch(() => setError(translations[lang].errorEnvio));
   };
+
+  // Selector de idioma arriba a la derecha
+  const LangSelector = (
+    <div style={{
+      position: 'absolute',
+      top: 18,
+      right: 18,
+      display: 'flex',
+      gap: 6,
+      zIndex: 10
+    }}>
+      <button
+        onClick={() => setLang('es')}
+        style={{
+          background: lang === 'es' ? '#e25822' : '#23201a',
+          border: 'none',
+          borderRadius: 6,
+          padding: 2,
+          cursor: 'pointer',
+          marginRight: 2,
+          boxShadow: lang === 'es' ? '0 0 0 2px #e25822' : 'none',
+          transition: 'box-shadow 0.2s'
+        }}
+        title="Español LATAM"
+      >
+        <img src={flagChile} alt="Chile" style={{ width: 22, height: 15, verticalAlign: 'middle', display: 'block' }} />
+      </button>
+      <button
+        onClick={() => setLang('en')}
+        style={{
+          background: lang === 'en' ? '#3a4bd8' : '#23201a',
+          border: 'none',
+          borderRadius: 6,
+          padding: 2,
+          cursor: 'pointer',
+          marginRight: 2,
+          boxShadow: lang === 'en' ? '0 0 0 2px #3a4bd8' : 'none',
+          transition: 'box-shadow 0.2s'
+        }}
+        title="English USA"
+      >
+        <img src={flagUSA} alt="USA" style={{ width: 22, height: 15, verticalAlign: 'middle', display: 'block' }} />
+      </button>
+      <button
+        onClick={() => setLang('pt')}
+        style={{
+          background: lang === 'pt' ? '#27ae60' : '#23201a',
+          border: 'none',
+          borderRadius: 6,
+          padding: 2,
+          cursor: 'pointer',
+          boxShadow: lang === 'pt' ? '0 0 0 2px #27ae60' : 'none',
+          transition: 'box-shadow 0.2s'
+        }}
+        title="Português Brasil"
+      >
+        <img src={flagBrazil} alt="Brasil" style={{ width: 22, height: 15, verticalAlign: 'middle', display: 'block' }} />
+      </button>
+    </div>
+  );
 
   if (user === undefined) {
     return (
@@ -89,8 +285,10 @@ const Applys = () => {
         padding: '2.5rem 2rem',
         textAlign: 'center',
         color: '#fff',
-        fontFamily: 'Montserrat, Arial, sans-serif'
+        fontFamily: 'Montserrat, Arial, sans-serif',
+        position: 'relative'
       }}>
+        {LangSelector}
         <div style={fadeIn(0.1)}>
           <span className="loader" style={{
             display: 'inline-block',
@@ -101,7 +299,7 @@ const Applys = () => {
             animation: 'spin 1s linear infinite',
             marginBottom: 18
           }} />
-          <div style={{ fontWeight: 700, fontSize: '1.2rem', color: '#b3cfff' }}>Cargando...</div>
+          <div style={{ fontWeight: 700, fontSize: '1.2rem', color: '#b3cfff' }}>{translations[lang].cargando}</div>
         </div>
         <style>
           {`
@@ -126,10 +324,12 @@ const Applys = () => {
         padding: '2.5rem 2rem',
         textAlign: 'center',
         color: '#fff',
-        fontFamily: 'Montserrat, Arial, sans-serif'
+        fontFamily: 'Montserrat, Arial, sans-serif',
+        position: 'relative'
       }}>
+        {LangSelector}
         <h2 style={{ color: '#e25822', fontWeight: 900, fontSize: '2rem', marginBottom: '1.5rem', ...fadeIn(0.1) }}>
-          Debes logearte primero para poder ingresar al proceso de inscripción
+          {translations[lang].loginRequerido}
         </h2>
         <button
           onClick={() => history.push('/')}
@@ -152,7 +352,7 @@ const Applys = () => {
           onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
           onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Volver al Home
+          {translations[lang].volverHome}
         </button>
       </div>
     );
@@ -170,16 +370,16 @@ const Applys = () => {
         textAlign: 'center',
         color: '#fff',
         fontFamily: 'Montserrat, Arial, sans-serif',
-        border: '2px solid #27ae60cc'
+        border: '2px solid #27ae60cc',
+        position: 'relative'
       }}>
+        {LangSelector}
         <div style={{ fontSize: 54, marginBottom: 18, animation: 'fadeInUp 0.8s' }}>🎉</div>
         <h2 style={{ color: '#27ae60', fontWeight: 900, fontSize: '2rem', marginBottom: '1.5rem', ...fadeIn(0.1) }}>
-          ¡Inscripción enviada!
+          {translations[lang].enviadoTitulo}
         </h2>
         <p style={{ color: '#b3cfff', fontSize: '1.13rem', marginBottom: 18, ...fadeIn(0.2) }}>
-          Tu equipo ha sido inscrito correctamente.<br />
-          Pronto recibirás novedades en Discord o por correo electrónico.<br />
-          ¡Gracias por confiar en Rustaco Eventos!
+          {translations[lang].enviadoMsg.split('\n').map((line, i) => <span key={i}>{line}<br /></span>)}
         </p>
         <button
           onClick={() => history.push('/')}
@@ -202,7 +402,7 @@ const Applys = () => {
           onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
           onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Volver al Home
+          {translations[lang].volverHome}
         </button>
         <style>
           {`
@@ -216,7 +416,6 @@ const Applys = () => {
     );
   }
 
-  // Pantalla de aceptación de términos antes del formulario
   if (!acceptTerms) {
     return (
       <div style={{
@@ -232,6 +431,7 @@ const Applys = () => {
         border: '2px solid #7289da88',
         position: 'relative'
       }}>
+        {LangSelector}
         <div style={{
           fontSize: 48,
           marginBottom: 18,
@@ -246,7 +446,7 @@ const Applys = () => {
           textShadow: '0 2px 18px #000a',
           ...fadeIn(0.1)
         }}>
-          Proceso de Inscripción - Rustaco II
+          {translations[lang].procesoTitulo}
         </h1>
         <div style={{
           background: 'rgba(34,34,34,0.97)',
@@ -260,17 +460,11 @@ const Applys = () => {
           border: '1.5px solid #7289da88',
           ...fadeIn(0.2)
         }}>
-          <b style={{ color: '#27ae60' }}>Antes de continuar, debes aceptar los términos y condiciones del evento:</b>
+          <b style={{ color: '#27ae60' }}>{translations[lang].aceptarTerminosTitulo}</b>
           <ul style={{ margin: '1.1rem 0 0 1.2rem', fontSize: '1.08rem', color: '#f39c12', lineHeight: 1.7 }}>
-            <li>He leído y acepto el <a href="/reglas" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>reglamento oficial</a> del torneo Rustaco II.</li>
-            <li>Me comprometo a que todos los datos entregados son verídicos y que los integrantes del equipo están informados y de acuerdo con la inscripción.</li>
-            <li>Entiendo que el incumplimiento de las reglas puede resultar en la descalificación del equipo y/o sanciones.</li>
-            <li>Acepto que la administración podrá contactarme vía Discord para cualquier comunicación oficial.</li>
-            <li>Declaro que todos los participantes tienen cuenta de Steam y cumplen los requisitos del evento.</li>
-            <li>La organización se reserva el derecho de admisión y puede solicitar información adicional si lo estima conveniente.</li>
-            <li style={{ color: '#b3cfff' }}>
-              <b>Nota:</b> El proceso de inscripción es competitivo y la selección de equipos será realizada por el staff de Rustaco en base a los datos entregados y el cumplimiento de los requisitos.
-            </li>
+            {translations[lang].aceptarTerminosLista.map((item, idx) => (
+              <li key={idx} style={idx === 6 ? { color: '#b3cfff' } : {}}>{item}</li>
+            ))}
           </ul>
         </div>
         <button
@@ -293,7 +487,7 @@ const Applys = () => {
           onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
           onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
         >
-          Acepto y deseo inscribir a mi equipo
+          {translations[lang].aceptarBtn}
         </button>
         <style>
           {`
@@ -307,7 +501,7 @@ const Applys = () => {
     );
   }
 
-  // Nuevo: banner superior profesional
+  // Banner superior profesional
   const Banner = () => (
     <div style={{
       background: 'linear-gradient(90deg, #23201a 70%, #27ae60 100%)',
@@ -318,7 +512,8 @@ const Applys = () => {
       textAlign: 'center',
       color: '#fff',
       fontFamily: 'Montserrat, Arial, sans-serif',
-      border: '2px solid #27ae60cc'
+      border: '2px solid #27ae60cc',
+      position: 'relative'
     }}>
       <h1 style={{
         color: '#27ae60',
@@ -328,7 +523,7 @@ const Applys = () => {
         letterSpacing: '2px',
         textShadow: '0 2px 18px #000a'
       }}>
-        Inscripción al Torneo Rustaco II
+        {translations[lang].inscripcionTitulo}
       </h1>
       <p style={{
         color: '#b3cfff',
@@ -336,13 +531,14 @@ const Applys = () => {
         fontWeight: 500,
         marginBottom: 0
       }}>
-        Completa todos los campos para inscribir a tu equipo.<br />
-        <span style={{ color: '#e25822', fontWeight: 700 }}>¡Recuerda que la inscripción es competitiva y será revisada por el staff!</span>
+        {translations[lang].inscripcionDesc}<br />
+        <span style={{ color: '#e25822', fontWeight: 700 }}>{translations[lang].inscripcionNota}</span>
       </p>
+      {LangSelector}
     </div>
   );
 
-  // Nuevo: layout profesional para el formulario, con checkbox de términos abajo
+  // Layout profesional para el formulario, con checkbox de términos abajo
   if (user && !submitted && acceptTerms) {
     return (
       <div style={{
@@ -355,9 +551,10 @@ const Applys = () => {
         color: '#fff',
         fontFamily: 'Montserrat, Arial, sans-serif',
         border: '2px solid #e25822cc',
-        animation: 'fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) both'
+        animation: 'fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) both',
+        position: 'relative'
       }}>
-        <Banner />
+        {Banner()}
         <form onSubmit={handleSubmit} style={{ marginTop: 0 }}>
           {/* Nombre del equipo y capitán */}
           <div style={{
@@ -367,7 +564,7 @@ const Applys = () => {
             marginBottom: 24
           }}>
             <div>
-              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>Nombre del Equipo *</label>
+              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>{translations[lang].nombreEquipo}</label>
               <input
                 type="text"
                 value={teamName}
@@ -384,11 +581,11 @@ const Applys = () => {
                   boxShadow: '0 1px 8px #0007'
                 }}
                 required
-                placeholder="Ejemplo: Rustaco Warriors"
+                placeholder={translations[lang].placeholderEquipo}
               />
             </div>
             <div>
-              <label style={{ fontWeight: 700, color: '#7289da', fontSize: '1.09rem' }}>Capitán del Equipo *</label>
+              <label style={{ fontWeight: 700, color: '#7289da', fontSize: '1.09rem' }}>{translations[lang].capitan}</label>
               <input
                 type="text"
                 value={captain}
@@ -405,7 +602,7 @@ const Applys = () => {
                   boxShadow: '0 1px 8px #0007'
                 }}
                 required
-                placeholder="Nombre completo del capitán"
+                placeholder={translations[lang].placeholderCapitan}
               />
             </div>
           </div>
@@ -418,13 +615,13 @@ const Applys = () => {
             boxShadow: '0 2px 12px #0007'
           }}>
             <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem', marginBottom: 12, display: 'block' }}>
-              Participantes del Equipo (8 jugadores, capitán incluido) *
+              {translations[lang].participantes}
             </label>
             <ol style={{ paddingLeft: '1.2rem', margin: 0 }}>
               {players.map((player, idx) => (
                 <li key={idx} style={{ marginBottom: 18 }}>
                   <div style={{ fontWeight: 700, color: '#b3cfff', fontSize: '1.08rem', marginBottom: 6 }}>
-                    Jugador {idx + 1}.
+                    {translations[lang].nombre} {idx + 1}.
                   </div>
                   <input
                     type="text"
@@ -441,7 +638,7 @@ const Applys = () => {
                       marginBottom: 4
                     }}
                     required
-                    placeholder="Nombre"
+                    placeholder={translations[lang].nombre}
                   />
                   <input
                     type="text"
@@ -458,7 +655,7 @@ const Applys = () => {
                       marginBottom: 4
                     }}
                     required
-                    placeholder="SteamID64"
+                    placeholder={translations[lang].steamid}
                   />
                   <input
                     type="text"
@@ -474,7 +671,7 @@ const Applys = () => {
                       color: '#fff'
                     }}
                     required
-                    placeholder="Canal de Transmisión"
+                    placeholder={translations[lang].twitch}
                   />
                 </li>
               ))}
@@ -488,7 +685,7 @@ const Applys = () => {
             gap: '2rem'
           }}>
             <div>
-              <label style={{ fontWeight: 700, color: '#7289da', fontSize: '1.09rem' }}>Discord del Capitán *</label>
+              <label style={{ fontWeight: 700, color: '#7289da', fontSize: '1.09rem' }}>{translations[lang].discord}</label>
               <input
                 type="text"
                 value={discord}
@@ -505,7 +702,7 @@ const Applys = () => {
                   boxShadow: '0 1px 8px #0007'
                 }}
                 required
-                placeholder="Ejemplo: usuario#1234"
+                placeholder={translations[lang].placeholderDiscord}
               />
             </div>
           </div>
@@ -517,7 +714,7 @@ const Applys = () => {
             gap: '2rem'
           }}>
             <div>
-              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>¿Por qué debe participar tu equipo? *</label>
+              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>{translations[lang].porque}</label>
               <textarea
                 value={why}
                 onChange={e => setWhy(e.target.value)}
@@ -534,11 +731,11 @@ const Applys = () => {
                   boxShadow: '0 1px 8px #0007'
                 }}
                 required
-                placeholder="Cuéntanos por qué tu equipo merece un lugar en Rustaco II..."
+                placeholder={translations[lang].placeholderPorque}
               />
             </div>
             <div>
-              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>Estrategia o preparación especial</label>
+              <label style={{ fontWeight: 700, color: '#f39c12', fontSize: '1.09rem' }}>{translations[lang].estrategia}</label>
               <textarea
                 value={strategy}
                 onChange={e => setStrategy(e.target.value)}
@@ -554,7 +751,7 @@ const Applys = () => {
                   minHeight: 60,
                   boxShadow: '0 1px 8px #0007'
                 }}
-                placeholder="Describe brevemente la preparación, entrenamientos, roles, etc."
+                placeholder={translations[lang].placeholderEstrategia}
               />
             </div>
           </div>
@@ -574,7 +771,11 @@ const Applys = () => {
                 style={{ marginRight: 8, accentColor: '#e25822' }}
                 required
               />
-              Confirmo que he leído y acepto los <a href="/reglas" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>términos y condiciones</a> y me comprometo a respetar todas las reglas del evento.
+              {translations[lang].terminos}{' '}
+              <a href="/reglas" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 700 }}>
+                {translations[lang].terminosLink}
+              </a>{' '}
+              {translations[lang].terminosFinal}
             </label>
           </div>
           {error && (
@@ -607,7 +808,7 @@ const Applys = () => {
             onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
             onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            Enviar inscripción
+            {translations[lang].enviar}
           </button>
         </form>
         <style>
@@ -626,7 +827,7 @@ const Applys = () => {
     );
   }
 
-  return null; // En caso de que ninguna condición se cumpla
+  return null;
 };
 
 export default Applys;
