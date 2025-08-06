@@ -187,8 +187,9 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
     style={{
       width: '100%',
       minHeight: '80px',
-      background: 'linear-gradient(90deg, #181818 60%, #e25822 120%)',
-      boxShadow: '0 2px 12px #0008',
+      // Quita el fondo y sombra
+      background: 'none',
+      boxShadow: 'none',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -233,20 +234,122 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           gap: '2rem',
           marginLeft: '2rem'
         }}>
-          <motion.button className="nav-btn" onClick={onFormatoClick} variants={btnAnim} initial="initial" animate="animate">
+          <motion.button
+            className="nav-btn"
+            onClick={onFormatoClick}
+            variants={btnAnim}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              padding: '0.55rem 1.5rem',
+              borderRadius: 0,
+              boxShadow: 'none',
+              cursor: 'pointer',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+              margin: 0,
+              transition: 'color 0.2s'
+            }}
+          >
             {translations[lang].formato}
           </motion.button>
-          <motion.button className="nav-btn" onClick={onInfoClick} variants={btnAnim} initial="initial" animate="animate">
+          <motion.button
+            className="nav-btn"
+            onClick={onInfoClick}
+            variants={btnAnim}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              padding: '0.55rem 1.5rem',
+              borderRadius: 0,
+              boxShadow: 'none',
+              cursor: 'pointer',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+              margin: 0,
+              transition: 'color 0.2s'
+            }}
+          >
             {translations[lang].sobre}
           </motion.button>
-          <motion.button className="nav-btn" onClick={onTeamsClick} variants={btnAnim} initial="initial" animate="animate">
+          <motion.button
+            className="nav-btn"
+            onClick={onTeamsClick}
+            variants={btnAnim}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              padding: '0.55rem 1.5rem',
+              borderRadius: 0,
+              boxShadow: 'none',
+              cursor: 'pointer',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+              margin: 0,
+              transition: 'color 0.2s'
+            }}
+          >
             {translations[lang].equipos}
           </motion.button>
-          <motion.a href="/events" className="nav-btn" variants={btnAnim} initial="initial" animate="animate">
+          <motion.a
+            href="/events"
+            className="nav-btn"
+            variants={btnAnim}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 700,
+              fontSize: '1.08rem',
+              padding: '0.55rem 1.5rem',
+              borderRadius: 0,
+              boxShadow: 'none',
+              cursor: 'pointer',
+              letterSpacing: '1px',
+              textDecoration: 'none',
+              margin: 0,
+              transition: 'color 0.2s'
+            }}
+          >
             {translations[lang].stats}
           </motion.a>
           <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
-            <Link to="/reglas" className="nav-btn">
+            <Link
+              to="/reglas"
+              className="nav-btn"
+              style={{
+                background: 'none',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '1.08rem',
+                padding: '0.55rem 1.5rem',
+                borderRadius: 0,
+                boxShadow: 'none',
+                cursor: 'pointer',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+                margin: 0,
+                transition: 'color 0.2s'
+              }}
+            >
               {translations[lang].verReglas}
             </Link>
           </motion.div>
@@ -269,13 +372,13 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           initial="initial"
           animate="animate"
           style={{
-            background: lang === 'es' ? '#e25822' : '#23201a',
+            background: 'none',
             border: 'none',
             borderRadius: 6,
             padding: 2,
             cursor: 'pointer',
             marginRight: 2,
-            boxShadow: lang === 'es' ? '0 0 0 2px #e25822' : 'none',
+            boxShadow: 'none',
             transition: 'box-shadow 0.2s'
           }}
           title="Español LATAM"
@@ -288,13 +391,13 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           initial="initial"
           animate="animate"
           style={{
-            background: lang === 'en' ? '#3a4bd8' : '#23201a',
+            background: 'none',
             border: 'none',
             borderRadius: 6,
             padding: 2,
             cursor: 'pointer',
             marginRight: 2,
-            boxShadow: lang === 'en' ? '0 0 0 2px #3a4bd8' : 'none',
+            boxShadow: 'none',
             transition: 'box-shadow 0.2s'
           }}
           title="English USA"
@@ -307,12 +410,12 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           initial="initial"
           animate="animate"
           style={{
-            background: lang === 'pt' ? '#27ae60' : '#23201a',
+            background: 'none',
             border: 'none',
             borderRadius: 6,
             padding: 2,
             cursor: 'pointer',
-            boxShadow: lang === 'pt' ? '0 0 0 2px #27ae60' : 'none',
+            boxShadow: 'none',
             transition: 'box-shadow 0.2s'
           }}
           title="Português Brasil"
@@ -912,9 +1015,9 @@ const ExtraInfoSection = React.forwardRef(({ lang }, ref) => {
         marginTop: '3rem',
         marginBottom: '3rem',
         padding: '2.5rem 1.5rem',
-        background: 'rgba(24,24,24,0.93)',
         borderRadius: '24px',
-        boxShadow: '0 4px 32px #000a',
+        boxShadow: 'none', // Elimina sombra
+        background: 'none', // Elimina fondo negro
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1006,9 +1109,9 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
         marginTop: '4rem',
         marginBottom: '3rem',
         padding: '2rem 1rem',
-        background: 'rgba(24,24,24,0.97)',
         borderRadius: '28px',
-        boxShadow: '0 6px 32px #000b',
+        boxShadow: 'none', // Elimina sombra
+        background: 'none', // Elimina fondo negro
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1029,8 +1132,8 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
               height: 70,
               borderRadius: '50%',
               objectFit: 'cover',
-              boxShadow: '0 2px 12px #000a',
-              background: '#23201a',
+              boxShadow: 'none', // Elimina sombra
+              background: 'none', // Elimina fondo negro
               border: '2px solid #e25822'
             }}
           />
@@ -1063,9 +1166,9 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
             key={card.label + '-' + idx}
             className="evento-info-card reveal"
             style={{
-              background: 'linear-gradient(135deg, #23201a 70%, #e2582222 100%)',
+              background: 'none', // Elimina fondo negro
               borderRadius: '16px',
-              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #e25822cc',
+              boxShadow: 'none', // Elimina sombra
               padding: '1.2rem 1.4rem',
               minWidth: 170,
               maxWidth: 210,
@@ -1643,6 +1746,19 @@ const MapaSection = React.forwardRef((props, ref) => {
     if (ref) ref.current = sectionRef.current;
   }, [ref]);
 
+  // Animación: solo flotación horizontal suave, sin desaparecer
+  const mapaAnim = {
+    initial: { x: 0 },
+    animate: {
+      x: [0, 18, 0, -18, 0],
+      transition: {
+        duration: 6,
+        ease: "easeInOut",
+        repeat: Infinity
+      }
+    }
+  };
+
   return (
     <motion.section
       ref={sectionRef}
@@ -1659,7 +1775,10 @@ const MapaSection = React.forwardRef((props, ref) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '1.5rem'
+        gap: '1.5rem',
+        background: 'none',
+        boxShadow: 'none',
+        borderRadius: 0
       }}
     >
       <h2 style={{
@@ -1671,17 +1790,23 @@ const MapaSection = React.forwardRef((props, ref) => {
         letterSpacing: '1px',
         textAlign: 'center'
       }}>
+        {/* Puedes poner aquí un título si lo deseas */}
       </h2>
-      <img
+      <motion.img
         src={mapaRustacooo}
-        alt=""
+        alt="Mapa Rustaco Evento"
+        initial="initial"
+        animate="animate"
+        variants={mapaAnim}
         style={{
           width: '100%',
           maxWidth: 520,
           height: 'auto',
-          borderRadius: 18,
-          boxShadow: '0 4px 24px #000a',
-          background: '#181818'
+          borderRadius: 28,
+          background: 'none',
+          border: '4px solid #e25822',
+          marginBottom: 0,
+          boxShadow: '0 8px 32px #e2582288'
         }}
       />
     </motion.section>
