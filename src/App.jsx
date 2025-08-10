@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Reglas from './pages/Reglas';
 import Admin from './pages/Admin';
 import Applys from './pages/Applys'; // importa el formulario de inscripción
+import Equipos from './pages/equipos';
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/reglas" component={Reglas} />
                     <Route path="/admin" component={Admin} />
                     <Route path="/applys" component={Applys} />
+                    <Route path="/equipos" component={Equipos} />
                 </Switch>
                 {/* Elimina este footer global, ya hay uno en Home.jsx y otras páginas */}
                 {/* 

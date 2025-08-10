@@ -17,6 +17,8 @@ import { motion } from 'framer-motion';
 import fondo from '../assets/img/fondo.jpg';
 import rustaco2logo from '../assets/img/rustaco2.png'; // Nuevo logo Rustaco II
 import kicklogo from '../assets/img/kick.png'; // Logo Kick optimizado
+import cantosogangLogo from '../assets/img/cantosogang.webp';
+import juninLogo from '../assets/img/juninlogo.png';
 
 // Traducciones
 const translations = {
@@ -55,7 +57,7 @@ const translations = {
     fecha: 'Fechas',
     fechaDesc: 'Fechas del evento Rustaco II.',
     inscripcionesBtn: 'Inscripciones abiertas ¡YA!',
-    inscripcionesFechas: 'del 6 de Agosto 15:00 GMT-4 hasta el 10 de Septiembre 16:00 GMT-4',
+    inscripcionesFechas: 'del 6 de Agosto 15:00 GMT-4 hasta el 8 de Septiembre 16:00 GMT-4',
     inscripcionesMsg: '¡No te quedes fuera! Inscribe tu equipo y participa en Rustaco II.',
     // Añade traducciones para el sponsor Poionako
     sponsorTitle: 'Patrocinado por',
@@ -106,7 +108,7 @@ const translations = {
     fecha: 'Dates',
     fechaDesc: 'Dates of the Rustaco II event.',
     inscripcionesBtn: 'Registrations open NOW!',
-    inscripcionesFechas: 'from August 6th 15:00 GMT-4 to September 10th 16:00 GMT-4',
+    inscripcionesFechas: 'from August 6th 15:00 GMT-4 to September 8th 16:00 GMT-4',
     inscripcionesMsg: "Don't miss out! Register your team and participate in Rustaco II.",
     // Sponsor Poionako translations
     sponsorTitle: 'Sponsored by',
@@ -146,7 +148,7 @@ const translations = {
     equiposLabel: 'Equipes',
     equiposDesc: 'Total de equipes participantes no evento.',
     jogadoresEquipo: 'Jogadores por equipe',
-    jugadoresEquipoDesc: 'Cada equipe será composta por 8 jogadores.',
+    jogadoresEquipoDesc: 'Cada equipe será composta por 8 jogadores.',
     jogadores: 'Jogadores',
     jogadoresDesc: 'Participantes confirmados para o Rustaco 2.',
     hora: 'Hora',
@@ -157,7 +159,7 @@ const translations = {
     fecha: 'Datas',
     fechaDesc: 'Datas do evento Rustaco II.',
     inscripcionesBtn: 'Inscrições abertas AGORA!',
-    inscripcionesFechas: 'de 6 de agosto 15:00 GMT-4 até 10 de setembro 16:00 GMT-4',
+    inscripcionesFechas: 'de 6 de agosto 15:00 GMT-4 até 8 de setembro 16:00 GMT-4',
     inscripcionesMsg: 'Não fique de fora! Inscreva sua equipe e participe do Rustaco II.',
     // Sponsor Poionako translations
     sponsorTitle: 'Patrocinado por',
@@ -323,30 +325,31 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
           >
             {translations[lang].sobre}
           </motion.button>
-          <motion.button
-            className="nav-btn"
-            onClick={onTeamsClick}
-            variants={btnAnim}
-            initial="initial"
-            animate="animate"
-            style={{
-              background: 'none',
-              color: '#fff',
-              border: 'none',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              padding: '0.55rem 1.5rem',
-              borderRadius: 0,
-              boxShadow: 'none',
-              cursor: 'pointer',
-              letterSpacing: '1px',
-              textDecoration: 'none',
-              margin: 0,
-              transition: 'color 0.2s'
-            }}
-          >
-            {translations[lang].equipos}
-          </motion.button>
+          <Link to="/equipos">
+            <motion.button
+              className="nav-btn"
+              variants={btnAnim}
+              initial="initial"
+              animate="animate"
+              style={{
+                background: 'none',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '1.08rem',
+                padding: '0.55rem 1.5rem',
+                borderRadius: 0,
+                boxShadow: 'none',
+                cursor: 'pointer',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+                margin: 0,
+                transition: 'color 0.2s'
+              }}
+            >
+              {translations[lang].equipos}
+            </motion.button>
+          </Link>
           <motion.a
             href="/events"
             className="nav-btn"
@@ -1274,181 +1277,431 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
+  // Estado para mostrar el modal de información de equipo
+  const [openTeamIdx, setOpenTeamIdx] = useState(null);
+
   useEffect(() => {
     if (ref) ref.current = sectionRef.current;
   }, [ref]);
 
-  const teams = Array.from({ length: 16 }, (_, i) => ({
-    name: `${translations[lang].equipo} ${i + 1}`,
-    status: translations[lang].aConfirmar
-  }));
+  // --- Equipos destacados y el resto ---
+  const teams = [
+    {
+      name: "Team cG",
+      logo: cantosogangLogo,
+      channels: [
+        { url: "https://www.twitch.tv/lukasito", name: "Lukasito" },
+        { url: "https://www.twitch.tv/adriidr", name: "Adriidr" },
+        { url: "https://www.twitch.tv/02tez", name: "02tez" },
+        { url: "https://www.twitch.tv/murloc_cg", name: "Murloc_cg" },
+        { url: "https://www.twitch.tv/nadiahq", name: "Nadiahq" },
+        { url: "https://www.twitch.tv/edinz_", name: "Edinz_" },
+        { url: "https://www.twitch.tv/v2unstoppable", name: "V2Unstoppable" },
+        { url: "https://kick.com/poionako", name: "Poionako" }
+      ]
+    },
+    {
+      name: "Team Junin",
+      logo: juninLogo,
+      channels: [
+        { url: "https://www.twitch.tv/junin", name: "Junin" },
+        { url: "https://www.twitch.tv/toddynho", name: "Toddynho" },
+        { url: "https://www.twitch.tv/r3crutatv", name: "R3crutatv" },
+        { url: "https://www.twitch.tv/dubomtv", name: "Dubomtv" },
+        { url: "https://www.twitch.tv/andrerossi", name: "Andrerossi" },
+        { url: "https://www.twitch.tv/mtx1__", name: "Mtx1__" },
+        { url: "https://www.twitch.tv/rubyhub", name: "Rubyhub" },
+        { url: "https://www.twitch.tv/sh0cker", name: "Sh0cker" }
+      ]
+    },
+    ...Array.from({ length: 14 }, (_, i) => ({
+      name: `${translations[lang].equipo} ${i + 3}`,
+      status: translations[lang].aConfirmar,
+      channels: []
+    }))
+  ];
 
   const firstRow = teams.slice(0, 8);
   const secondRow = teams.slice(8, 16);
 
-  return (
-    <motion.section
-      ref={sectionRef}
-      className="reveal"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={fadeVariants}
+  // Modal de información de equipo
+  const TeamInfoModal = ({ team, onClose }) => (
+    <div
       style={{
-        maxWidth: 1100,
-        margin: '0 auto',
-        marginTop: '2.5rem',
-        marginBottom: '3.5rem',
-        padding: 0,
-        background: 'none',
-        borderRadius: 0,
-        boxShadow: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '2.2rem'
+        position: "fixed",
+        top: 0, left: 0, width: "100vw", height: "100vh",
+        background: "rgba(0,0,0,0.55)",
+        zIndex: 99999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
       }}
+      onClick={onClose}
     >
-      <h2 style={{
-        fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
-        fontWeight: 900,
-        color: 'var(--rust-orange)',
-        fontSize: '2rem',
-        letterSpacing: '2px',
-        margin: 0,
-        textShadow: '2px 2px 8px #000a'
-      }}>
-        {translations[lang].equiposParticipantes}
-      </h2>
-      <p
+      <div
         style={{
-          color: '#fff',
-          fontFamily: 'Montserrat, Arial, sans-serif',
-          fontSize: '1.15rem',
+          background: "#23201a",
+          borderRadius: 22,
+          boxShadow: "0 8px 32px #000b",
+          padding: "2.2rem 2rem 1.5rem 2rem",
+          minWidth: 320,
+          maxWidth: 400,
+          width: "90vw",
+          color: "#fff",
+          fontFamily: "Montserrat, Arial, sans-serif",
+          position: "relative"
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: 12,
+            right: 16,
+            background: "none",
+            border: "none",
+            color: "#fff",
+            fontSize: 28,
+            cursor: "pointer"
+          }}
+          aria-label="Cerrar"
+        >×</button>
+        {team.logo && (
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 16
+          }}>
+            <img
+              src={team.logo}
+              alt={team.name + " Logo"}
+              style={{
+                width: 70,
+                height: 70,
+                borderRadius: "50%",
+                objectFit: "cover",
+                boxShadow: "0 2px 12px #0008"
+              }}
+            />
+          </div>
+        )}
+        <h2 style={{
+          fontSize: "1.5rem",
+          fontWeight: 900,
+          color: "#fff",
+          textAlign: "center",
+          marginBottom: 8
+        }}>{team.name}</h2>
+        {team.status && (
+          <div style={{
+            color: "#f39c12",
+            fontWeight: 700,
+            fontSize: "1.09rem",
+            textAlign: "center",
+            marginBottom: 10
+          }}>{team.status}</div>
+        )}
+        {team.channels && team.channels.length > 0 && (
+          <>
+            <div style={{
+              color: "#f39c12",
+              fontWeight: 700,
+              fontSize: "1.09rem",
+              marginBottom: 6,
+              textAlign: "center"
+            }}>
+              Canales de transmisión
+            </div>
+            <ul style={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+              width: "100%",
+              alignItems: "center"
+            }}>
+              {team.channels.map((ch, i) => (
+                <li key={i} style={{ marginBottom: 0 }}>
+                  <a
+                    href={ch.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: ch.url.includes("kick.com") ? "#53fc18" : "#9147ff",
+                      fontWeight: 700,
+                      textDecoration: "underline",
+                      fontSize: "1.08rem",
+                      wordBreak: "break-all",
+                      letterSpacing: "0.5px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      background: "rgba(0,0,0,0.10)",
+                      borderRadius: 8,
+                      padding: "2px 10px"
+                    }}
+                  >
+                    {ch.url.includes("kick.com") ? (
+                      <svg width="18" height="18" viewBox="0 0 32 32" style={{ marginRight: 2 }}>
+                        <rect width="32" height="32" rx="7" fill="#53fc18"/>
+                        <text x="16" y="22" textAnchor="middle" fontSize="18" fill="#23201a" fontWeight="bold">K</text>
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 32 32" style={{ marginRight: 2 }}>
+                        <rect width="32" height="32" rx="7" fill="#9147ff"/>
+                        <text x="16" y="22" textAnchor="middle" fontSize="18" fill="#fff" fontWeight="bold">T</text>
+                      </svg>
+                    )}
+                    {ch.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <motion.section
+        ref={sectionRef}
+        className="reveal"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeVariants}
+        style={{
+          maxWidth: 1100,
+          margin: '0 auto',
+          marginTop: '2.5rem',
+          marginBottom: '3.5rem',
+          padding: 0,
+          background: 'none',
+          borderRadius: 0,
+          boxShadow: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '2.2rem'
+        }}
+      >
+        <h2 style={{
+          fontFamily: 'Montserrat, Impact, Arial Black, Arial, sans-serif',
+          fontWeight: 900,
+          color: 'var(--rust-orange)',
+          fontSize: '2rem',
+          letterSpacing: '2px',
           margin: 0,
-          marginBottom: '1.5rem',
-          textAlign: 'center',
-          opacity: 0.85,
-          maxWidth: 700
-        }}
-      >
-        {translations[lang].equiposTexto}
-      </p>
-      {/* Primera fila */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(8, 1fr)',
-          gap: '1.7rem',
-          width: '100%',
-          marginTop: '1.2rem'
-        }}
-      >
-        {firstRow.map((team, idx) => (
-          <div
-            key={team.name + '-' + idx}
-            className="reveal"
-            style={{
-              background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
-              borderRadius: '16px',
-              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
-              padding: '1.5rem 1.2rem',
-              minHeight: 110,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.7rem',
-              border: 'none',
-              fontFamily: 'Montserrat, Arial, sans-serif',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              color: '#fff',
-              letterSpacing: '1px',
-              position: 'relative',
-              transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
-              overflow: 'hidden'
-            }}
-          >
-            <span style={{
-              fontSize: '1.3rem',
-              color: '#b3cfff',
-              fontWeight: 900,
-              textShadow: '1px 1px 8px #23272a'
-            }}>
-              {team.name}
-            </span>
-            <span style={{
-              fontSize: '1.08rem',
-              color: '#fff',
-              fontWeight: 600,
-              opacity: 0.85,
-              letterSpacing: '1px',
-              marginTop: '0.2rem'
-            }}>
-              {team.status}
-            </span>
-          </div>
-        ))}
-      </div>
-      {/* Segunda fila */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(8, 1fr)',
-          gap: '1.7rem',
-          width: '100%',
-          marginTop: '1.2rem'
-        }}
-      >
-        {secondRow.map((team, idx) => (
-          <div
-            key={team.name + '-' + (idx + 8)}
-            className="reveal"
-            style={{
-              background: 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
-              borderRadius: '16px',
-              boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
-              padding: '1.5rem 1.2rem',
-              minHeight: 110,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.7rem',
-              border: 'none',
-              fontFamily: 'Montserrat, Arial, sans-serif',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              color: '#fff',
-              letterSpacing: '1px',
-              position: 'relative',
-              transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
-              overflow: 'hidden'
-            }}
-          >
-            <span style={{
-              fontSize: '1.3rem',
-              color: '#b3cfff',
-              fontWeight: 900,
-              textShadow: '1px 1px 8px #23272a'
-            }}>
-              {team.name}
-            </span>
-            <span style={{
-              fontSize: '1.08rem',
-              color: '#fff',
-              fontWeight: 600,
-              opacity: 0.85,
-              letterSpacing: '1px',
-              marginTop: '0.2rem'
-            }}>
-              {team.status}
-            </span>
-          </div>
-        ))}
-      </div>
-    </motion.section>
+          textShadow: '2px 2px 8px #000a'
+        }}>
+          {translations[lang].equiposParticipantes}
+        </h2>
+        <p
+          style={{
+            color: '#fff',
+            fontFamily: 'Montserrat, Arial, sans-serif',
+            fontSize: '1.15rem',
+            margin: 0,
+            marginBottom: '1.5rem',
+            textAlign: 'center',
+            opacity: 0.85,
+            maxWidth: 700
+          }}
+        >
+          {translations[lang].equiposTexto}
+        </p>
+        {/* Primera fila */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(8, 1fr)',
+            gap: '1.7rem',
+            width: '100%',
+            marginTop: '1.2rem'
+          }}
+        >
+          {firstRow.map((team, idx) => (
+            <div
+              key={team.name + '-' + idx}
+              className="reveal"
+              style={{
+                background: team.logo
+                  ? `linear-gradient(135deg, #23201a 70%, ${idx === 0 ? "#e25822" : "#9147ff"} 100%)`
+                  : 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
+                borderRadius: '16px',
+                boxShadow: team.logo
+                  ? `0 4px 24px ${idx === 0 ? "#e25822cc" : "#9147ffcc"}, 0 0 0 3px #fff2`
+                  : '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
+                padding: '1.5rem 1.2rem',
+                minHeight: 110,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.7rem',
+                border: 'none',
+                fontFamily: 'Montserrat, Arial, sans-serif',
+                fontWeight: 700,
+                fontSize: '1.08rem',
+                color: '#fff',
+                letterSpacing: '1px',
+                position: 'relative',
+                transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
+                overflow: 'hidden',
+                cursor: 'pointer'
+              }}
+              onClick={() => setOpenTeamIdx(idx)}
+            >
+              {team.logo && (
+                <div style={{
+                  borderRadius: "50%",
+                  width: 60,
+                  height: 60,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 6,
+                  boxShadow: "none",
+                  background: "none"
+                }}>
+                  <img
+                    src={team.logo}
+                    alt={team.name + " Logo"}
+                    style={{
+                      width: 46,
+                      height: 46,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      boxShadow: "0 2px 12px #0008"
+                    }}
+                  />
+                </div>
+              )}
+              <span style={{
+                fontSize: '1.3rem',
+                color: '#b3cfff',
+                fontWeight: 900,
+                textShadow: '1px 1px 8px #23272a',
+                textAlign: 'center'
+              }}>
+                {team.name}
+              </span>
+              {team.status && (
+                <span style={{
+                  fontSize: '1.08rem',
+                  color: '#fff',
+                  fontWeight: 600,
+                  opacity: 0.85,
+                  letterSpacing: '1px',
+                  marginTop: '0.2rem'
+                }}>
+                  {team.status}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Segunda fila */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(8, 1fr)',
+            gap: '1.7rem',
+            width: '100%',
+            marginTop: '1.2rem'
+          }}
+        >
+          {secondRow.map((team, idx) => (
+            <div
+              key={team.name + '-' + (idx + 8)}
+              className="reveal"
+              style={{
+                background: team.logo
+                  ? `linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)`
+                  : 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
+                borderRadius: '16px',
+                boxShadow: '0 2px 12px #000a, 0 0 0 1.5px #7289da88',
+                padding: '1.5rem 1.2rem',
+                minHeight: 110,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.7rem',
+                border: 'none',
+                fontFamily: 'Montserrat, Arial, sans-serif',
+                fontWeight: 700,
+                fontSize: '1.08rem',
+                color: '#fff',
+                letterSpacing: '1px',
+                position: 'relative',
+                transition: 'transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s cubic-bezier(.4,0,.2,1)',
+                overflow: 'hidden',
+                cursor: 'pointer'
+              }}
+              onClick={() => setOpenTeamIdx(idx + 8)}
+            >
+              {team.logo && (
+                <div style={{
+                  borderRadius: "50%",
+                  width: 60,
+                  height: 60,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 6,
+                  boxShadow: "none",
+                  background: "none"
+                }}>
+                  <img
+                    src={team.logo}
+                    alt={team.name + " Logo"}
+                    style={{
+                      width: 46,
+                      height: 46,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      boxShadow: "0 2px 12px #0008"
+                    }}
+                  />
+                </div>
+              )}
+              <span style={{
+                fontSize: '1.3rem',
+                color: '#b3cfff',
+                fontWeight: 900,
+                textShadow: '1px 1px 8px #23272a',
+                textAlign: 'center'
+              }}>
+                {team.name}
+              </span>
+              {team.status && (
+                <span style={{
+                  fontSize: '1.08rem',
+                  color: '#fff',
+                  fontWeight: 600,
+                  opacity: 0.85,
+                  letterSpacing: '1px',
+                  marginTop: '0.2rem'
+                }}>
+                  {team.status}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      </motion.section>
+      {/* Modal de información de equipo */}
+      {openTeamIdx !== null && (
+        <TeamInfoModal team={teams[openTeamIdx]} onClose={() => setOpenTeamIdx(null)} />
+      )}
+    </>
   );
 });
 
@@ -1776,7 +2029,7 @@ function ChatbotWidget({ lang }) {
             </div>
             <div style={{
               flex: 1,
-              minHeight: 90,
+                           minHeight: 90,
               maxHeight: 220,
               overflowY: "auto",
               marginBottom: 8,
@@ -1946,7 +2199,7 @@ const Home = () => {
                 height: 110,
                 objectFit: 'contain',
                 marginBottom: '0.7rem',
-                boxShadow: '0 4px 24px #e25822cc, 0 0 0 4px #fff2'
+                boxShadow: '0 4px 24px #e2582288, 0 0 0 4px #fff2'
               }}
             />
           </motion.div>
@@ -1959,7 +2212,7 @@ const Home = () => {
               fontWeight: 900,
               fontSize: '1.7rem',
               marginBottom: '0.5rem',
-              letterSpacing: '2px',
+              letterSpacing: '1px',
               textShadow: '0 2px 18px #e25822, 0 1px 8px #000a',
               background: 'linear-gradient(90deg, #e25822 60%, #fff 100%)',
               WebkitBackgroundClip: 'text',
@@ -2275,7 +2528,7 @@ const MapaSection = React.forwardRef((props, ref) => {
         fontSize: '1.12rem',
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
+        gap: '12px',
         justifyContent: 'center'
       }}>
         <i className="bi bi-twitch" style={{ fontSize: 28, color: '#9147ff' }}></i>
