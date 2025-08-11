@@ -19,6 +19,9 @@ import rustaco2logo from '../assets/img/rustaco2.png'; // Nuevo logo Rustaco II
 import kicklogo from '../assets/img/kick.png'; // Logo Kick optimizado
 import cantosogangLogo from '../assets/img/cantosogang.webp';
 import juninLogo from '../assets/img/juninlogo.png';
+import salomonLogo from '../assets/img/salomonlogo.png';
+import mcompanyvLogo from '../assets/img/mcompanyvlogo.png';
+import aaaaLogo from '../assets/img/AAAA.png';
 
 // Traducciones
 const translations = {
@@ -1314,8 +1317,50 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://www.twitch.tv/sh0cker", name: "Sh0cker" }
       ]
     },
-    ...Array.from({ length: 14 }, (_, i) => ({
-      name: `${translations[lang].equipo} ${i + 3}`,
+    {
+      name: "Team Lagtam",
+      logo: salomonLogo,
+      channels: [
+        { url: "https://www.twitch.tv/salomonl96_", name: "salomonl96_" },
+        { url: "https://www.twitch.tv/morganelia", name: "morganelia" },
+        { url: "https://www.twitch.tv/yopickeosola", name: "yopickeosola" },
+        { url: "https://www.twitch.tv/eldestinydbl", name: "eldestinydbl" },
+        { url: "https://www.twitch.tv/noscopeaim", name: "noscopeaim" },
+        { url: "https://www.twitch.tv/wavesxs0314", name: "wavesxs0314" },
+        { url: "https://www.twitch.tv/notcarlitoxcr", name: "notcarlitoxcr" },
+        { url: "https://www.twitch.tv/vacnekopp", name: "vacnekopp" }
+      ]
+    },
+    {
+      name: "Team MCV",
+      logo: mcompanyvLogo,
+      channels: [
+        { url: "https://www.twitch.tv/mcompanyv", name: "mcompanyv" },
+        { url: "https://www.twitch.tv/renepilon", name: "renepilon" },
+        { url: "https://www.twitch.tv/mk33l", name: "mk33l" },
+        { url: "https://www.twitch.tv/joe100val", name: "joe100val" },
+        { url: "https://www.twitch.tv/naviix19", name: "naviix19" },
+        { url: "https://www.twitch.tv/crazita", name: "crazita" },
+        { url: "https://www.twitch.tv/fuegales", name: "fuegales" },
+        { url: "https://www.twitch.tv/tilteada", name: "tilteada" }
+      ]
+    },
+    {
+      name: "Team AAAA",
+      logo: aaaaLogo,
+      channels: [
+        { url: "https://kick.com/04-mauri", name: "04-mauri" },
+        { url: "https://www.twitch.tv/lichaafps", name: "lichaafps" },
+        { url: "https://kick.com/1matuh", name: "1matuh" },
+        { url: "https://kick.com/papats", name: "papats" },
+        { url: "https://www.twitch.tv/nbfacu", name: "nbfacu" },
+        { url: "https://www.twitch.tv/tinigoo", name: "tinigoo" },
+        { url: "https://www.twitch.tv/elchuecoo19", name: "elchuecoo19" },
+        { url: "https://www.twitch.tv/zisaac18", name: "zisaac18" }
+      ]
+    },
+    ...Array.from({ length: 11 }, (_, i) => ({
+      name: `${translations[lang].equipo} ${i + 6}`,
       status: translations[lang].aConfirmar,
       channels: []
     }))

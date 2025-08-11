@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import fondo from "../assets/img/fondo.jpg";
 import cantosogangLogo from "../assets/img/cantosogang.webp";
 import juninLogo from "../assets/img/juninlogo.png";
+import salomonLogo from "../assets/img/salomonlogo.png";
+import mcompanyvLogo from "../assets/img/mcompanyvlogo.png";
+import aaaaLogo from "../assets/img/AAAA.png";
 
 // Animación de fade-in
 const fadeVariants = {
@@ -33,6 +36,39 @@ const team2Channels = [
   { url: "https://www.twitch.tv/sh0cker", name: "Sh0cker" }
 ];
 
+const teamLagtamChannels = [
+  { url: "https://www.twitch.tv/salomonl96_", name: "salomonl96_", tipo: "twitch" },
+  { url: "https://www.twitch.tv/morganelia", name: "morganelia", tipo: "twitch" },
+  { url: "https://www.twitch.tv/yopickeosola", name: "yopickeosola", tipo: "twitch" },
+  { url: "https://www.twitch.tv/eldestinydbl", name: "eldestinydbl", tipo: "twitch" },
+  { url: "https://www.twitch.tv/noscopeaim", name: "noscopeaim", tipo: "twitch" },
+  { url: "https://www.twitch.tv/wavesxs0314", name: "wavesxs0314", tipo: "twitch" },
+  { url: "https://www.twitch.tv/notcarlitoxcr", name: "notcarlitoxcr", tipo: "twitch" },
+  { url: "https://www.twitch.tv/vacnekopp", name: "vacnekopp", tipo: "twitch" }
+];
+
+const teamMCVChannels = [
+  { url: "https://www.twitch.tv/mcompanyv", name: "mcompanyv", tipo: "twitch" },
+  { url: "https://www.twitch.tv/renepilon", name: "renepilon", tipo: "twitch" },
+  { url: "https://www.twitch.tv/mk33l", name: "mk33l", tipo: "twitch" },
+  { url: "https://www.twitch.tv/joe100val", name: "joe100val", tipo: "twitch" },
+  { url: "https://www.twitch.tv/naviix19", name: "naviix19", tipo: "twitch" },
+  { url: "https://www.twitch.tv/crazita", name: "crazita", tipo: "twitch" },
+  { url: "https://www.twitch.tv/fuegales", name: "fuegales", tipo: "twitch" },
+  { url: "https://www.twitch.tv/tilteada", name: "tilteada", tipo: "twitch" }
+];
+
+const teamAAAAChannels = [
+  { url: "https://kick.com/04-mauri", name: "04-mauri", tipo: "kick" },
+  { url: "https://www.twitch.tv/lichaafps", name: "lichaafps", tipo: "twitch" },
+  { url: "https://kick.com/1matuh", name: "1matuh", tipo: "kick" },
+  { url: "https://kick.com/papats", name: "papats", tipo: "kick" },
+  { url: "https://www.twitch.tv/nbfacu", name: "nbfacu", tipo: "twitch" },
+  { url: "https://www.twitch.tv/tinigoo", name: "tinigoo", tipo: "twitch" },
+  { url: "https://www.twitch.tv/elchuecoo19", name: "elchuecoo19", tipo: "twitch" },
+  { url: "https://www.twitch.tv/zisaac18", name: "zisaac18", tipo: "twitch" }
+];
+
 const teams = [
   {
     name: "Team cG",
@@ -44,8 +80,23 @@ const teams = [
     logo: juninLogo,
     channels: team2Channels
   },
-  ...Array.from({ length: 14 }, (_, i) => ({
-    name: `Team ${i + 3}`
+  {
+    name: "Team Lagtam",
+    logo: salomonLogo,
+    channels: teamLagtamChannels
+  },
+  {
+    name: "Team MCV",
+    logo: mcompanyvLogo,
+    channels: teamMCVChannels
+  },
+  {
+    name: "Team AAAA",
+    logo: aaaaLogo,
+    channels: teamAAAAChannels
+  },
+  ...Array.from({ length: 12 }, (_, i) => ({
+    name: `Team ${i + 5}`
   }))
 ];
 
