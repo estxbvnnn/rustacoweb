@@ -584,7 +584,7 @@ const reglas = [
             Cada isla cuenta con:
             <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
               <li>Un espacio designado para la <b>base principal (main)</b>.</li>
-              <li>Un área específica para la <b>zona de huerto/garage</b> (9x8).</li>
+              <li>Un área específica para la <b>zona de huerto/garage</b> (9x8). <span style={{ color: "#f39c12", fontWeight: 700 }}>No se aceptan bases con MultiTC (solo un TC por base principal y huerto).</span></li>
               <li>Una <b>entrada a metro</b> exclusiva para cada isla.</li>
             </ul>
           </li>
@@ -607,7 +607,7 @@ const reglas = [
             Each island has:
             <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
               <li>A designated space for the <b>main base</b> (main).</li>
-              <li>A specific area for the <b>garden/garage zone</b> (9x8).</li>
+              <li>A specific area for the <b>garden/garage zone</b> (9x8). <span style={{ color: "#f39c12", fontWeight: 700 }}>Bases with MultiTC are not accepted (only one TC per main base and garden).</span></li>
               <li>An exclusive <b>metro entrance</b> for each island.</li>
             </ul>
           </li>
@@ -616,7 +616,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>It is not allowed to exceed the limits of the assigned area, including the garden area.</span>
           </li>
           <li>
-            The <b>TC (main cabinet)</b> of the main base must be accessible at all times. It can only be protected by doors or windows, <b>it cannot be completely closed or grifeado</b>.
+            The <b>TC (main cabinet)</b> of the main base must be accessible at all times. It can only be protected by doors or windows, <b>it cannot be completely closed or grifed</b>.
           </li>
           <li>
             The <b>TC</b> can be moved if necessary, but <b>the change must be requested from the administration</b>. <br />
@@ -630,7 +630,7 @@ const reglas = [
             Cada ilha possui:
             <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
               <li>Um espaço designado para a <b>base principal</b> (main).</li>
-              <li>Uma área específica para a <b>zona de jardim/gara</b> (9x8).</li>
+              <li>Uma área específica para a <b>zona de jardim/garagem</b> (9x8). <span style={{ color: "#f39c12", fontWeight: 700 }}>Não são aceitas bases com MultiTC (apenas um TC por base principal e jardim).</span></li>
               <li>Uma <b>entrada de metrô</b> exclusiva para cada ilha.</li>
             </ul>
           </li>
@@ -639,7 +639,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>Não é permitido ultrapassar os limites da área designada, incluindo a área do jardim.</span>
           </li>
           <li>
-            O <b>TC (armário principal)</b> da base principal deve ser acessível o tempo todo. Pode estar protegido apenas por portas ou janelas, <b>não pode estar completamente fechado ou grifeado</b>.
+            O <b>TC (armário principal)</b> da base principal deve ser acessível o tempo todo. Pode estar protegido apenas por portas ou janelas, <b>não pode estar completamente fechado ou grifado</b>.
           </li>
           <li>
             O <b>TC</b> pode ser movido se necessário, mas <b>a mudança deve ser solicitada à administração</b>. <br />
