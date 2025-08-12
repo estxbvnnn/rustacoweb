@@ -64,7 +64,7 @@ const teamAAAAChannels = [
   { url: "https://kick.com/1matuh", name: "1matuh", tipo: "kick" },
   { url: "https://kick.com/papats", name: "papats", tipo: "kick" },
   { url: "https://www.twitch.tv/nbfacu", name: "nbfacu", tipo: "twitch" },
-  { url: "https://www.twitch.tv/tinigoo", name: "tinigoo", tipo: "twitch" },
+  { url: "https://www.twitch.tv/1stompz", name: "1stompz", tipo: "twitch" },
   { url: "https://www.twitch.tv/elchuecoo19", name: "elchuecoo19", tipo: "twitch" },
   { url: "https://www.twitch.tv/zisaac18", name: "zisaac18", tipo: "twitch" }
 ];

@@ -1354,7 +1354,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://kick.com/1matuh", name: "1matuh" },
         { url: "https://kick.com/papats", name: "papats" },
         { url: "https://www.twitch.tv/nbfacu", name: "nbfacu" },
-        { url: "https://www.twitch.tv/tinigoo", name: "tinigoo" },
+        { url: "https://www.twitch.tv/1stompz", name: "1stopmz" },
         { url: "https://www.twitch.tv/elchuecoo19", name: "elchuecoo19" },
         { url: "https://www.twitch.tv/zisaac18", name: "zisaac18" }
       ]
@@ -1936,11 +1936,38 @@ const chatbotMessages = {
 
 function ChatbotWidget({ lang }) {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { from: "bot", text: chatbotMessages[lang].welcome }
-  ]);
-  const [showNotif, setShowNotif] = useState(true);
+  const [messages, setMessages] = useState([]);
+  const [showNotif, setShowNotif] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   const chatEndRef = useRefChatbot(null);
+
+  // Sonidos para el bot
+  const sndBot = useRefChatbot(null);
+  const sndUser = useRefChatbot(null);
+
+  // Cargar sonidos solo una vez
+  useEffect(() => {
+    sndBot.current = new window.Audio("https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae1b1.mp3"); // sonido bot
+    sndUser.current = new window.Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b7bfa.mp3"); // sonido usuario
+    // Volumen bajo para no molestar
+    sndBot.current.volume = 0.18;
+    sndUser.current.volume = 0.18;
+  }, []);
+
+  // Animación y aparición del mensaje inicial tras 3 segundos
+  useEffect(() => {
+    setShowNotif(false);
+    setShowWelcome(false);
+    setMessages([]);
+    const timer = setTimeout(() => {
+      setShowWelcome(true);
+      setMessages([{ from: "bot", text: chatbotMessages[lang].welcome }]);
+      setShowNotif(true);
+      // Sonido de bot al aparecer
+      if (sndBot.current) sndBot.current.play();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [lang]);
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -1949,10 +1976,15 @@ function ChatbotWidget({ lang }) {
     }
   }, [messages, open]);
 
-  // Show notification on mount
+  // Sonido al recibir mensaje bot
   useEffect(() => {
-    setShowNotif(true);
-  }, [lang]);
+    if (messages.length > 1 && messages[messages.length - 1].from === "bot") {
+      if (sndBot.current) sndBot.current.play();
+    }
+    if (messages.length > 1 && messages[messages.length - 1].from === "user") {
+      if (sndUser.current) sndUser.current.play();
+    }
+  }, [messages]);
 
   const handleOption = idx => {
     let reply = "";
@@ -1968,7 +2000,7 @@ function ChatbotWidget({ lang }) {
 
   return (
     <>
-      {/* Notification bubble */}
+      {/* Notification bubble animada */}
       {showNotif && !open && (
         <div
           onClick={() => { setOpen(true); setShowNotif(false); }}
@@ -1976,28 +2008,30 @@ function ChatbotWidget({ lang }) {
             position: "fixed",
             bottom: 110,
             right: 32,
-            background: "#e25822",
+            background: "linear-gradient(90deg, #23201a 60%, #e25822 100%)",
             color: "#fff",
             borderRadius: 18,
-            boxShadow: "0 2px 12px #000a",
-            padding: "0.9rem 1.5rem",
+            boxShadow: "0 4px 24px #000a",
+            padding: "1.1rem 1.7rem",
             cursor: "pointer",
             zIndex: 99999,
             fontWeight: 700,
             fontSize: "1.08rem",
             display: "flex",
             alignItems: "center",
-            gap: 10,
-            animation: "notifPop 0.7s"
+            gap: 12,
+            animation: "notifFadeIn 0.9s cubic-bezier(.4,0,.2,1)"
           }}
         >
-          <i className="bi bi-chat-dots" style={{ fontSize: 22, marginRight: 8 }}></i>
-          {chatbotMessages[lang].welcome}
+          <i className="bi bi-chat-dots" style={{ fontSize: 26, marginRight: 10, color: "#fff" }}></i>
+          <span style={{ fontSize: "1.08rem", fontWeight: 700, letterSpacing: "0.5px" }}>
+            {chatbotMessages[lang].welcome}
+          </span>
           <style>
             {`
-              @keyframes notifPop {
-                0% { transform: scale(0.7); opacity: 0; }
-                100% { transform: scale(1); opacity: 1; }
+              @keyframes notifFadeIn {
+                0% { transform: translateY(40px) scale(0.8); opacity: 0; }
+                100% { transform: translateY(0) scale(1); opacity: 1; }
               }
             `}
           </style>
@@ -2018,10 +2052,10 @@ function ChatbotWidget({ lang }) {
             width: 64,
             height: 64,
             borderRadius: "50%",
-            background: "#e25822",
+            background: "linear-gradient(135deg, #e25822 60%, #23201a 100%)",
             color: "#fff",
             border: "none",
-            boxShadow: "0 2px 12px #000a",
+            boxShadow: "0 4px 18px #000a",
             fontSize: 32,
             cursor: "pointer",
             display: "flex",
@@ -2040,23 +2074,24 @@ function ChatbotWidget({ lang }) {
               position: "fixed",
               bottom: 110,
               right: 32,
-              width: 340,
+              width: 360,
               maxWidth: "95vw",
-              background: "#23201a",
-              borderRadius: 18,
-              boxShadow: "0 8px 32px #000b",
-              padding: "1.2rem 1rem 1rem 1rem",
+              background: "rgba(35,32,26,0.98)",
+              borderRadius: 22,
+              boxShadow: "0 12px 48px #000c, 0 0 0 2px #e25822cc",
+              padding: "1.5rem 1.1rem 1.2rem 1.1rem",
               zIndex: 99999,
               color: "#fff",
               fontFamily: "Montserrat, Arial, sans-serif",
               display: "flex",
               flexDirection: "column",
-              gap: 12
+              gap: 16,
+              animation: "chatFadeIn 0.7s cubic-bezier(.4,0,.2,1)"
             }}
           >
-            <div style={{ fontWeight: 800, fontSize: "1.15rem", color: "#e25822", marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
-              <i className="bi bi-robot" style={{ fontSize: 22 }}></i>
-              RustacoBot
+            <div style={{ fontWeight: 900, fontSize: "1.18rem", color: "#e25822", marginBottom: 8, display: "flex", alignItems: "center", gap: 10 }}>
+              <i className="bi bi-robot" style={{ fontSize: 26, color: "#fff" }}></i>
+              Rustaco II Bot
               <button
                 onClick={() => setOpen(false)}
                 style={{
@@ -2064,8 +2099,9 @@ function ChatbotWidget({ lang }) {
                   background: "none",
                   border: "none",
                   color: "#fff",
-                  fontSize: 22,
-                  cursor: "pointer"
+                  fontSize: 26,
+                  cursor: "pointer",
+                  fontWeight: 700
                 }}
                 title="Cerrar"
               >
@@ -2074,27 +2110,37 @@ function ChatbotWidget({ lang }) {
             </div>
             <div style={{
               flex: 1,
-                           minHeight: 90,
-              maxHeight: 220,
+              minHeight: 90,
+              maxHeight: 240,
               overflowY: "auto",
               marginBottom: 8,
-              paddingRight: 4
+              paddingRight: 4,
+              transition: "background 0.2s"
             }}>
               {messages.map((msg, i) => (
                 <div key={i} style={{
-                  margin: "0.3rem 0",
-                  textAlign: msg.from === "bot" ? "left" : "right"
+                  margin: "0.4rem 0",
+                  textAlign: msg.from === "bot" ? "left" : "right",
+                  display: "flex",
+                  justifyContent: msg.from === "bot" ? "flex-start" : "flex-end",
+                  alignItems: "flex-end"
                 }}>
                   <span style={{
                     display: "inline-block",
-                    background: msg.from === "bot" ? "#181818" : "#27ae60",
+                    background: msg.from === "bot"
+                      ? "linear-gradient(90deg, #23201a 80%, #e25822 100%)"
+                      : "linear-gradient(90deg, #27ae60 60%, #23201a 100%)",
                     color: "#fff",
-                    borderRadius: 12,
-                    padding: "0.6rem 1rem",
-                    fontSize: "1rem",
+                    borderRadius: msg.from === "bot" ? "16px 16px 16px 4px" : "16px 16px 4px 16px",
+                    padding: "0.7rem 1.1rem",
+                    fontSize: "1.05rem",
                     marginBottom: 2,
                     maxWidth: 260,
-                    wordBreak: "break-word"
+                    wordBreak: "break-word",
+                    boxShadow: msg.from === "bot"
+                      ? "0 2px 8px #e2582288"
+                      : "0 2px 8px #27ae6088",
+                    animation: "msgFadeIn 0.5s"
                   }}>
                     {msg.text}
                   </span>
@@ -2102,22 +2148,23 @@ function ChatbotWidget({ lang }) {
               ))}
               <div ref={chatEndRef} />
             </div>
-            {/* Options only if last message is from bot and less than 8 messages */}
+            {/* Opciones solo si último mensaje es bot y menos de 8 mensajes */}
             {messages.length < 8 && messages[messages.length - 1]?.from === "bot" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {chatbotMessages[lang].options.map((opt, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleOption(idx)}
                     style={{
-                      background: "#7289da",
+                      background: "linear-gradient(90deg, #7289da 60%, #e25822 100%)",
                       color: "#fff",
                       border: "none",
-                      borderRadius: 8,
-                      padding: "0.7rem 1rem",
+                      borderRadius: 10,
+                      padding: "0.8rem 1.1rem",
                       fontWeight: 700,
-                      fontSize: "1rem",
+                      fontSize: "1.05rem",
                       cursor: "pointer",
+                      boxShadow: "0 2px 8px #7289da66",
                       transition: "background 0.2s"
                     }}
                   >
@@ -2126,6 +2173,18 @@ function ChatbotWidget({ lang }) {
                 ))}
               </div>
             )}
+            <style>
+              {`
+                @keyframes chatFadeIn {
+                  0% { transform: translateY(60px) scale(0.95); opacity: 0; }
+                  100% { transform: translateY(0) scale(1); opacity: 1; }
+                }
+                @keyframes msgFadeIn {
+                  0% { transform: scale(0.9); opacity: 0; }
+                  100% { transform: scale(1); opacity: 1; }
+                }
+              `}
+            </style>
           </div>
         )}
       </div>
