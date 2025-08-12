@@ -125,31 +125,71 @@ const reglaCardStyle = {
   overflow: 'hidden'
 };
 
-const eras = [
+const getEras = (lang) => [
   {
-    nombre: "Era Primitivo",
+    nombre: {
+      es: "Era Primitivo",
+      en: "Primitive Era",
+      pt: "Era Primitiva"
+    }[lang],
     imagen: eraPrimitivo,
-    descripcion: "Comienzo del evento con armas y herramientas primitivas."
+    descripcion: {
+      es: "Comienzo del evento con armas y herramientas primitivas.",
+      en: "The event starts with primitive weapons and tools.",
+      pt: "Início do evento com armas e ferramentas primitivas."
+    }[lang]
   },
   {
-    nombre: "Era Tier 1",
+    nombre: {
+      es: "Era Tier 1",
+      en: "Tier 1 Era",
+      pt: "Era Tier 1"
+    }[lang],
     imagen: eraTier1,
-    descripcion: "Acceso a equipamiento y armas de Tier 1."
+    descripcion: {
+      es: "Acceso a equipamiento y armas de Tier 1.",
+      en: "Access to Tier 1 equipment and weapons.",
+      pt: "Acesso a equipamentos e armas de Tier 1."
+    }[lang]
   },
   {
-    nombre: "Era Tier 2",
+    nombre: {
+      es: "Era Tier 2",
+      en: "Tier 2 Era",
+      pt: "Era Tier 2"
+    }[lang],
     imagen: eraTier2,
-    descripcion: "Se habilitan armas y objetos de Tier 2."
+    descripcion: {
+      es: "Se habilitan armas y objetos de Tier 2.",
+      en: "Tier 2 weapons and items are enabled.",
+      pt: "Armas e itens de Tier 2 são habilitados."
+    }[lang]
   },
   {
-    nombre: "Era Tier 3",
+    nombre: {
+      es: "Era Tier 3",
+      en: "Tier 3 Era",
+      pt: "Era Tier 3"
+    }[lang],
     imagen: eraTier3,
-    descripcion: "Desbloqueo de todo el arsenal y equipamiento de Tier 3."
+    descripcion: {
+      es: "Desbloqueo de todo el arsenal y equipamiento de Tier 3.",
+      en: "Unlock of all Tier 3 arsenal and equipment.",
+      pt: "Desbloqueio de todo o arsenal e equipamentos de Tier 3."
+    }[lang]
   },
   {
-    nombre: "Era Raids",
+    nombre: {
+      es: "Era Raids",
+      en: "Raids Era",
+      pt: "Era Raids"
+    }[lang],
     imagen: eraRaids,
-    descripcion: "Comienza la era de raideos, se habilitan los ataques a las Bases MAIN."
+    descripcion: {
+      es: "Comienza la era de raideos, se habilitan los ataques a las Bases MAIN.",
+      en: "The raiding era begins, attacks on MAIN Bases are enabled.",
+      pt: "Começa a era dos raids, ataques às Bases MAIN são permitidos."
+    }[lang]
   }
 ];
 
@@ -674,7 +714,7 @@ const reglas = [
             }}>
               Eras del Evento
             </h3>
-            {eras.map((era, idx) => (
+            {getEras('es').map((era, idx) => (
               <div key={idx} style={eraCardStyle}>
                 <img
                   src={era.imagen}
@@ -719,7 +759,7 @@ const reglas = [
             }}>
               Event Eras
             </h3>
-            {eras.map((era, idx) => (
+            {getEras('en').map((era, idx) => (
               <div key={idx} style={eraCardStyle}>
                 <img
                   src={era.imagen}
@@ -764,7 +804,7 @@ const reglas = [
             }}>
               Eras do Evento
             </h3>
-            {eras.map((era, idx) => (
+            {getEras('pt').map((era, idx) => (
               <div key={idx} style={eraCardStyle}>
                 <img
                   src={era.imagen}
