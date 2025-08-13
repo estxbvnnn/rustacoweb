@@ -22,6 +22,7 @@ import juninLogo from '../assets/img/juninlogo.png';
 import salomonLogo from '../assets/img/salomonlogo.png';
 import mcompanyvLogo from '../assets/img/mcompanyvlogo.png';
 import aaaaLogo from '../assets/img/AAAA.png';
+import teamOTLogo from '../assets/img/teamlogoot.webp';
 
 // Traducciones
 const translations = {
@@ -1398,6 +1399,20 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
       ]
     },
     {
+      name: "Team OT",
+      logo: teamOTLogo,
+      channels: [
+        { url: "https://www.twitch.tv/deathwingua", name: "deathwingua" },
+        { url: "https://www.twitch.tv/riqqeloff", name: "riqqeloff" },
+        { url: "https://www.twitch.tv/hutnik", name: "hutnik" },
+        { url: "https://www.twitch.tv/oilrats", name: "oilrats" },
+        { url: "https://www.twitch.tv/mango", name: "mango" },
+        { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas" },
+        { url: "https://www.twitch.tv/basetradetv", name: "basetradetv" },
+        { url: "https://www.twitch.tv/yaga__baba", name: "yaga__baba" }
+      ]
+    },
+    {
       name: "Team Lagtam",
       logo: salomonLogo,
       channels: [
@@ -1439,7 +1454,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://www.twitch.tv/zisaac18", name: "zisaac18" }
       ]
     },
-    ...Array.from({ length: 11 }, (_, i) => ({
+    ...Array.from({ length: 10 }, (_, i) => ({
       name: `${translations[lang].equipo} ${i + 6}`,
       status: translations[lang].aConfirmar,
       channels: []

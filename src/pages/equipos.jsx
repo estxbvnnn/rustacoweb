@@ -7,6 +7,7 @@ import juninLogo from "../assets/img/juninlogo.png";
 import salomonLogo from "../assets/img/salomonlogo.png";
 import mcompanyvLogo from "../assets/img/mcompanyvlogo.png";
 import aaaaLogo from "../assets/img/AAAA.png";
+import teamOTLogo from "../assets/img/teamlogoot.webp";
 
 // Animación de fade-in
 const fadeVariants = {
@@ -69,6 +70,17 @@ const teamAAAAChannels = [
   { url: "https://www.twitch.tv/zisaac18", name: "zisaac18", tipo: "twitch" }
 ];
 
+const teamOTChannels = [
+  { url: "https://www.twitch.tv/deathwingua", name: "deathwingua", tipo: "twitch" },
+  { url: "https://www.twitch.tv/riqqeloff", name: "riqqeloff", tipo: "twitch" },
+  { url: "https://www.twitch.tv/hutnik", name: "hutnik", tipo: "twitch" },
+  { url: "https://www.twitch.tv/oilrats", name: "oilrats", tipo: "twitch" },
+  { url: "https://www.twitch.tv/mango", name: "mango", tipo: "twitch" },
+  { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas", tipo: "twitch" },
+  { url: "https://www.twitch.tv/basetradetv", name: "basetradetv", tipo: "twitch" },
+  { url: "https://www.twitch.tv/yaga__baba", name: "yaga__baba", tipo: "twitch" }
+];
+
 const teams = [
   {
     name: "Team cG",
@@ -79,6 +91,11 @@ const teams = [
     name: "Team Junin",
     logo: juninLogo,
     channels: team2Channels
+  },
+  {
+    name: "Team OT",
+    logo: teamOTLogo,
+    channels: teamOTChannels
   },
   {
     name: "Team Lagtam",
@@ -95,7 +112,7 @@ const teams = [
     logo: aaaaLogo,
     channels: teamAAAAChannels
   },
-  ...Array.from({ length: 12 }, (_, i) => ({
+  ...Array.from({ length: 11 }, (_, i) => ({
     name: `Team ${i + 5}`
   }))
 ];
@@ -468,6 +485,11 @@ const Equipos = () => {
       channels: team2Channels
     },
     {
+      name: "Team OT",
+      logo: teamOTLogo,
+      channels: teamOTChannels
+    },
+    {
       name: "Team Lagtam",
       logo: salomonLogo,
       channels: teamLagtamChannels
@@ -482,7 +504,7 @@ const Equipos = () => {
       logo: aaaaLogo,
       channels: teamAAAAChannels
     },
-    ...Array.from({ length: 12 }, (_, i) => ({
+    ...Array.from({ length: 11 }, (_, i) => ({
       name: `Team ${i + 5}`
     }))
   ];
