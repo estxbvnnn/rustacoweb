@@ -75,6 +75,7 @@ const translations = {
     sponsorLocationValue: 'España',
     sponsorAbout: 'Sobre el streamer:',
     sponsorLive: 'Transmite en vivo, crea contenido en YouTube y comparte clips en X (Twitter) y Kick.',
+    streamNotice: 'Todo el evento será transmitido por la administración en',
   },
   en: {
     formato: 'Format',
@@ -126,6 +127,7 @@ const translations = {
     sponsorLocationValue: 'Spain',
     sponsorAbout: 'About the streamer:',
     sponsorLive: 'Streams live, creates content on YouTube and shares clips on X (Twitter) and Kick.',
+    streamNotice: 'The entire event will be streamed by the administration on',
   },
   pt: {
     formato: 'Formato',
@@ -177,6 +179,7 @@ const translations = {
     sponsorLocationValue: 'Espanha',
     sponsorAbout: 'Sobre o streamer:',
     sponsorLive: 'Transmite ao vivo, cria conteúdo no YouTube e compartilha clipes no X (Twitter) e Kick.',
+    streamNotice: 'Todo o evento será transmitido pela administração em',
   }
 };
 
@@ -227,111 +230,134 @@ const btnAnim = {
   }
 };
 
+// Añade interacciones de hover/tap consistentes para todos los botones de la HUD
+const hoverTapProps = {
+  whileHover: { scale: 1.05 },
+  whileTap: { scale: 0.97 }
+};
+
 // Modifica el logo y los botones en TopBar para usar motion
-const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) => (
-  <div
-    style={{
-      width: '100%',
-      minHeight: '80px',
-      // Quita el fondo y sombra
-      background: 'none',
-      boxShadow: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-    }}
-  >
+const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) => {
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' ? window.innerWidth <= 900 : false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 10);
+    const onResize = () => setIsMobile(window.innerWidth <= 900);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
+  const closeMenuIfMobile = () => {
+    if (isMobile) setMenuOpen(false);
+  };
+
+  return (
     <div
+      className="TopBar"
       style={{
         width: '100%',
-        maxWidth: 1300,
+        minHeight: isScrolled ? '62px' : '80px',
+        background: 'rgba(15,15,15,0.35)',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        boxShadow: isScrolled ? '0 6px 24px rgba(0,0,0,0.35)' : '0 2px 12px rgba(0,0,0,0.25)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 1.5rem',
+        justifyContent: 'center',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100
       }}
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '2rem',
-        minWidth: 0,
-      }}>
-        <motion.img
-          src={logo}
-          alt="Rustaco Logo"
-          variants={logoAnim}
-          initial="initial"
-          animate="animate"
-          style={{
-            borderRadius: '50%',
-            width: 64,
-            height: 64,
-            objectFit: 'cover',
-            boxShadow: '0 1px 12px #0007',
-          }}
-        />
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 1300,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 1.5rem',
+          position: 'relative'
+        }}
+      >
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '2rem',
-          marginLeft: '2rem'
+          gap: '1.25rem',
+          minWidth: 0
         }}>
-          <motion.button
-            className="nav-btn"
-            onClick={onFormatoClick}
-            variants={btnAnim}
+          <motion.img
+            src={logo}
+            alt="Rustaco Logo"
+            variants={logoAnim}
             initial="initial"
             animate="animate"
             style={{
-              background: 'none',
-              color: '#fff',
-              border: 'none',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              padding: '0.55rem 1.5rem',
-              borderRadius: 0,
-              boxShadow: 'none',
-              cursor: 'pointer',
-              letterSpacing: '1px',
-              textDecoration: 'none',
-              margin: 0,
-              transition: 'color 0.2s'
+              borderRadius: '50%',
+              width: isScrolled ? 56 : 64,
+              height: isScrolled ? 56 : 64,
+              objectFit: 'cover',
+              boxShadow: '0 1px 12px #0007'
             }}
-          >
-            {translations[lang].formato}
-          </motion.button>
-          <motion.button
-            className="nav-btn"
-            onClick={onInfoClick}
-            variants={btnAnim}
-            initial="initial"
-            animate="animate"
+          />
+          {/* Botón hamburguesa en mobile */}
+          {isMobile && (
+            <button
+              onClick={() => setMenuOpen(v => !v)}
+              aria-expanded={menuOpen}
+              aria-label="Toggle menu"
+              style={{
+                background: 'rgba(255,255,255,0.06)',
+                color: '#fff',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: 10,
+                width: 44,
+                height: 44,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.25)'
+              }}
+            >
+              ☰
+            </button>
+          )}
+          {/* Contenedor de navegación (colapsable en mobile) */}
+          <div
             style={{
-              background: 'none',
-              color: '#fff',
-              border: 'none',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              padding: '0.55rem 1.5rem',
-              borderRadius: 0,
-              boxShadow: 'none',
-              cursor: 'pointer',
-              letterSpacing: '1px',
-              textDecoration: 'none',
-              margin: 0,
-              transition: 'color 0.2s'
+              display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              alignItems: isMobile ? 'stretch' : 'center',
+              gap: isMobile ? '0.4rem' : '2rem',
+              marginLeft: isMobile ? 0 : '2rem',
+              position: isMobile ? 'absolute' : 'static',
+              top: isMobile ? '100%' : 'auto',
+              left: isMobile ? 0 : 'auto',
+              right: isMobile ? 0 : 'auto',
+              padding: isMobile ? '0.75rem' : 0,
+              background: isMobile ? 'rgba(15,15,15,0.92)' : 'transparent',
+              backdropFilter: isMobile ? 'blur(10px)' : 'none',
+              WebkitBackdropFilter: isMobile ? 'blur(10px)' : 'none',
+              borderBottom: isMobile ? '1px solid rgba(255,255,255,0.08)' : 'none',
+              boxShadow: isMobile ? '0 10px 30px rgba(0,0,0,0.45)' : 'none',
+              borderRadius: isMobile ? '0 0 14px 14px' : 0,
+              zIndex: 101
             }}
           >
-            {translations[lang].sobre}
-          </motion.button>
-          <Link to="/equipos">
             <motion.button
               className="nav-btn"
+              onClick={() => { onFormatoClick(); closeMenuIfMobile(); }}
               variants={btnAnim}
+              {...hoverTapProps}
               initial="initial"
               animate="animate"
               style={{
@@ -340,139 +366,196 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
                 border: 'none',
                 fontWeight: 700,
                 fontSize: '1.08rem',
-                padding: '0.55rem 1.5rem',
-                borderRadius: 0,
+                padding: isMobile ? '0.8rem 0.9rem' : '0.55rem 1.5rem',
+                borderRadius: 10,
                 boxShadow: 'none',
                 cursor: 'pointer',
                 letterSpacing: '1px',
                 textDecoration: 'none',
                 margin: 0,
-                transition: 'color 0.2s'
+                transition: 'color 0.2s, background 0.2s'
               }}
             >
-              {translations[lang].equipos}
+              {translations[lang].formato}
             </motion.button>
-          </Link>
-          <motion.a
-            href="/events"
-            className="nav-btn"
-            variants={btnAnim}
-            initial="initial"
-            animate="animate"
-            style={{
-              background: 'none',
-              color: '#fff',
-              border: 'none',
-              fontWeight: 700,
-              fontSize: '1.08rem',
-              padding: '0.55rem 1.5rem',
-              borderRadius: 0,
-              boxShadow: 'none',
-              cursor: 'pointer',
-              letterSpacing: '1px',
-              textDecoration: 'none',
-              margin: 0,
-              transition: 'color 0.2s'
-            }}
-          >
-            {translations[lang].stats}
-          </motion.a>
-          <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
-            <Link
-              to="/reglas"
+            <motion.button
               className="nav-btn"
+              onClick={() => { onInfoClick(); closeMenuIfMobile(); }}
+              variants={btnAnim}
+              {...hoverTapProps}
+              initial="initial"
+              animate="animate"
               style={{
                 background: 'none',
                 color: '#fff',
                 border: 'none',
                 fontWeight: 700,
                 fontSize: '1.08rem',
-                padding: '0.55rem 1.5rem',
-                borderRadius: 0,
+                padding: isMobile ? '0.8rem 0.9rem' : '0.55rem 1.5rem',
+                borderRadius: 10,
                 boxShadow: 'none',
                 cursor: 'pointer',
                 letterSpacing: '1px',
                 textDecoration: 'none',
                 margin: 0,
-                transition: 'color 0.2s'
+                transition: 'color 0.2s, background 0.2s'
               }}
             >
-              {translations[lang].verReglas}
+              {translations[lang].sobre}
+            </motion.button>
+            <Link to="/equipos" onClick={closeMenuIfMobile}>
+              <motion.button
+                className="nav-btn"
+                variants={btnAnim}
+                {...hoverTapProps}
+                initial="initial"
+                animate="animate"
+                style={{
+                  background: 'none',
+                  color: '#fff',
+                  border: 'none',
+                  fontWeight: 700,
+                  fontSize: '1.08rem',
+                  padding: isMobile ? '0.8rem 0.9rem' : '0.55rem 1.5rem',
+                  borderRadius: 10,
+                  boxShadow: 'none',
+                  cursor: 'pointer',
+                  letterSpacing: '1px',
+                  textDecoration: 'none',
+                  margin: 0,
+                  transition: 'color 0.2s, background 0.2s'
+                }}
+              >
+                {translations[lang].equipos}
+              </motion.button>
             </Link>
-          </motion.div>
-          <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
-            <LoginSteam />
-          </motion.div>
+            <motion.a
+              href="/events"
+              className="nav-btn"
+              variants={btnAnim}
+              {...hoverTapProps}
+              initial="initial"
+              animate="animate"
+              onClick={closeMenuIfMobile}
+              style={{
+                background: 'none',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '1.08rem',
+                padding: isMobile ? '0.8rem 0.9rem' : '0.55rem 1.5rem',
+                borderRadius: 10,
+                boxShadow: 'none',
+                cursor: 'pointer',
+                letterSpacing: '1px',
+                textDecoration: 'none',
+                margin: 0,
+                transition: 'color 0.2s, background 0.2s'
+              }}
+            >
+              {translations[lang].stats}
+            </motion.a>
+            <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
+              <Link
+                to="/reglas"
+                onClick={closeMenuIfMobile}
+                className="nav-btn"
+                style={{
+                  background: 'none',
+                  color: '#fff',
+                  border: 'none',
+                  fontWeight: 700,
+                  fontSize: '1.08rem',
+                  padding: isMobile ? '0.8rem 0.9rem' : '0.55rem 1.5rem',
+                  borderRadius: 10,
+                  boxShadow: 'none',
+                  cursor: 'pointer',
+                  letterSpacing: '1px',
+                  textDecoration: 'none',
+                  margin: 0,
+                  transition: 'color 0.2s, background 0.2s'
+                }}
+              >
+                {translations[lang].verReglas}
+              </Link>
+            </motion.div>
+            <motion.div style={{ display: 'inline-block' }} variants={btnAnim} initial="initial" animate="animate">
+              <LoginSteam />
+            </motion.div>
+          </div>
+        </div>
+        {/* Selector de idioma (siempre visible) */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8
+          }}
+        >
+          <motion.button
+            onClick={() => { setLang('es'); closeMenuIfMobile(); }}
+            variants={btnAnim}
+            {...hoverTapProps}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: 10,
+              padding: 4,
+              cursor: 'pointer',
+              marginRight: 2,
+              boxShadow: 'none',
+              transition: 'box-shadow 0.2s, border-color 0.2s'
+            }}
+            title="Español LATAM"
+          >
+            <img src={flagChile} alt="Chile" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
+          </motion.button>
+          <motion.button
+            onClick={() => { setLang('en'); closeMenuIfMobile(); }}
+            variants={btnAnim}
+            {...hoverTapProps}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: 10,
+              padding: 4,
+              cursor: 'pointer',
+              marginRight: 2,
+              boxShadow: 'none',
+              transition: 'box-shadow 0.2s, border-color 0.2s'
+            }}
+            title="English USA"
+          >
+            <img src={flagUSA} alt="USA" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
+          </motion.button>
+          <motion.button
+            onClick={() => { setLang('pt'); closeMenuIfMobile(); }}
+            variants={btnAnim}
+            {...hoverTapProps}
+            initial="initial"
+            animate="animate"
+            style={{
+              background: 'none',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: 10,
+              padding: 4,
+              cursor: 'pointer',
+              boxShadow: 'none',
+              transition: 'box-shadow 0.2s, border-color 0.2s'
+            }}
+            title="Português Brasil"
+          >
+            <img src={flagBrazil} alt="Brasil" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
+          </motion.button>
         </div>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-        }}
-      >
-        {/* ...selector de idioma... */}
-        <motion.button
-          onClick={() => setLang('es')}
-          variants={btnAnim}
-          initial="initial"
-          animate="animate"
-          style={{
-            background: 'none',
-            border: 'none',
-            borderRadius: 6,
-            padding: 2,
-            cursor: 'pointer',
-            marginRight: 2,
-            boxShadow: 'none',
-            transition: 'box-shadow 0.2s'
-          }}
-          title="Español LATAM"
-        >
-          <img src={flagChile} alt="Chile" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
-        </motion.button>
-        <motion.button
-          onClick={() => setLang('en')}
-          variants={btnAnim}
-          initial="initial"
-          animate="animate"
-          style={{
-            background: 'none',
-            border: 'none',
-            borderRadius: 6,
-            padding: 2,
-            cursor: 'pointer',
-            marginRight: 2,
-            boxShadow: 'none',
-            transition: 'box-shadow 0.2s'
-          }}
-          title="English USA"
-        >
-          <img src={flagUSA} alt="USA" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
-        </motion.button>
-        <motion.button
-          onClick={() => setLang('pt')}
-          variants={btnAnim}
-          initial="initial"
-          animate="animate"
-          style={{
-            background: 'none',
-            border: 'none',
-            borderRadius: 6,
-            padding: 2,
-            cursor: 'pointer',
-            boxShadow: 'none',
-            transition: 'box-shadow 0.2s'
-          }}
-          title="Português Brasil"
-        >
-          <img src={flagBrazil} alt="Brasil" style={{ width: 26, height: 18, verticalAlign: 'middle', display: 'block' }} />
-        </motion.button>
-      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Botón profesional de Login Steam SOLO en la TopBar
 const ADMIN_STEAM_IDS = [
@@ -663,11 +746,11 @@ const LoginSteam = () => {
 
 const DISCORD_CONTACT = "https://discord.rustaco.site"; // Cambia por el Discord oficial si es otro
 
-const InscripcionBanner = () => {
+// Usa el idioma del Home; elimina el estado local de idioma
+const InscripcionBanner = ({ lang }) => {
   const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const history = useHistory();
-  const [lang, setLang] = useState('es'); // Añade el estado de idioma aquí si no lo tienes
 
   useEffect(() => {
     fetch('/api/user', {
@@ -692,9 +775,6 @@ const InscripcionBanner = () => {
       setShowModal(true);
     }
   };
-
-  // Usa el idioma del Home si lo tienes, si no, usa el estado local
-  const currentLang = typeof window !== 'undefined' && window.__LANG ? window.__LANG : lang;
 
   return (
     <motion.div
@@ -726,11 +806,11 @@ const InscripcionBanner = () => {
           opacity: 1,
           transition: 'background 0.2s, transform 0.2s'
         }}
-        title={translations[currentLang].inscripcionesBtn}
+        title={translations[lang].inscripcionesBtn}
       >
-        {translations[currentLang].inscripcionesBtn}<br />
+        {translations[lang].inscripcionesBtn}<br />
         <span style={{ fontWeight: 700, fontSize: '1.08rem', color: '#b3cfff' }}>
-          {translations[currentLang].inscripcionesFechas}
+          {translations[lang].inscripcionesFechas}
         </span>
       </button>
       <span style={{
@@ -741,7 +821,7 @@ const InscripcionBanner = () => {
         opacity: 0.95,
         textAlign: 'center'
       }}>
-        {translations[currentLang].inscripcionesMsg}
+        {translations[lang].inscripcionesMsg}
       </span>
       {/* ...el resto del modal y mensaje se puede dejar oculto o eliminar si no se usa */}
     </motion.div>
@@ -754,7 +834,7 @@ const fadeVariants = {
 };
 
 // Reemplaza los principales bloques por motion.div/motion.section/motion.header
-const Header = () => {
+const Header = ({ lang }) => {
   const headerRef = useRef(null);
   useRevealOnScroll(headerRef, { threshold: 0.2 });
 
@@ -807,7 +887,7 @@ const Header = () => {
         {/* Elimina el fondo glow */}
         {/* <div className="logo-glow-bg"></div> */}
       </motion.div>
-      <InscripcionBanner />
+      <InscripcionBanner lang={lang} />
     </motion.header>
   );
 };
@@ -1934,6 +2014,22 @@ const chatbotMessages = {
   }
 };
 
+// Helper: pick first playable audio source; returns null if none
+const pickSupportedAudio = (sources = []) => {
+  try {
+    const a = new window.Audio();
+    a.preload = 'none';
+    for (const { src, type } of sources) {
+      // If type omitted or supported by the browser
+      if (!type || a.canPlayType(type)) {
+        a.src = src;
+        return a;
+      }
+    }
+  } catch {}
+  return null;
+};
+
 function ChatbotWidget({ lang }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -1945,16 +2041,21 @@ function ChatbotWidget({ lang }) {
   const sndBot = useRefChatbot(null);
   const sndUser = useRefChatbot(null);
 
-  // Cargar sonidos solo una vez
+  // Cargar sonidos solo una vez y solo si el navegador los soporta
   useEffect(() => {
-    sndBot.current = new window.Audio("https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae1b1.mp3"); // sonido bot
-    sndUser.current = new window.Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b7bfa.mp3"); // sonido usuario
-    // Volumen bajo para no molestar
-    sndBot.current.volume = 0.18;
-    sndUser.current.volume = 0.18;
+    sndBot.current = pickSupportedAudio([
+      { src: 'https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae1b1.mp3', type: 'audio/mpeg' }
+      // agrega un .ogg si tienes una alternativa: { src: '...ogg', type: 'audio/ogg' }
+    ]);
+    sndUser.current = pickSupportedAudio([
+      { src: 'https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b7bfa.mp3', type: 'audio/mpeg' }
+    ]);
+
+    if (sndBot.current) sndBot.current.volume = 0.18;
+    if (sndUser.current) sndUser.current.volume = 0.18;
   }, []);
 
-  // Animación y aparición del mensaje inicial tras 3 segundos
+  // Animación y aparición del mensaje inicial tras 3 segundos (sin reproducir sonido automático)
   useEffect(() => {
     setShowNotif(false);
     setShowWelcome(false);
@@ -1963,8 +2064,7 @@ function ChatbotWidget({ lang }) {
       setShowWelcome(true);
       setMessages([{ from: "bot", text: chatbotMessages[lang].welcome }]);
       setShowNotif(true);
-      // Sonido de bot al aparecer
-      if (sndBot.current) sndBot.current.play();
+      // No auto-play para evitar errores/autoplay-block
     }, 3000);
     return () => clearTimeout(timer);
   }, [lang]);
@@ -1976,15 +2076,17 @@ function ChatbotWidget({ lang }) {
     }
   }, [messages, open]);
 
-  // Sonido al recibir mensaje bot
+  // Reproducir sonidos solo cuando el chat está abierto y hay interacción
   useEffect(() => {
-    if (messages.length > 1 && messages[messages.length - 1].from === "bot") {
-      if (sndBot.current) sndBot.current.play();
+    if (!open || messages.length === 0) return;
+    const last = messages[messages.length - 1];
+    if (last.from === "bot" && sndBot.current) {
+      sndBot.current.play?.().catch(() => {});
     }
-    if (messages.length > 1 && messages[messages.length - 1].from === "user") {
-      if (sndUser.current) sndUser.current.play();
+    if (last.from === "user" && sndUser.current) {
+      sndUser.current.play?.().catch(() => {});
     }
-  }, [messages]);
+  }, [messages, open]);
 
   const handleOption = idx => {
     let reply = "";
@@ -2003,7 +2105,12 @@ function ChatbotWidget({ lang }) {
       {/* Notification bubble animada */}
       {showNotif && !open && (
         <div
-          onClick={() => { setOpen(true); setShowNotif(false); }}
+          onClick={() => {
+            setOpen(true);
+            setShowNotif(false);
+            // Reproduce un sonido al abrir si está disponible
+            sndBot.current?.play?.().catch(() => {});
+          }}
           style={{
             position: "fixed",
             bottom: 110,
@@ -2047,7 +2154,12 @@ function ChatbotWidget({ lang }) {
         }}
       >
         <button
-          onClick={() => { setOpen(o => !o); setShowNotif(false); }}
+          onClick={() => {
+            setOpen(o => !o);
+            setShowNotif(false);
+            // Sonido suave al abrir el chat si procede
+            if (!open) sndBot.current?.play?.().catch(() => {});
+          }}
           style={{
             width: 64,
             height: 64,
@@ -2225,9 +2337,8 @@ const Home = () => {
         lang={lang}
         setLang={setLang}
       />
-      <Header />
-      {/* Ya no muestres <LoginSteam /> aquí */}
-      <MapaSection />
+      <Header lang={lang} />
+      <MapaSection lang={lang} />
       <FormatoSection ref={formatoRef} lang={lang} />
       <AboutSection ref={aboutRef} lang={lang} />
       <ExtraInfoSection ref={extraInfoRef} lang={lang} />
@@ -2317,7 +2428,7 @@ const Home = () => {
               fontSize: '1.7rem',
               marginBottom: '0.5rem',
               letterSpacing: '1px',
-              textShadow: '0 2px 18px #e25822, 0 1px 8px #000a',
+              textShadow: '0 1px 4px #000a',
               background: 'linear-gradient(90deg, #e25822 60%, #fff 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
@@ -2549,7 +2660,7 @@ const Home = () => {
 
 export default Home;
 
-const MapaSection = React.forwardRef((props, ref) => {
+const MapaSection = React.forwardRef(({ lang }, ref) => {
   const sectionRef = useRef(null);
   useRevealOnScroll(sectionRef, { threshold: 0.15 });
 
@@ -2637,7 +2748,7 @@ const MapaSection = React.forwardRef((props, ref) => {
       }}>
         <i className="bi bi-twitch" style={{ fontSize: 28, color: '#9147ff' }}></i>
         <span>
-          Todo el evento será transmitido por la administración en&nbsp;
+          {translations[lang].streamNotice}&nbsp;
           <a
             href="https://www.twitch.tv/rustacoeventos"
             target="_blank"
@@ -2704,7 +2815,7 @@ const SponsorSection = () => (
         color: '#e25822',
         marginBottom: '0.7rem',
         letterSpacing: '1px',
-        textShadow: '0 1px 8px #000a'
+        textShadow: '0 1px 4px #000a'
       }}
     >
       Sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>

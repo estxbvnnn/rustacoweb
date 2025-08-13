@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import fondo from "../assets/img/fondo.jpg";
@@ -100,6 +100,29 @@ const teams = [
   }))
 ];
 
+// Utilidad: detectar plataforma por URL si no viene en 'tipo'
+const platformFromUrl = (url) => {
+  if (!url) return 'other';
+  if (url.includes("kick.com")) return "kick";
+  if (url.includes("twitch.tv")) return "twitch";
+  return "other";
+};
+
+// Utilidad: metadata de equipo (conteo plataforma)
+const teamMeta = (team) => {
+  const channels = team.channels || [];
+  return channels.reduce(
+    (acc, ch) => {
+      const t = ch.tipo || platformFromUrl(ch.url);
+      if (t === "kick") acc.kick += 1;
+      else if (t === "twitch") acc.twitch += 1;
+      else acc.other += 1;
+      return acc;
+    },
+    { kick: 0, twitch: 0, other: 0, total: channels.length }
+  );
+};
+
 const AnimatedBackground = () => (
   <div
     style={{
@@ -164,249 +187,524 @@ const AnimatedBackground = () => (
   </div>
 );
 
-const TeamCard = ({ team, idx }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, delay: idx * 0.08 }}
-    style={{
-      background: team.channels
-        ? `linear-gradient(135deg, #23201a 70%, ${idx === 0 ? "#e25822" : "#9147ff"} 100%)`
-        : "linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)",
-      borderRadius: "22px",
-      boxShadow: team.channels
-        ? `0 4px 24px ${idx === 0 ? "#e25822cc" : "#9147ffcc"}, 0 0 0 3px #fff2`
-        : "0 2px 12px #000a, 0 0 0 1.5px #7289da88",
-      padding: "2.2rem 1.2rem",
-      minHeight: 260,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "space-between", // Cambia a space-between para alinear todo igual
-      border: "none",
-      fontFamily: "Montserrat, Arial, sans-serif",
-      fontWeight: 700,
-      fontSize: "1.18rem",
-      color: "#fff",
-      letterSpacing: "1px",
-      position: "relative",
-      overflow: "visible"
-    }}
-  >
-    <div style={{
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center"
-    }}>
-      {team.logo && (
-        <div style={{
-          borderRadius: "50%",
-          width: 90,
-          height: 90,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 10,
-          boxShadow: "none",
-          background: "none"
-        }}>
-          <img
-            src={team.logo}
-            alt={team.name + " Logo"}
-            style={{
-              width: 70,
-              height: 70,
-              borderRadius: "50%",
-              objectFit: "cover",
-              boxShadow: "0 2px 12px #0008"
-            }}
-          />
-        </div>
-      )}
-      <span style={{
-        fontSize: "1.35rem",
-        color: "#fff",
-        fontWeight: 900,
-        textShadow: "1px 1px 12px #23272a",
-        marginBottom: team.channels ? 8 : 0,
-        letterSpacing: "1.5px",
-        textAlign: "center"
-      }}>
-        {team.name}
-      </span>
-    </div>
-    {team.channels && (
-      <div style={{
-        width: "100%",
+// Tarjeta de equipo profesional con motion + badges
+const TeamCard = ({ team, idx, onOpen }) => {
+  const meta = teamMeta(team);
+  const confirmed = !!(team.channels && team.channels.length);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: idx * 0.05 }}
+      whileHover={{ y: -6, scale: 1.01 }}
+      whileTap={{ scale: 0.99 }}
+      onClick={() => confirmed && onOpen(team)}
+      style={{
+        background: confirmed
+          ? `linear-gradient(135deg, #23201a 70%, ${idx === 0 ? "#e25822" : "#3a4bd8"} 100%)`
+          : "linear-gradient(135deg, #23201a 70%, #2e2e2e 100%)",
+        borderRadius: 18,
+        boxShadow: confirmed
+          ? `0 10px 28px ${idx === 0 ? "#e25822aa" : "#3a4bd8aa"}, 0 0 0 2px #ffffff22`
+          : "0 10px 28px #0009, 0 0 0 1px #ffffff18",
+        padding: "1.6rem 1.1rem",
+        minHeight: 210,
         display: "flex",
         flexDirection: "column",
+        gap: 10,
         alignItems: "center",
-        marginTop: 8
-      }}>
+        justifyContent: "space-between",
+        color: "#fff",
+        cursor: confirmed ? "pointer" : "default",
+        position: "relative",
+        overflow: "hidden"
+      }}
+    >
+      {/* Glow decorativo */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: -40,
+          background: confirmed ? "radial-gradient(800px 120px at 0% 0%, #ffffff08, transparent)" : "transparent",
+          pointerEvents: "none"
+        }}
+      />
+      {/* Header: logo + nombre */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+        {team.logo && (
+          <div
+            style={{
+              width: 72,
+              height: 72,
+              borderRadius: "50%",
+              background: "#0008",
+              display: "grid",
+              placeItems: "center",
+              boxShadow: "0 2px 12px #000a, 0 0 0 2px #ffffff22"
+            }}
+          >
+            <img
+              src={team.logo}
+              alt={`${team.name} Logo`}
+              loading="lazy"
+              style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover" }}
+              onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+            />
+          </div>
+        )}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: "1.1rem", fontWeight: 900, letterSpacing: 1 }}>
+            {team.name}
+          </span>
+          {!confirmed && (
+            <span
+              title="A confirmar"
+              style={{
+                fontSize: "0.78rem",
+                fontWeight: 800,
+                color: "#fff",
+                background: "linear-gradient(90deg,#666,#999)",
+                padding: "2px 8px",
+                borderRadius: 999,
+                border: "1px solid #ffffff33",
+                letterSpacing: 0.5
+              }}
+            >
+              A confirmar
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Badges de plataformas */}
+      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
         <span style={{
-          color: "#f39c12",
-          fontWeight: 700,
-          fontSize: "1.09rem",
-          marginBottom: 2,
-          letterSpacing: "1px",
-          textAlign: "center"
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          background: "#0008",
+          border: "1px solid #ffffff1e",
+          color: "#b3cfff",
+          padding: "4px 10px",
+          borderRadius: 999,
+          fontSize: 12,
+          fontWeight: 800
         }}>
-          Canales de transmisión
+          <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden>
+            <rect width="32" height="32" rx="7" fill="#9147ff" />
+          </svg>
+          Twitch {meta.twitch}
         </span>
-        <ul style={{
-          listStyle: "none",
-          padding: 0,
-          margin: 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: 4,
-          width: "100%",
-          alignItems: "center"
+        <span style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          background: "#0008",
+          border: "1px solid #ffffff1e",
+          color: "#d6ffd6",
+          padding: "4px 10px",
+          borderRadius: 999,
+          fontSize: 12,
+          fontWeight: 800
         }}>
-          {team.channels.map((ch, i) => (
-            <li key={i} style={{ marginBottom: 0 }}>
+          <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden>
+            <rect width="32" height="32" rx="7" fill="#53fc18" />
+          </svg>
+          Kick {meta.kick}
+        </span>
+      </div>
+
+      {/* CTA */}
+      <div style={{ height: 32 }}>
+        {confirmed ? (
+          <span style={{ fontSize: 13, color: "#ffffffd9", opacity: 0.9 }}>
+            Click para ver canales
+          </span>
+        ) : (
+          <span style={{ fontSize: 13, color: "#ffffffb3" }}>
+            Próximamente
+          </span>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+// Modal con detalle de canales
+const TeamModal = ({ team, onClose }) => {
+  if (!team) return null;
+  const meta = teamMeta(team);
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.55)",
+        zIndex: 9999,
+        display: "grid",
+        placeItems: "center",
+        padding: "1rem"
+      }}
+    >
+      <motion.div
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 160, damping: 18 }}
+        style={{
+          width: "min(92vw, 560px)",
+          background: "linear-gradient(180deg, rgba(35,32,26,0.98), rgba(35,32,26,0.92))",
+          borderRadius: 18,
+          boxShadow: "0 12px 48px #000c, 0 0 0 2px #ffffff22",
+          padding: "1.2rem",
+          color: "#fff",
+          fontFamily: "Montserrat, Arial, sans-serif",
+          position: "relative"
+        }}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Cerrar"
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 12,
+            background: "none",
+            border: "none",
+            color: "#fff",
+            fontSize: 26,
+            cursor: "pointer",
+            lineHeight: 1
+          }}
+        >
+          ×
+        </button>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+          {team.logo && (
+            <img
+              src={team.logo}
+              alt={`${team.name} Logo`}
+              loading="lazy"
+              style={{ width: 54, height: 54, borderRadius: "50%", objectFit: "cover", boxShadow: "0 2px 12px #0008" }}
+            />
+          )}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontWeight: 900, fontSize: "1.2rem", letterSpacing: 0.5 }}>{team.name}</div>
+            <div style={{ display: "flex", gap: 10, marginTop: 6, fontSize: 12 }}>
+              <span style={{ color: "#b3cfff" }}>Twitch: {meta.twitch}</span>
+              <span style={{ color: "#d6ffd6" }}>Kick: {meta.kick}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: 8,
+          maxHeight: 320,
+          overflowY: "auto",
+          paddingRight: 4,
+          marginTop: 6
+        }}>
+          {(team.channels || []).map((ch, i) => {
+            const t = ch.tipo || platformFromUrl(ch.url);
+            const isKick = t === "kick";
+            return (
               <a
+                key={i}
                 href={ch.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  color: ch.url.includes("kick.com") ? "#53fc18" : "#9147ff",
-                  fontWeight: 700,
-                  textDecoration: "underline",
-                  fontSize: "1.08rem",
-                  wordBreak: "break-all",
-                  letterSpacing: "0.5px",
-                  display: "inline-flex",
+                  display: "flex",
                   alignItems: "center",
-                  gap: 6,
-                  background: "rgba(0,0,0,0.10)",
-                  borderRadius: 8,
-                  padding: "2px 10px"
+                  gap: 10,
+                  background: "rgba(0,0,0,0.18)",
+                  border: "1px solid #ffffff22",
+                  borderRadius: 12,
+                  padding: "0.55rem 0.7rem",
+                  color: isKick ? "#d6ffd6" : "#e1d4ff",
+                  fontWeight: 800,
+                  textDecoration: "none",
+                  letterSpacing: 0.4
                 }}
               >
-                {ch.url.includes("kick.com") ? (
-                  <svg width="18" height="18" viewBox="0 0 32 32" style={{ marginRight: 2 }}>
-                    <rect width="32" height="32" rx="7" fill="#53fc18"/>
-                    <text x="16" y="22" textAnchor="middle" fontSize="18" fill="#23201a" fontWeight="bold">K</text>
-                  </svg>
-                ) : (
-                  <svg width="18" height="18" viewBox="0 0 32 32" style={{ marginRight: 2 }}>
-                    <rect width="32" height="32" rx="7" fill="#9147ff"/>
-                    <text x="16" y="22" textAnchor="middle" fontSize="18" fill="#fff" fontWeight="bold">T</text>
-                  </svg>
-                )}
-                {ch.name}
+                <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden>
+                  <rect width="32" height="32" rx="7" fill={isKick ? "#53fc18" : "#9147ff"} />
+                </svg>
+                <span style={{ flex: 1, wordBreak: "break-word" }}>{ch.name}</span>
+                <span style={{ fontSize: 12, opacity: 0.9 }}>{isKick ? "Kick" : "Twitch"}</span>
               </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
-  </motion.div>
-);
-
-const Equipos = () => (
-  <div style={{ minHeight: "100vh", position: "relative", zIndex: 2 }}>
-    <AnimatedBackground />
-    {/* Botón volver al inicio */}
-    <div style={{
-      position: "fixed",
-      top: 32,
-      right: 40,
-      zIndex: 10
-    }}>
-      <Link to="/" style={{
-        background: "linear-gradient(90deg, #27ae60 60%, #e25822 100%)",
-        color: "#fff",
-        fontWeight: 700,
-        fontSize: "1.08rem",
-        padding: "0.7rem 1.7rem",
-        border: "none",
-        borderRadius: 12,
-        boxShadow: "0 2px 8px #0007",
-        cursor: "pointer",
-        letterSpacing: "1px",
-        textDecoration: "none",
-        transition: "background 0.2s, transform 0.2s"
-      }}>
-        <span style={{ marginRight: 8, fontSize: 18 }}>🏠</span>
-        Volver al inicio
-      </Link>
+            );
+          })}
+        </div>
+      </motion.div>
     </div>
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={fadeVariants}
-      style={{
-        padding: "3rem 0 2rem 0",
-        position: "relative",
-        zIndex: 3,
-        maxWidth: 1200,
-        margin: "0 auto"
-      }}
-    >
-      <h1 style={{
-        color: "#fff",
-        fontWeight: 900,
-        fontSize: "2.5rem",
-        letterSpacing: "2px",
-        textAlign: "center",
-        marginBottom: "2.5rem",
-        textShadow: "2px 2px 12px #000b"
-      }}>
-        <span style={{
-          background: "linear-gradient(90deg, #e25822 60%, #fff 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent"
+  );
+};
+
+const Equipos = () => {
+  const [query, setQuery] = useState("");
+  const [platform, setPlatform] = useState("all"); // all | twitch | kick
+  const [confirmedOnly, setConfirmedOnly] = useState(false);
+  const [sort, setSort] = useState("featured"); // featured | az
+  const [openTeam, setOpenTeam] = useState(null);
+
+  // Fuente original de equipos
+  const teams = [
+    {
+      name: "Team cG",
+      logo: cantosogangLogo,
+      channels: cantosoChannels
+    },
+    {
+      name: "Team Junin",
+      logo: juninLogo,
+      channels: team2Channels
+    },
+    {
+      name: "Team Lagtam",
+      logo: salomonLogo,
+      channels: teamLagtamChannels
+    },
+    {
+      name: "Team MCV",
+      logo: mcompanyvLogo,
+      channels: teamMCVChannels
+    },
+    {
+      name: "Team AAAA",
+      logo: aaaaLogo,
+      channels: teamAAAAChannels
+    },
+    ...Array.from({ length: 12 }, (_, i) => ({
+      name: `Team ${i + 5}`
+    }))
+  ];
+
+  // Cálculo profesional de filtros/orden
+  const filtered = useMemo(() => {
+    let list = teams.map(t => ({
+      ...t,
+      _meta: teamMeta(t)
+    }));
+
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      list = list.filter(t =>
+        t.name.toLowerCase().includes(q) ||
+        (t.channels || []).some(ch => (ch.name || "").toLowerCase().includes(q))
+      );
+    }
+
+    if (confirmedOnly) {
+      list = list.filter(t => t._meta.total > 0);
+    }
+
+    if (platform !== "all") {
+      list = list.filter(t =>
+        (t.channels || []).some(ch => (ch.tipo || platformFromUrl(ch.url)) === platform)
+      );
+    }
+
+    if (sort === "az") {
+      list = list.slice().sort((a, b) => a.name.localeCompare(b.name, 'es'));
+    }
+    // featured mantiene el orden original
+    return list;
+  }, [query, platform, confirmedOnly, sort]);
+
+  return (
+    <div style={{ minHeight: "100vh", position: "relative", zIndex: 2 }}>
+      <AnimatedBackground />
+
+      {/* Barra superior: volver + Glass toolbar */}
+      <div style={{ position: "fixed", top: 18, right: 20, left: 20, zIndex: 10, display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
+        <Link to="/" style={{
+          background: "linear-gradient(90deg, #27ae60 60%, #e25822 100%)",
+          color: "#fff",
+          fontWeight: 800,
+          fontSize: "0.98rem",
+          padding: "0.55rem 1.1rem",
+          border: "none",
+          borderRadius: 10,
+          boxShadow: "0 2px 10px #0009",
+          textDecoration: "none",
+          letterSpacing: 0.6
         }}>
-          Equipos del Torneo
-        </span>
-      </h1>
+          <span style={{ marginRight: 8 }}>🏠</span> Inicio
+        </Link>
+
+        <div style={{
+          flex: 1,
+          display: "flex",
+          gap: 10,
+          alignItems: "center",
+          justifyContent: "flex-end",
+          background: "rgba(15,15,15,0.45)",
+          border: "1px solid #ffffff22",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          borderRadius: 12,
+          padding: "0.5rem 0.6rem",
+          boxShadow: "0 8px 32px #000a"
+        }}>
+          <input
+            type="search"
+            placeholder="Buscar equipo o canal..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            style={{
+              flex: 1,
+              minWidth: 180,
+              background: "rgba(0,0,0,0.25)",
+              border: "1px solid #ffffff22",
+              borderRadius: 10,
+              padding: "0.55rem 0.7rem",
+              color: "#fff",
+              outline: "none",
+              fontWeight: 700,
+              letterSpacing: 0.3
+            }}
+          />
+          <select
+            value={platform}
+            onChange={(e) => setPlatform(e.target.value)}
+            title="Filtrar por plataforma"
+            style={{
+              background: "rgba(0,0,0,0.25)",
+              border: "1px solid #ffffff22",
+              color: "#fff",
+              fontWeight: 800,
+              borderRadius: 10,
+              padding: "0.55rem 0.7rem",
+              outline: "none",
+              letterSpacing: 0.4
+            }}
+          >
+            <option value="all">Todas</option>
+            <option value="twitch">Twitch</option>
+            <option value="kick">Kick</option>
+          </select>
+          <label style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#fff", fontWeight: 800, fontSize: 13 }}>
+            <input
+              type="checkbox"
+              checked={confirmedOnly}
+              onChange={(e) => setConfirmedOnly(e.target.checked)}
+            />
+            Confirmados
+          </label>
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            title="Ordenar"
+            style={{
+              background: "rgba(0,0,0,0.25)",
+              border: "1px solid #ffffff22",
+              color: "#fff",
+              fontWeight: 800,
+              borderRadius: 10,
+              padding: "0.55rem 0.7rem",
+              outline: "none",
+              letterSpacing: 0.4
+            }}
+          >
+            <option value="featured">Destacados</option>
+            <option value="az">A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Contenido */}
       <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeVariants}
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "2.2rem",
-          maxWidth: 1100,
+          padding: "6.5rem 0 2.5rem 0",
+          position: "relative",
+          zIndex: 3,
+          maxWidth: 1200,
           margin: "0 auto"
         }}
       >
-        {teams.map((team, idx) => (
-          <TeamCard team={team} idx={idx} key={team.name + idx} />
-        ))}
+        <h1 style={{
+          color: "#fff",
+          fontWeight: 900,
+          fontSize: "2.2rem",
+          letterSpacing: "2px",
+          textAlign: "center",
+          marginBottom: "2rem",
+          textShadow: "2px 2px 12px #000b"
+        }}>
+          <span style={{
+            background: "linear-gradient(90deg, #e25822 60%, #fff 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent"
+          }}>
+            Equipos del Torneo
+          </span>
+        </h1>
+
+        {/* Grid de equipos */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeVariants}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "1.6rem",
+            maxWidth: 1100,
+            margin: "0 auto"
+          }}
+        >
+          {filtered.map((team, idx) => (
+            <TeamCard key={team.name + idx} team={team} idx={idx} onOpen={setOpenTeam} />
+          ))}
+        </motion.div>
+
+        {/* Estado vacío */}
+        {filtered.length === 0 && (
+          <div style={{ color: "#fff", opacity: 0.85, textAlign: "center", marginTop: 24, fontWeight: 700 }}>
+            No se encontraron equipos con esos filtros.
+          </div>
+        )}
       </motion.div>
-    </motion.div>
-    {/* --- CSS RESPONSIVO --- */}
-    <style>
-      {`
-        @media (max-width: 900px) {
-          h1 {
-            font-size: 1.5rem !important;
+
+      {/* Modal */}
+      {openTeam && <TeamModal team={openTeam} onClose={() => setOpenTeam(null)} />}
+
+      {/* --- CSS RESPONSIVO --- */}
+      <style>
+        {`
+          @media (max-width: 1100px) {
+            div[style*="grid-template-columns: repeat(4"] {
+              grid-template-columns: repeat(3, 1fr) !important;
+            }
           }
-          div[style*="grid-template-columns"] {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 1.2rem !important;
+          @media (max-width: 900px) {
+            h1 { font-size: 1.6rem !important; }
+            div[style*="grid-template-columns: repeat(3"] {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
           }
-        }
-        @media (max-width: 600px) {
-          div[style*="grid-template-columns"] {
-            grid-template-columns: 1fr !important;
-            gap: 0.7rem !important;
+          @media (max-width: 600px) {
+            div[style*="grid-template-columns: repeat(2"] {
+              grid-template-columns: 1fr !important;
+            }
           }
-          .equipos-card {
-            padding: 1.1rem 0.5rem !important;
-            font-size: 0.97rem !important;
-          }
-        }
-      `}
-    </style>
-    {/* --- FIN CSS RESPONSIVO --- */}
-  </div>
-);
+        `}
+      </style>
+      {/* --- FIN CSS RESPONSIVO --- */}
+    </div>
+  );
+};
 
 export default Equipos;
 
