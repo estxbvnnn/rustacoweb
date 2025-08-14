@@ -1667,7 +1667,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://www.twitch.tv/mango", name: "mango" },
         { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas" },
         { url: "https://www.twitch.tv/basetradetv", name: "basetradetv" },
-        { url: "https://www.twitch.tv/yaga__baba", name: "yaga__baba" }
+        { url: "https://www.twitch.tv/babayaga__0", name: "babayaga__0" }
       ]
     },
     {

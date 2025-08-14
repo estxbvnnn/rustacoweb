@@ -78,7 +78,7 @@ const teamOTChannels = [
   { url: "https://www.twitch.tv/mango", name: "mango", tipo: "twitch" },
   { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas", tipo: "twitch" },
   { url: "https://www.twitch.tv/basetradetv", name: "basetradetv", tipo: "twitch" },
-  { url: "https://www.twitch.tv/yaga__baba", name: "yaga__baba", tipo: "twitch" }
+  { url: "https://www.twitch.tv/babayaga__0", name: "babayaga__o", tipo: "twitch" }
 ];
 
 const teams = [
