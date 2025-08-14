@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import logo from '../assets/img/logorustaco.png';
 import rustpmc3 from '../assets/img/rustpmc3.png';
 import rustpmc4 from '../assets/img/rustpmc4.png';
@@ -11,7 +11,7 @@ const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
 import '../assets/styles.css';
 import { Link, useHistory } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Importa el fondo
 import fondo from '../assets/img/fondo.jpg';
@@ -77,6 +77,13 @@ const translations = {
     sponsorAbout: 'Sobre el streamer:',
     sponsorLive: 'Transmite en vivo, crea contenido en YouTube y comparte clips en X (Twitter) y Kick.',
     streamNotice: 'Todo el evento será transmitido por la administración en',
+    // Countdown
+    countdownTitle: 'Cuenta regresiva — 11 de septiembre 15:00 (hora de Chile)',
+    countdownDone: '¡Llegó la hora!',
+    daysShort: 'd',
+    hoursShort: 'h',
+    minutesShort: 'm',
+    secondsShort: 's',
   },
   en: {
     formato: 'Format',
@@ -129,6 +136,13 @@ const translations = {
     sponsorAbout: 'About the streamer:',
     sponsorLive: 'Streams live, creates content on YouTube and shares clips on X (Twitter) and Kick.',
     streamNotice: 'The entire event will be streamed by the administration on',
+    // Countdown
+    countdownTitle: 'Countdown — Sep 11, 3:00 PM (Chile Time)',
+    countdownDone: 'Time is up!',
+    daysShort: 'd',
+    hoursShort: 'h',
+    minutesShort: 'm',
+    secondsShort: 's',
   },
   pt: {
     formato: 'Formato',
@@ -181,6 +195,13 @@ const translations = {
     sponsorAbout: 'Sobre o streamer:',
     sponsorLive: 'Transmite ao vivo, cria conteúdo no YouTube e compartilha clipes no X (Twitter) e Kick.',
     streamNotice: 'Todo o evento será transmitido pela administração em',
+    // Countdown
+    countdownTitle: 'Contagem regressiva — 11 de setembro 15:00 (horário do Chile)',
+    countdownDone: 'Chegou a hora!',
+    daysShort: 'd',
+    hoursShort: 'h',
+    minutesShort: 'm',
+    secondsShort: 's',
   }
 };
 
@@ -243,15 +264,42 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
   const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' ? window.innerWidth <= 900 : false);
   const [menuOpen, setMenuOpen] = React.useState(false);
 
+  // Hysteresis y rAF para evitar parpadeo en el tope
+  const SCROLL_DOWN_THRESHOLD = 80; // activa estado "scrolled" al pasar 80px
+  const SCROLL_UP_THRESHOLD = 20;   // desactiva al volver por debajo de 20px
+  const rafRef = React.useRef(null);
+  const scrolledRef = React.useRef(isScrolled);
+
   React.useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 10);
+    scrolledRef.current = isScrolled;
+  }, [isScrolled]);
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        const y = window.scrollY || document.documentElement.scrollTop || 0;
+        const curr = scrolledRef.current;
+        if (!curr && y > SCROLL_DOWN_THRESHOLD) {
+          scrolledRef.current = true;
+          setIsScrolled(true);
+        } else if (curr && y < SCROLL_UP_THRESHOLD) {
+          scrolledRef.current = false;
+          setIsScrolled(false);
+        }
+      });
+    };
     const onResize = () => setIsMobile(window.innerWidth <= 900);
-    onScroll();
+
+    onResize();
+    onScroll(); // estado inicial coherente
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
@@ -275,7 +323,8 @@ const TopBar = ({ onFormatoClick, onInfoClick, onTeamsClick, lang, setLang }) =>
         justifyContent: 'center',
         position: 'sticky',
         top: 0,
-        zIndex: 100
+        zIndex: 100,
+        transition: 'min-height 180ms ease, box-shadow 180ms ease, background 180ms ease' // transición suave
       }}
     >
       <div
@@ -834,6 +883,211 @@ const fadeVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.39, 0.575, 0.565, 1] } }
 };
 
+// Utilidad TZ: convierte una hora local en America/Santiago a Date UTC
+function tzOffsetInMs(date, timeZone) {
+  const dtf = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false
+  });
+  const parts = dtf.formatToParts(date);
+  const map = {};
+  for (const p of parts) map[p.type] = p.value;
+  const asUTC = Date.UTC(map.year, Number(map.month) - 1, map.day, map.hour, map.minute, map.second);
+  return asUTC - date.getTime();
+}
+
+function zonedTimeToUtc({ year, monthIndex, day, hour, minute, second = 0 }, timeZone) {
+  const guess = new Date(Date.UTC(year, monthIndex, day, hour, minute, second));
+  const offset = tzOffsetInMs(guess, timeZone);
+  return new Date(guess.getTime() - offset);
+}
+
+// Utilidad: próxima fecha objetivo Sep 11 15:00 America/Santiago (DST-safe)
+function getNextTargetDate() {
+  const tz = 'America/Santiago';
+  const now = new Date();
+  const y = now.getUTCFullYear();
+  const mk = (year) => zonedTimeToUtc({ year, monthIndex: 8, day: 11, hour: 15, minute: 0 }, tz); // Sep=8
+  const thisYear = mk(y);
+  return now.getTime() < thisYear.getTime() ? thisYear : mk(y + 1);
+}
+
+// Hook de cuenta regresiva
+function useCountdown(targetDate) {
+  const [diff, setDiff] = useState(() => Math.max(0, targetDate.getTime() - Date.now()));
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDiff(Math.max(0, targetDate.getTime() - Date.now()));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [targetDate]);
+
+  const expired = diff <= 0;
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { days, hours, minutes, seconds, expired };
+}
+
+// Banner de cuenta regresiva (mejorado)
+function CountdownBanner({ lang }) {
+  const [target] = useState(() => getNextTargetDate());
+
+  const { days, hours, minutes, seconds, expired } = useCountdown(target);
+
+  // Localized preview of target in user's timezone
+  const localeMap = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' };
+  const localTargetStr = useMemo(() => {
+    try {
+      return new Intl.DateTimeFormat(localeMap[lang] || 'en-US', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      }).format(target);
+    } catch {
+      return target.toLocaleString();
+    }
+  }, [lang, target]);
+
+  return (
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={fadeVariants}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '0.6rem',
+        margin: '0.8rem 0 0.2rem 0'
+      }}
+      title={`${translations[lang].countdownTitle} • ${localTargetStr}`}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        color: '#fff',
+        fontWeight: 900,
+        letterSpacing: '1px',
+        textShadow: '0 1px 4px #000a'
+      }}>
+        <i className="bi bi-calendar2-week" style={{ color: '#e25822' }} />
+        {translations[lang].countdownTitle}
+      </div>
+
+      {expired ? (
+        <div style={{ color: '#e25822', fontWeight: 900, fontSize: '1.2rem' }}>
+          {translations[lang].countdownDone}
+        </div>
+      ) : (
+        <div
+          role="timer"
+          aria-live="polite"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.6rem',
+            padding: '0.6rem 0.9rem',
+            borderRadius: 16,
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
+            border: '1px solid rgba(255,255,255,0.14)',
+            boxShadow: '0 8px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)',
+            backdropFilter: 'blur(6px)'
+          }}
+        >
+          <TimeBox value={days} label={translations[lang].daysShort} />
+          <Sep />
+          <TimeBox value={hours} label={translations[lang].hoursShort} />
+          <Sep />
+          <TimeBox value={minutes} label={translations[lang].minutesShort} />
+          <Sep />
+          <TimeBox value={seconds} label={translations[lang].secondsShort} />
+        </div>
+      )}
+
+      {!expired && (
+        <div style={{ color: '#b3cfff', fontWeight: 600, fontSize: '0.95rem', opacity: 0.9 }}>
+          {localTargetStr}
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+// Caja de tiempo con animación profesional por cambio de valor
+function TimeBox({ value, label }) {
+  const pad = (n) => String(n).padStart(2, '0');
+  const fontMono = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+
+  return (
+    <div
+      style={{
+        minWidth: 64,
+        textAlign: 'center',
+        background: 'linear-gradient(180deg, #23201a 65%, #1b1915 100%)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: 12,
+        padding: '0.5rem 0.55rem',
+        color: '#fff',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 18px rgba(0,0,0,0.35)'
+      }}
+    >
+      <div style={{ height: 28, overflow: 'hidden' }}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={value}
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              display: 'inline-block',
+              fontWeight: 900,
+              fontSize: '1.25rem',
+              color: '#f39c12',
+              fontFamily: fontMono,
+              fontVariantNumeric: 'tabular-nums'
+            }}
+          >
+            {pad(value)}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+      <div style={{ fontWeight: 700, fontSize: '0.8rem', opacity: 0.85, letterSpacing: '0.5px' }}>{label}</div>
+    </div>
+  );
+}
+
+function Sep() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        width: 10,
+        height: 28,
+        alignSelf: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#ffffffcc',
+        fontWeight: 900,
+        textShadow: '0 1px 4px #000a'
+      }}
+    >
+      :
+    </div>
+  );
+}
+
 // Reemplaza los principales bloques por motion.div/motion.section/motion.header
 const Header = ({ lang }) => {
   const headerRef = useRef(null);
@@ -854,7 +1108,7 @@ const Header = ({ lang }) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        background: 'none' // Quita fondo del header
+        background: 'none'
       }}
     >
       <motion.div
@@ -863,7 +1117,7 @@ const Header = ({ lang }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          background: 'none' // Quita fondo del logo
+          background: 'none'
         }}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -877,8 +1131,8 @@ const Header = ({ lang }) => {
             height: 320,
             borderRadius: '50%',
             objectFit: 'contain',
-            background: 'none', // Sin fondo
-            boxShadow: 'none', // Sin sombra
+            background: 'none',
+            boxShadow: 'none',
             margin: '0 auto',
             marginBottom: '1.5rem',
             position: 'relative',
@@ -888,6 +1142,10 @@ const Header = ({ lang }) => {
         {/* Elimina el fondo glow */}
         {/* <div className="logo-glow-bg"></div> */}
       </motion.div>
+
+      {/* NUEVA: Cuenta regresiva hasta 11 de septiembre 15:00 (hora de Chile) */}
+      <CountdownBanner lang={lang} />
+
       <InscripcionBanner lang={lang} />
     </motion.header>
   );
@@ -2203,7 +2461,7 @@ function ChatbotWidget({ lang }) {
               right: 32,
               width: 360,
               maxWidth: "95vw",
-              background: "rgba(35,32,26,0.98)",
+              background: "rgba(34,34,34,0.97)",
               borderRadius: 22,
               boxShadow: "0 12px 48px #000c, 0 0 0 2px #e25822cc",
               padding: "1.5rem 1.1rem 1.2rem 1.1rem",
@@ -2449,7 +2707,7 @@ const Home = () => {
               WebkitTextFillColor: 'transparent'
             }}
           >
-            <span style={{ color: '#fff', fontWeight: 700, WebkitTextFillColor: 'unset' }}>Sponsored by</span> Poionako
+            <span style={{ color: '#fff', fontWeight: 700, WebkitTextFillColor: 'unset' }}>{translations[lang].sponsorTitle}</span> Poionako
           </motion.h3>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2465,8 +2723,10 @@ const Home = () => {
               textShadow: '0 1px 8px #000a'
             }}
           >
-            Poionako es streamer y creador de contenido.<br />
-            <span style={{ color: '#f39c12', fontWeight: 700 }}>¡Síguelo y apóyalo en sus canales!</span>
+            {translations[lang].sponsorDesc}<br />
+            <span style={{ color: '#f39c12', fontWeight: 700 }}>
+              {translations[lang].sponsorFollow}
+            </span>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2833,7 +3093,7 @@ const SponsorSection = () => (
         textShadow: '0 1px 4px #000a'
       }}
     >
-      Sponsored by <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
+      {translations[lang].sponsorTitle} <span style={{ color: '#fff', fontWeight: 700 }}>Poionako</span>
     </h3>
     <div style={{
       fontSize: '1.08rem',
@@ -2842,15 +3102,9 @@ const SponsorSection = () => (
       textAlign: 'center',
       lineHeight: 1.5
     }}>
-      <b style={{ color: '#f39c12', fontSize: '1.15rem' }}>Sobre el streamer:</b><br />
-      Poionako es creador de contenido y streamer de Rust y otros juegos.<br />
-      <span style={{ color: '#b3cfff' }}>Transmite en vivo, crea contenido en YouTube y comparte clips en X (Twitter) y Kick.</span><br />
-      <span style={{ color: '#e25822', fontWeight: 700 }}>¡Síguelo y apóyalo en sus redes!</span>
-      <br /><br />
-      <span style={{ color: '#f39c12', fontWeight: 700 }}>Nombre:</span> Poionako<br />
-      <span style={{ color: '#f39c12', fontWeight: 700 }}>Juegos:</span> Rust, variedad<br />
-      <span style={{ color: '#f39c12', fontWeight: 700 }}>Idioma:</span> Español<br />
-      <span style={{ color: '#f39c12', fontWeight: 700 }}>Ubicación:</span> España<br />
+      <b style={{ color: '#f39c12', fontSize: '1.15rem' }}>{translations[lang].sponsorAbout || 'Sobre el streamer:'}</b><br />
+      {translations[lang].sponsorDesc}<br />
+      <span style={{ color: '#e25822', fontWeight: 700 }}>{translations[lang].sponsorFollow}</span>
     </div>
     <div style={{
       display: 'flex',
