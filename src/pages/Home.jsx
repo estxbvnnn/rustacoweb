@@ -41,7 +41,7 @@ const translations = {
     sobreTexto: 'Rustaco fue formado por un grupo de amigos con experiencia brutal en Rust, que han decidido crear torneos y eventos competitivos para la comunidad LATAM.',
     eventoTitulo: 'Rustaco II',
     equiposParticipantes: 'Equipos participantes',
-    equiposTexto: 'Los equipos participantes serán anunciados próximamente. Por ahora, todos los equipos están a confirmar.',
+    equiposTexto: 'Los equipos participantes poco a poco serán anunciados.',
     equipo: 'Team',
     aConfirmar: 'A confirmar',
     discord1: 'Únete a nuestro Discord',
@@ -61,7 +61,7 @@ const translations = {
     fecha: 'Fechas',
     fechaDesc: 'Fechas del evento Rustaco II.',
     inscripcionesBtn: 'Inscripciones abiertas ¡YA!',
-    inscripcionesFechas: 'del 6 de Agosto 15:00 GMT-4 hasta el 8 de Septiembre 16:00 GMT-4',
+    inscripcionesFechas: 'del 6 de Agosto 15:00 GMT-3 hasta el 8 de Septiembre 16:00 GMT-3',
     inscripcionesMsg: '¡No te quedes fuera! Inscribe tu equipo y participa en Rustaco II.',
     // Añade traducciones para el sponsor Poionako
     sponsorTitle: 'Patrocinado por',
@@ -100,7 +100,7 @@ const translations = {
     sobreTexto: 'Rustaco was formed by a group of friends with brutal Rust experience, who decided to create tournaments and competitive events for the LATAM community.',
     eventoTitulo: 'Rustaco II',
     equiposParticipantes: 'Participating Teams',
-    equiposTexto: 'Participating teams will be announced soon. For now, all teams are to be confirmed.',
+    equiposTexto: 'Participating teams will be announced little by little.',
     equipo: 'Team',
     aConfirmar: 'To be confirmed',
     discord1: 'Join our Discord',
@@ -120,7 +120,7 @@ const translations = {
     fecha: 'Dates',
     fechaDesc: 'Dates of the Rustaco II event.',
     inscripcionesBtn: 'Registrations open NOW!',
-    inscripcionesFechas: 'from August 6th 15:00 GMT-4 to September 8th 16:00 GMT-4',
+    inscripcionesFechas: 'from August 6th 15:00 GMT-3 to September 8th 16:00 GMT-3',
     inscripcionesMsg: "Don't miss out! Register your team and participate in Rustaco II.",
     // Sponsor Poionako translations
     sponsorTitle: 'Sponsored by',
@@ -159,7 +159,7 @@ const translations = {
     sobreTexto: 'O Rustaco foi formado por um grupo de amigos com grande experiência em Rust, que decidiram criar torneios e eventos competitivos para a comunidade LATAM.',
     eventoTitulo: 'Rustaco II',
     equiposParticipantes: 'Equipes participantes',
-    equiposTexto: 'As equipes participantes serão anunciadas em breve. Por enquanto, todas as equipes estão a confirmar.',
+    equiposTexto: 'As equipes participantes serão anunciadas aos poucos.',
     equipo: 'Equipe',
     aConfirmar: 'A confirmar',
     discord1: 'Entre no nosso Discord',
@@ -179,7 +179,7 @@ const translations = {
     fecha: 'Datas',
     fechaDesc: 'Datas do evento Rustaco II.',
     inscripcionesBtn: 'Inscrições abertas AGORA!',
-    inscripcionesFechas: 'de 6 de agosto 15:00 GMT-4 até 8 de setembro 16:00 GMT-4',
+    inscripcionesFechas: 'de 3 de agosto 15:00 GMT-4 até 8 de setembro 16:00 GMT-3',
     inscripcionesMsg: 'Não fique de fora! Inscreva sua equipe e participe do Rustaco II.',
     // Sponsor Poionako translations
     sponsorTitle: 'Patrocinado por',
@@ -1469,7 +1469,7 @@ const EventoInfoSection = React.forwardRef(({ lang }, ref) => {
     },
     {
       label: translations[lang].hora,
-      value: '17:00 (GMT-4)',
+      value: '15:00 (GMT-3)',
       icon: '⏰',
       description: translations[lang].horaDesc
     },
