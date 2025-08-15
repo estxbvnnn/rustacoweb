@@ -23,6 +23,7 @@ import salomonLogo from '../assets/img/salomonlogo.png';
 import mcompanyvLogo from '../assets/img/mcompanyvlogo.png';
 import aaaaLogo from '../assets/img/AAAA.png';
 import teamOTLogo from '../assets/img/teamlogoot.webp';
+import losmuchachoslogo from '../assets/img/losmuchachoslogo.webp'; // Logo de LoS Muchacho's
 
 // Traducciones
 const translations = {
@@ -1712,6 +1713,20 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://www.twitch.tv/zisaac18", name: "zisaac18" }
       ]
     },
+    {
+      name: "Team LoS Muchacho's",
+      logo: losmuchachoslogo,
+      channels: [
+        { url: "https://www.twitch.tv/spinky_r", name: "spinky_r" },
+        { url: "https://www.twitch.tv/spiicyrust", name: "spiicyrust" },
+        { url: "https://www.twitch.tv/ferb", name: "ferb" },
+        { url: "https://www.twitch.tv/snowmers", name: "snowmers" },
+        { url: "https://www.twitch.tv/vectiong", name: "vectiong" },
+        { url: "https://www.twitch.tv/skrilla5", name: "skrilla5" },
+        { url: "https://www.twitch.tv/winxrust", name: "winxrust" },
+        { url: "https://www.twitch.tv/ledoo", name: "ledoo" }
+      ]
+    },
     ...Array.from({ length: 10 }, (_, i) => ({
       name: `${translations[lang].equipo} ${i + 6}`,
       status: translations[lang].aConfirmar,
@@ -1982,11 +1997,17 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
                 </div>
               )}
               <span style={{
-                fontSize: '1.3rem',
+                fontSize: team.name === "Team LoS Muchacho's" ? '1.08rem' : '1.3rem',
                 color: '#b3cfff',
                 fontWeight: 900,
                 textShadow: '1px 1px 8px #23272a',
-                textAlign: 'center'
+                textAlign: 'center',
+                maxWidth: '100%',
+                wordBreak: 'break-word',
+                lineHeight: '1.15',
+                letterSpacing: '0.5px',
+                whiteSpace: 'normal',
+                overflowWrap: 'anywhere'
               }}>
                 {team.name}
               </span>
@@ -2071,11 +2092,17 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
                 </div>
               )}
               <span style={{
-                fontSize: '1.3rem',
+                fontSize: team.name === "Team LoS Muchacho's" ? '1.08rem' : '1.3rem',
                 color: '#b3cfff',
                 fontWeight: 900,
                 textShadow: '1px 1px 8px #23272a',
-                textAlign: 'center'
+                textAlign: 'center',
+                maxWidth: '100%',
+                wordBreak: 'break-word',
+                lineHeight: '1.15',
+                letterSpacing: '0.5px',
+                whiteSpace: 'normal',
+                overflowWrap: 'anywhere'
               }}>
                 {team.name}
               </span>

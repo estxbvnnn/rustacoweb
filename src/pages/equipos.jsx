@@ -8,6 +8,7 @@ import salomonLogo from "../assets/img/salomonlogo.png";
 import mcompanyvLogo from "../assets/img/mcompanyvlogo.png";
 import aaaaLogo from "../assets/img/AAAA.png";
 import teamOTLogo from "../assets/img/teamlogoot.webp";
+import losmuchachoslogo from "../assets/img/losmuchachoslogo.webp";
 
 // Animación de fade-in
 const fadeVariants = {
@@ -81,6 +82,17 @@ const teamOTChannels = [
   { url: "https://www.twitch.tv/babayaga__0", name: "babayaga__o", tipo: "twitch" }
 ];
 
+const losMuchachosChannels = [
+  { url: "https://www.twitch.tv/spinky_r", name: "spinky_r", tipo: "twitch" },
+  { url: "https://www.twitch.tv/spiicyrust", name: "spiicyrust", tipo: "twitch" },
+  { url: "https://www.twitch.tv/ferb", name: "ferb", tipo: "twitch" },
+  { url: "https://www.twitch.tv/snowmers", name: "snowmers", tipo: "twitch" },
+  { url: "https://www.twitch.tv/vectiong", name: "vectiong", tipo: "twitch" },
+  { url: "https://www.twitch.tv/skrilla5", name: "skrilla5", tipo: "twitch" },
+  { url: "https://www.twitch.tv/winxrust", name: "winxrust", tipo: "twitch" },
+  { url: "https://www.twitch.tv/ledoo", name: "ledoo", tipo: "twitch" }
+];
+
 const teams = [
   {
     name: "Team cG",
@@ -112,8 +124,13 @@ const teams = [
     logo: aaaaLogo,
     channels: teamAAAAChannels
   },
-  ...Array.from({ length: 11 }, (_, i) => ({
-    name: `Team ${i + 5}`
+  {
+    name: "Team LoS Muchacho's",
+    logo: losmuchachoslogo,
+    channels: losMuchachosChannels
+  },
+  ...Array.from({ length: 9 }, (_, i) => ({
+    name: `Team ${i + 8}`
   }))
 ];
 
@@ -504,8 +521,13 @@ const Equipos = () => {
       logo: aaaaLogo,
       channels: teamAAAAChannels
     },
-    ...Array.from({ length: 11 }, (_, i) => ({
-      name: `Team ${i + 5}`
+    {
+      name: "Team LoS Muchacho's",
+      logo: losmuchachoslogo,
+      channels: losMuchachosChannels
+    },
+    ...Array.from({ length: 9 }, (_, i) => ({
+      name: `Team ${i + 8}`
     }))
   ];
 
