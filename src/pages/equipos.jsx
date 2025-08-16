@@ -23,7 +23,7 @@ const cantosoChannels = [
   { url: "https://www.twitch.tv/murloc_cg", name: "Murloc_cg" },
   { url: "https://www.twitch.tv/nadiahq", name: "Nadiahq" },
   { url: "https://www.twitch.tv/edinz_", name: "Edinz_" },
-  { url: "https://www.twitch.tv/v2unstoppable", name: "V2Unstoppable" },
+  { url: "https://www.twitch.tv/playbackkr", name: "playbackkr" },
   { url: "https://kick.com/poionako", name: "Poionako" }
 ];
 
