@@ -575,20 +575,23 @@ const reglas = [
     descripcion: {
       es: (
         <span>
-          Cada jugador, al ser eliminado, soltará un <b>dogtag</b> (placa identificatoria). Los equipos deberán recolectar los dogtags de sus rivales y depositarlos en el <b>armario principal</b> de su base para que sean contabilizados. <br />
-          <span style={{ color: "#f39c12" }}>Solo los dogtags depositados correctamente sumarán puntos para el equipo.</span>
+          El modo del torneo es mediante <b>dogtags únicos por cada jugador</b>. Cada vez que mates a un jugador, este soltará un dogtag. <br />
+          Para que el dogtag cuente para ganar, <b>debe ser depositado en el "altar" de la isla respectiva de cada team</b>. <br />
+          <span style={{ color: "#f39c12" }}>Solo los dogtags depositados correctamente en el altar sumarán puntos para el equipo.</span>
         </span>
       ),
       en: (
         <span>
-          Each player, upon being eliminated, will drop a <b>dogtag</b> (identification tag). Teams must collect the dogtags from their rivals and deposit them in their base's <b>main cabinet</b> for them to be counted. <br />
-          <span style={{ color: "#f39c12" }}>Only correctly deposited dogtags will count points for the team.</span>
+          The tournament mode uses <b>unique dogtags for each player</b>. Every time you kill a player, they will drop a dogtag. <br />
+          For the dogtag to count towards victory, <b>it must be deposited in the "altar" located on the respective team's island</b>. <br />
+          <span style={{ color: "#f39c12" }}>Only dogtags correctly deposited in the altar will count points for the team.</span>
         </span>
       ),
       pt: (
         <span>
-          Cada jogador, ao ser eliminado, soltará um <b>dogtag</b> (placa de identificação). As equipes devem coletar os dogtags de seus rivais e depositá-los no <b>armário principal</b> de sua base para que sejam contabilizados. <br />
-          <span style={{ color: "#f39c12" }}>Somente os dogtags depositados corretamente contarão pontos para a equipe.</span>
+          O modo do torneio utiliza <b>dogtags únicos para cada jogador</b>. Sempre que você eliminar um jogador, ele soltará um dogtag. <br />
+          Para que o dogtag conte para a vitória, <b>deve ser depositado no "altar" localizado na ilha respectiva de cada equipe</b>. <br />
+          <span style={{ color: "#f39c12" }}>Somente os dogtags depositados corretamente no altar contarão pontos para a equipe.</span>
         </span>
       )
     }
@@ -632,6 +635,7 @@ const reglas = [
               <li>Un espacio designado para la <b>base principal (main)</b>.</li>
               <li>Un área específica para la <b>zona de huerto/garage</b> (9x8). <span style={{ color: "#f39c12", fontWeight: 700 }}>No se aceptan bases con MultiTC (solo un TC por base principal y huerto).</span></li>
               <li>Una <b>entrada a metro</b> exclusiva para cada isla.</li>
+              <li>Un <b>altar exclusivo</b> para cada isla donde el equipo debe depositar sus dogtags para que cuenten.</li>
             </ul>
           </li>
           <li>
@@ -655,6 +659,7 @@ const reglas = [
               <li>A designated space for the <b>main base</b> (main).</li>
               <li>A specific area for the <b>garden/garage zone</b> (9x8). <span style={{ color: "#f39c12", fontWeight: 700 }}>Bases with MultiTC are not accepted (only one TC per main base and garden).</span></li>
               <li>An exclusive <b>metro entrance</b> for each island.</li>
+              <li>An <b>exclusive altar</b> for each island where the team must deposit their dogtags for them to count.</li>
             </ul>
           </li>
           <li>
@@ -678,6 +683,7 @@ const reglas = [
               <li>Um espaço designado para a <b>base principal</b> (main).</li>
               <li>Uma área específica para a <b>zona de jardim/garagem</b> (9x8). <span style={{ color: "#f39c12", fontWeight: 700 }}>Não são aceitas bases com MultiTC (apenas um TC por base principal e jardim).</span></li>
               <li>Uma <b>entrada de metrô</b> exclusiva para cada ilha.</li>
+              <li>Um <b>altar exclusivo</b> para cada ilha onde a equipe deve depositar seus dogtags para que contem.</li>
             </ul>
           </li>
           <li>
