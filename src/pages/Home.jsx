@@ -24,6 +24,8 @@ import mcompanyvLogo from '../assets/img/mcompanyvlogo.png';
 import aaaaLogo from '../assets/img/AAAA.png';
 import teamOTLogo from '../assets/img/teamlogoot.webp';
 import losmuchachoslogo from '../assets/img/losmuchachoslogo.webp'; // Logo de LoS Muchacho's
+import teamotmainlogo from '../assets/img/teamotmainlogo.png';
+import teamlstlogo from '../assets/img/teamlstlogo.png';
 
 // Traducciones
 const translations = {
@@ -1627,7 +1629,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
     if (ref) ref.current = sectionRef.current;
   }, [ref]);
 
-  // --- Equipos destacados y el resto ---
+  // --- Lista de 16 teams, igual que equipos.jsx, ordenados ---
   const teams = [
     {
       name: "Team cG",
@@ -1669,6 +1671,20 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas" },
         { url: "https://www.twitch.tv/basetradetv", name: "basetradetv" },
         { url: "https://www.twitch.tv/babayaga__0", name: "babayaga__0" }
+      ]
+    },
+    {
+      name: "Team OT Main",
+      logo: teamotmainlogo,
+      channels: [
+        { url: "https://www.twitch.tv/dinling", name: "dinling" },
+        { url: "https://www.twitch.tv/tonzaot", name: "tonzaot" },
+        { url: "https://www.twitch.tv/hat_rust", name: "hat_rust" },
+        { url: "https://www.twitch.tv/pangsquared", name: "pangsquared" },
+        { url: "https://www.twitch.tv/sndeluxe", name: "sndeluxe" },
+        { url: "https://www.twitch.tv/joeespo", name: "joeespo" },
+        { url: "https://www.twitch.tv/tazzos", name: "tazzos" },
+        { url: "https://www.twitch.tv/toxrust", name: "toxrust" }
       ]
     },
     {
@@ -1727,42 +1743,59 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
         { url: "https://www.twitch.tv/ledoo", name: "ledoo" }
       ]
     },
-    ...Array.from({ length: 10 }, (_, i) => ({
-      name: `${translations[lang].equipo} ${i + 6}`,
+    {
+      name: "Team LST",
+      logo: teamlstlogo,
+      channels: [
+        { url: "https://www.twitch.tv/7trunks_", name: "7trunks_" },
+        { url: "https://kick.com/pipenux", name: "pipenux" },
+        { url: "https://www.twitch.tv/anaanashei", name: "anaanashei" },
+        { url: "https://www.twitch.tv/raiden23x", name: "raiden23x" },
+        { url: "https://kick.com/santy3249", name: "santy3249" },
+        { url: "https://www.twitch.tv/cinquestellew", name: "cinquestellew" },
+        { url: "https://www.twitch.tv/bolivianoamazonico", name: "bolivianoamazonico" },
+        { url: "https://www.twitch.tv/606rust", name: "606rust" }
+      ]
+    },
+    // 7 equipos a confirmar para completar 16
+    ...Array.from({ length: 7 }, (_, i) => ({
+      name: `${translations[lang].equipo} ${i + 10}`,
       status: translations[lang].aConfirmar,
       channels: []
     }))
   ];
 
-  const firstRow = teams.slice(0, 8);
-  const secondRow = teams.slice(8, 16);
-
-  // Modal de información de equipo
+  // Modal profesional de información de equipo
   const TeamInfoModal = ({ team, onClose }) => (
     <div
       style={{
         position: "fixed",
         top: 0, left: 0, width: "100vw", height: "100vh",
-        background: "rgba(0,0,0,0.55)",
+        background: "rgba(0,0,0,0.65)",
         zIndex: 99999,
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        backdropFilter: "blur(4px)"
       }}
       onClick={onClose}
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 160, damping: 18 }}
         style={{
-          background: "#23201a",
-          borderRadius: 22,
-          boxShadow: "0 8px 32px #000b",
-          padding: "2.2rem 2rem 1.5rem 2rem",
-          minWidth: 320,
-          maxWidth: 400,
-          width: "90vw",
+          background: "linear-gradient(120deg, #23201a 90%, #3a4bd8 100%)",
+          borderRadius: 28,
+          boxShadow: "0 12px 48px #000c, 0 0 0 2px #e25822cc",
+          padding: "2.5rem 2.2rem 2rem 2.2rem",
+          minWidth: 340,
+          maxWidth: 440,
+          width: "95vw",
           color: "#fff",
           fontFamily: "Montserrat, Arial, sans-serif",
-          position: "relative"
+          position: "relative",
+          overflow: "hidden"
         }}
         onClick={e => e.stopPropagation()}
       >
@@ -1770,13 +1803,16 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
           onClick={onClose}
           style={{
             position: "absolute",
-            top: 12,
-            right: 16,
+            top: 18,
+            right: 22,
             background: "none",
             border: "none",
             color: "#fff",
-            fontSize: 28,
-            cursor: "pointer"
+            fontSize: 32,
+            cursor: "pointer",
+            fontWeight: 700,
+            opacity: 0.85,
+            transition: "opacity 0.2s"
           }}
           aria-label="Cerrar"
         >×</button>
@@ -1785,27 +1821,30 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: 16
+            marginBottom: 18,
+            marginTop: 2
           }}>
             <img
               src={team.logo}
               alt={team.name + " Logo"}
               style={{
-                width: 70,
-                height: 70,
+                width: 82,
+                height: 82,
                 borderRadius: "50%",
                 objectFit: "cover",
-                boxShadow: "0 2px 12px #0008"
-              }}
+                boxShadow: "0 4px 18px #000a, 0 0 0 3px #7289da88"
+                           }}
             />
           </div>
         )}
         <h2 style={{
-          fontSize: "1.5rem",
+          fontSize: "1.7rem",
           fontWeight: 900,
-          color: "#fff",
+          color: "#b3cfff",
           textAlign: "center",
-          marginBottom: 8
+          marginBottom: 6,
+          letterSpacing: "1px",
+          textShadow: "0 1px 8px #23272a"
         }}>{team.name}</h2>
         {team.status && (
           <div style={{
@@ -1813,72 +1852,103 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
             fontWeight: 700,
             fontSize: "1.09rem",
             textAlign: "center",
-            marginBottom: 10
+            marginBottom: 10,
+            letterSpacing: "0.5px"
           }}>{team.status}</div>
         )}
         {team.channels && team.channels.length > 0 && (
           <>
             <div style={{
-              color: "#f39c12",
+              color: "#b3cfff",
               fontWeight: 700,
               fontSize: "1.09rem",
-              marginBottom: 6,
-              textAlign: "center"
+              marginBottom: 10,
+              textAlign: "center",
+              letterSpacing: "0.5px"
             }}>
               Canales de transmisión
             </div>
-            <ul style={{
-              listStyle: "none",
-              padding: 0,
-              margin: 0,
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              width: "100%",
-              alignItems: "center"
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: 8,
+              maxHeight: 320,
+              overflowY: "auto",
+              paddingRight: 4,
+              marginBottom: 8
             }}>
-              {team.channels.map((ch, i) => (
-                <li key={i} style={{ marginBottom: 0 }}>
+              {team.channels.map((ch, i) => {
+                const isKick = ch.url.includes("kick.com");
+                return (
                   <a
+                    key={i}
                     href={ch.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      color: ch.url.includes("kick.com") ? "#53fc18" : "#9147ff",
-                      fontWeight: 700,
-                      textDecoration: "underline",
-                      fontSize: "1.08rem",
-                      wordBreak: "break-all",
-                      letterSpacing: "0.5px",
-                      display: "inline-flex",
+                      display: "flex",
                       alignItems: "center",
-                      gap: 6,
-                      background: "rgba(0,0,0,0.10)",
-                      borderRadius: 8,
-                      padding: "2px 10px"
+                      gap: 10,
+                      background: "rgba(0,0,0,0.18)",
+                      border: "1px solid #ffffff22",
+                      borderRadius: 12,
+                      padding: "0.55rem 0.7rem",
+                      color: isKick ? "#53fc18" : "#b3cfff",
+                      fontWeight: 800,
+                      textDecoration: "none",
+                      letterSpacing: "0.4px",
+                      fontSize: "1.09rem",
+                      boxShadow: isKick ? "0 2px 8px #53fc1888" : "0 2px 8px #9147ff88",
+                      transition: "background 0.2s"
                     }}
                   >
-                    {ch.url.includes("kick.com") ? (
-                      <svg width="18" height="18" viewBox="0 0 32 32" style={{ marginRight: 2 }}>
-                        <rect width="32" height="32" rx="7" fill="#53fc18"/>
-                        <text x="16" y="22" textAnchor="middle" fontSize="18" fill="#23201a" fontWeight="bold">K</text>
-                      </svg>
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 32 32" style={{ marginRight: 2 }}>
-                        <rect width="32" height="32" rx="7" fill="#9147ff"/>
-                        <text x="16" y="22" textAnchor="middle" fontSize="18" fill="#fff" fontWeight="bold">T</text>
-                      </svg>
-                    )}
-                    {ch.name}
+                    <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden>
+                      <rect width="32" height="32" rx="7" fill={isKick ? "#53fc18" : "#9147ff"} />
+                    </svg>
+                    <span style={{ flex: 1, wordBreak: "break-word" }}>{ch.name}</span>
+                    <span style={{
+                      fontSize: 13,
+                      opacity: 0.9,
+                      fontWeight: 700,
+                      color: isKick ? "#53fc18" : "#b3cfff"
+                    }}>
+                      {isKick ? "Kick" : "Twitch"}
+                    </span>
                   </a>
-                </li>
-              ))}
-            </ul>
+                );
+              })}
+            </div>
+            <div style={{
+              marginTop: 10,
+              textAlign: "center",
+              color: "#e0e0e0",
+              fontSize: "0.98rem",
+              opacity: 0.85,
+              fontWeight: 500,
+              letterSpacing: "0.3px"
+            }}>
+              <span>Haz click en el canal para ver el stream.</span>
+            </div>
           </>
         )}
-      </div>
+        {!team.channels?.length && (
+          <div style={{
+            color: "#fff",
+            fontWeight: 600,
+            fontSize: "1.09rem",
+            textAlign: "center",
+            marginTop: 18,
+            opacity: 0.85
+          }}>
+            Próximamente canales y detalles.
+          </div>
+        )}
+      </motion.div>
     </div>
   );
+
+  const firstRow = teams.slice(0, 8);
+  const secondRow = teams.slice(8, 16);
 
   return (
     <>
@@ -1945,7 +2015,7 @@ const TeamsSection = React.forwardRef(({ lang }, ref) => {
               className="reveal"
               style={{
                 background: team.logo
-                  ? `linear-gradient(135deg, #23201a 70%, ${idx === 0 ? "#e25822" : "#9147ff"} 100%)`
+                  ? `linear-gradient(135deg, #23201a 70%, ${idx === 0 ? "#e25822" : "#9147ff"}  100%)`
                   : 'linear-gradient(135deg, #23201a 70%, #3a4bd8 100%)',
                 borderRadius: '16px',
                 boxShadow: team.logo
@@ -2183,7 +2253,7 @@ const DiscordBanner = ({ lang }) => (
     <span style={{
       color: '#fff',
       letterSpacing: '1px',
-      textShadow: '1px 1px 8px #23272a',
+      textShadow: '1px 1px 4px #000a',
       display: 'flex',
       flexDirection: 'column'
     }}>
@@ -2924,11 +2994,6 @@ const Home = () => {
             }
             .TeamsSection .reveal > div,
             .TeamsSection section.reveal > div {
-              grid-template-columns: repeat(2, 1fr) !important;
-              gap: 0.7rem !important;
-            }
-            .TeamsSection .reveal > div > div,
-            .TeamsSection section.reveal > div > div {
               padding: 0.7rem 0.4rem !important;
               min-height: 70px !important;
               font-size: 0.93rem !important;

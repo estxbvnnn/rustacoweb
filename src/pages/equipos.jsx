@@ -9,6 +9,8 @@ import mcompanyvLogo from "../assets/img/mcompanyvlogo.png";
 import aaaaLogo from "../assets/img/AAAA.png";
 import teamOTLogo from "../assets/img/teamlogoot.webp";
 import losmuchachoslogo from "../assets/img/losmuchachoslogo.webp";
+import teamotmainlogo from "../assets/img/teamotmainlogo.png";
+import teamlstlogo from "../assets/img/teamlstlogo.png";
 
 // Animación de fade-in
 const fadeVariants = {
@@ -75,7 +77,7 @@ const teamOTChannels = [
   { url: "https://www.twitch.tv/deathwingua", name: "deathwingua", tipo: "twitch" },
   { url: "https://www.twitch.tv/riqqeloff", name: "riqqeloff", tipo: "twitch" },
   { url: "https://www.twitch.tv/hutnik", name: "hutnik", tipo: "twitch" },
-  { url: "https://www.twitch.tv/oilrats", name: "oilrats", tipo: "twitch" },
+  { url: "https://www.twitch.tv/oilrats", name: "oilrats" },
   { url: "https://www.twitch.tv/mango", name: "mango", tipo: "twitch" },
   { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas", tipo: "twitch" },
   { url: "https://www.twitch.tv/basetradetv", name: "basetradetv", tipo: "twitch" },
@@ -91,6 +93,28 @@ const losMuchachosChannels = [
   { url: "https://www.twitch.tv/skrilla5", name: "skrilla5", tipo: "twitch" },
   { url: "https://www.twitch.tv/winxrust", name: "winxrust", tipo: "twitch" },
   { url: "https://www.twitch.tv/ledoo", name: "ledoo", tipo: "twitch" }
+];
+
+const teamOTMainChannels = [
+  { url: "https://www.twitch.tv/dinling", name: "dinling", tipo: "twitch" },
+  { url: "https://www.twitch.tv/tonzaot", name: "tonzaot", tipo: "twitch" },
+  { url: "https://www.twitch.tv/hat_rust", name: "hat_rust", tipo: "twitch" },
+  { url: "https://www.twitch.tv/pangsquared", name: "pangsquared", tipo: "twitch" },
+  { url: "https://www.twitch.tv/sndeluxe", name: "sndeluxe", tipo: "twitch" },
+  { url: "https://www.twitch.tv/joeespo", name: "joeespo", tipo: "twitch" },
+  { url: "https://www.twitch.tv/tazzos", name: "tazzos", tipo: "twitch" },
+  { url: "https://www.twitch.tv/toxrust", name: "toxrust", tipo: "twitch" }
+];
+
+const teamLSTChannels = [
+  { url: "https://www.twitch.tv/7trunks_", name: "7trunks_", tipo: "twitch" },
+  { url: "https://kick.com/pipenux", name: "pipenux", tipo: "kick" },
+  { url: "https://www.twitch.tv/anaanashei", name: "anaanashei", tipo: "twitch" },
+  { url: "https://www.twitch.tv/raiden23x", name: "raiden23x", tipo: "twitch" },
+  { url: "https://kick.com/santy3249", name: "santy3249", tipo: "kick" },
+  { url: "https://www.twitch.tv/cinquestellew", name: "cinquestellew", tipo: "twitch" },
+  { url: "https://www.twitch.tv/bolivianoamazonico", name: "bolivianoamazonico", tipo: "twitch" },
+  { url: "https://www.twitch.tv/606rust", name: "606rust", tipo: "twitch" }
 ];
 
 const teams = [
@@ -129,8 +153,18 @@ const teams = [
     logo: losmuchachoslogo,
     channels: losMuchachosChannels
   },
-  ...Array.from({ length: 9 }, (_, i) => ({
-    name: `Team ${i + 8}`
+  {
+    name: "Team OT Main",
+    logo: teamotmainlogo,
+    channels: teamOTMainChannels
+  },
+  {
+    name: "Team LST",
+    logo: teamlstlogo,
+    channels: teamLSTChannels
+  },
+  ...Array.from({ length: 7 }, (_, i) => ({
+    name: `Team ${i + 10}`
   }))
 ];
 
@@ -526,8 +560,18 @@ const Equipos = () => {
       logo: losmuchachoslogo,
       channels: losMuchachosChannels
     },
-    ...Array.from({ length: 9 }, (_, i) => ({
-      name: `Team ${i + 8}`
+    {
+      name: "Team OT Main",
+      logo: teamotmainlogo,
+      channels: teamOTMainChannels
+    },
+    {
+      name: "Team LST",
+      logo: teamlstlogo,
+      channels: teamLSTChannels
+    },
+    ...Array.from({ length: 7 }, (_, i) => ({
+      name: `Team ${i + 10}`
     }))
   ];
 
