@@ -1,4 +1,5 @@
 import React from 'react';
+import '../assets/home-dark.css';
 import { useHistory } from 'react-router-dom';
 import ammoGrenadeLauncherHE from '../assets/img/ammo.grenadelauncher.he.png';
 import ammoRocketHV from '../assets/img/ammo.rocket.hv.png';
@@ -34,6 +35,7 @@ import metalFragments from '../assets/img/metal.fragments.png';
 import mapaRustacooo from '../assets/img/maparustacooo.png';
 import shotgunM4 from '../assets/img/shotgun.m4.png';
 import logo from '../assets/img/logorustaco.png';
+import rustGamedark from '../assets/img/rustgamedark.jpg';
 
 // Banderas usadas en la HUD (añadir estas constantes)
 const flagChile = "https://flagcdn.com/w20/cl.png";
@@ -41,48 +43,8 @@ const flagUSA  = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
 
 const SideAnimation = ({ side = 'left' }) => (
-  <div
-    style={{
-      position: 'absolute',
-      top: 0,
-      [side]: 0,
-      height: '100%',
-      width: 70,
-      pointerEvents: 'none',
-      zIndex: 0,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: side === 'left' ? 'flex-start' : 'flex-end',
-      background: 'none'
-    }}
-  >
-    <div
-      style={{
-        width: 12,
-        height: '80%',
-        margin: 'auto',
-        borderRadius: 18,
-        background: side === 'left'
-          ? 'linear-gradient(180deg, #e25822 0%, #23201a 100%)'
-          : 'linear-gradient(180deg, #7289da 0%, #23201a 100%)',
-        boxShadow: side === 'left'
-          ? '0 0 32px 8px #e2582255, 0 0 0 0 #0000'
-          : '0 0 32px 8px #7289da55, 0 0 0 0 #0000',
-        animation: `sideGlow-${side} 2.5s ease-in-out infinite alternate`
-      }}
-    />
-    <style>
-      {`
-        @keyframes sideGlow-left {
-          0% { box-shadow: 0 0 32px 8px #e2582255, 0 0 0 0 #0000; }
-          100% { box-shadow: 0 0 64px 24px #e25822cc, 0 0 0 0 #0000; }
-        }
-        @keyframes sideGlow-right {
-          0% { box-shadow: 0 0 32px 8px #7289da55, 0 0 0 0 #0000; }
-          100% { box-shadow: 0 0 64px 24px #7289dacc, 0 0 0 0 #0000; }
-        }
-      `}
-    </style>
+  <div className={`side-animation ${side}`} aria-hidden>
+    <div className="glow-pill" />
   </div>
 );
 
@@ -1396,155 +1358,40 @@ const Reglas = () => {
   return (
     <>
       {/* HUD profesional fijo arriba */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          padding: '10px 16px',
-          background: 'rgba(15,15,15,0.42)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          borderBottom: '1px solid #ffffff1a',
-          boxShadow: '0 8px 28px #000a'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-          <img
-            src={logo}
-            alt="Rustaco"
-            width={38}
-            height={38}
-            style={{ borderRadius: '50%', boxShadow: '0 1px 8px #0007', objectFit: 'cover' }}
-          />
-          <div style={{ color: '#fff', fontWeight: 900, letterSpacing: 1, whiteSpace: 'nowrap' }}>
-            {lang === 'es' ? 'Reglas del Evento' : lang === 'en' ? 'Event Rules' : 'Regras do Evento'}
-          </div>
+      <div className="page-hud">
+        <div className="hud-left">
+          <img src={logo} alt="Rustaco" className="hud-logo" />
+          <div className="hud-title">{lang === 'es' ? 'Reglas del Evento' : lang === 'en' ? 'Event Rules' : 'Regras do Evento'}</div>
         </div>
 
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button
-            onClick={handleHome}
-            title={lang === 'es' ? 'Inicio' : lang === 'en' ? 'Home' : 'Início'}
-            style={{
-              background: 'linear-gradient(90deg,#27ae60 60%,#e25822 100%)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 10,
-              padding: '8px 12px',
-              fontWeight: 800,
-              letterSpacing: 0.5,
-              cursor: 'pointer',
-              boxShadow: '0 2px 10px #0009'
-            }}
-          >
-            🏠 {lang === 'es' ? 'Inicio' : lang === 'en' ? 'Home' : 'Início'}
-          </button>
+        <div className="hud-right">
+          <button onClick={handleHome} title={lang === 'es' ? 'Inicio' : lang === 'en' ? 'Home' : 'Início'} className="btn-primary">🏠 {lang === 'es' ? 'Inicio' : lang === 'en' ? 'Home' : 'Início'}</button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 6 }}>
-            <button
-              onClick={() => setLang('es')}
-              title="Español LATAM"
-              style={{
-                padding: 4, borderRadius: 10, cursor: 'pointer',
-                background: lang === 'es' ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.06)',
-                border: `1px solid ${lang === 'es' ? '#ffffff55' : '#ffffff22'}`
-              }}
-            >
-              <img src={flagChile} alt="ES" width={26} height={18} />
-            </button>
-            <button
-              onClick={() => setLang('en')}
-              title="English USA"
-              style={{
-                padding: 4, borderRadius: 10, cursor: 'pointer',
-                background: lang === 'en' ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.06)',
-                border: `1px solid ${lang === 'en' ? '#ffffff55' : '#ffffff22'}`
-              }}
-            >
-              <img src={flagUSA} alt="EN" width={26} height={18} />
-            </button>
-            <button
-              onClick={() => setLang('pt')}
-              title="Português Brasil"
-              style={{
-                padding: 4, borderRadius: 10, cursor: 'pointer',
-                background: lang === 'pt' ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.06)',
-                border: `1px solid ${lang === 'pt' ? '#ffffff55' : '#ffffff22'}`
-              }}
-            >
-              <img src={flagBrazil} alt="PT" width={26} height={18} />
-            </button>
+          <div className="hud-flags">
+            <button onClick={() => setLang('es')} title="Español LATAM" className={`icon-btn flag ${lang === 'es' ? 'lang-btn-active' : ''}`}><img src={flagChile} alt="ES" /></button>
+            <button onClick={() => setLang('en')} title="English USA" className={`icon-btn flag ${lang === 'en' ? 'lang-btn-active' : ''}`}><img src={flagUSA} alt="EN" /></button>
+            <button onClick={() => setLang('pt')} title="Português Brasil" className={`icon-btn flag ${lang === 'pt' ? 'lang-btn-active' : ''}`}><img src={flagBrazil} alt="PT" /></button>
           </div>
         </div>
       </div>
 
       {/* Contenedor principal: agrega margen superior para no quedar bajo el HUD */}
-      <div
-        style={{
-          maxWidth: 1050,
-          margin: '6.5rem auto 3rem',
-          background: 'rgba(24,24,24,0.98)',
-          borderRadius: 32,
-          boxShadow: '0 16px 64px #000c',
-          padding: '3.2rem 2.5rem 2.5rem 2.5rem',
-          color: '#fff',
-          fontFamily: 'Montserrat, Arial, sans-serif',
-          border: '2px solid #e2582244',
-          position: 'relative',
-          overflow: 'hidden'
-        }}
-      >
-        {/* Decorativos de fondo internos */}
-        <div aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(600px 120px at 10% 0%, #e2582215, transparent), radial-gradient(600px 120px at 90% 100%, #7289da15, transparent)'
-          }}
-        />
+      <div className="panel home-dark page-container">
+        {/* animated background image */}
+        <div className="animated-bg-image" style={{ backgroundImage: `url(${rustGamedark})` }} aria-hidden />
+        {/* subtle overlay radials are handled by CSS helper */}
+        <div className="decorative-radials" aria-hidden />
         <SideAnimation side="left" />
         <SideAnimation side="right" />
 
-        <h1
-          style={{
-            color: 'var(--rust-orange)',
-            fontWeight: 900,
-            fontSize: '2.8rem',
-            marginBottom: '2.5rem',
-            textAlign: 'center',
-            letterSpacing: '2px',
-            textShadow: '0 2px 18px #000a',
-            zIndex: 2,
-            position: 'relative',
-            animation: 'fadeInDown 1s cubic-bezier(.39,.575,.565,1) both'
-          }}
-        >
+  <h1 className="reglas-title" style={{ zIndex: 2, position: 'relative' }}>
           {lang === 'es' ? 'Reglas del Evento' : lang === 'en' ? 'Event Rules' : 'Regras do Evento'}
         </h1>
 
         {/* Banner introductorio breve y educado */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            padding: '0.9rem 1.1rem',
-            margin: '0 0 1.6rem 0',
-            borderRadius: 14,
-            background: 'linear-gradient(120deg, rgba(39,174,96,.18), rgba(226,88,34,.18))',
-            border: '1px solid #ffffff22',
-            boxShadow: '0 2px 12px #0007'
-          }}
-          role="note"
-        >
-          <span style={{ fontSize: 22, lineHeight: 1 }}>📘</span>
-          <div style={{ fontSize: '1.02rem', color: '#e9edf7' }}>
+        <div className="reglas-banner" role="note">
+          <span className="reglas-banner-icon">📘</span>
+          <div className="reglas-banner-text">
             {lang === 'es' && 'Gracias por participar en Rustaco II. Estas directrices buscan una competencia justa, segura y respetuosa para todos.'}
             {lang === 'en' && 'Thanks for joining Rustaco II. These guidelines aim for a fair, safe and respectful competition for everyone.'}
             {lang === 'pt' && 'Obrigado por participar do Rustaco II. Estas diretrizes visam uma competição justa, segura e respeitosa para todos.'}
@@ -1552,96 +1399,27 @@ const Reglas = () => {
         </div>
 
         {/* Imagen del mapa entre el título y la regla 1 */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem' }}>
-          <img
-            src={mapaRustacooo}
-            alt="Mapa del evento"
-            style={{
-              width: '100%',
-              maxWidth: 520,
-              height: 'auto',
-              borderRadius: 18,
-              boxShadow: '0 4px 24px #000a',
-              background: '#181818'
-            }}
-          />
+        <div className="reglas-map">
+          <img src={mapaRustacooo} alt="Mapa del evento" />
         </div>
 
         {/* Contenido en una sola columna (sin TOC lateral) */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: 24,
-            alignItems: 'start'
-          }}
-        >
+        <div className="reglas-content">
           <div>
             {reglas.map((regla, idx) => (
-              <div
-                key={idx}
-                id={`rule-${idx + 1}`}
-                style={{
-                  background: 'linear-gradient(120deg, #23201a 75%, #2b2925 100%)',
-                  borderRadius: '18px',
-                  boxShadow: '0 8px 32px #000b',
-                  padding: '2.1rem 2.2rem',
-                  marginBottom: '2.2rem',
-                  borderLeft: '7px solid var(--rust-orange)',
-                  borderRight: '2px solid #7289da55',
-                  transition: 'box-shadow 0.2s, transform 0.2s',
-                  position: 'relative',
-                  zIndex: 1,
-                  overflow: 'hidden'
-                }}
-                className="regla-card"
-              >
-                {/* Encabezado limpio y profesional */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                  <span
-                    aria-hidden
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 999,
-                      background: 'linear-gradient(90deg,#e25822,#7289da)',
-                      boxShadow: '0 0 10px #e2582288'
-                    }}
-                  />
-                  <div
-                    style={{
-                      fontWeight: 800,
-                      color: '#f39c12',
-                      fontSize: '1.22rem',
-                      letterSpacing: '1px',
-                      textShadow: '0 1px 8px #000a'
-                    }}
-                  >
-                    {getRuleTitle(regla, lang)}
-                  </div>
+              <div key={idx} id={`rule-${idx + 1}`} className="regla-card">
+                <div className="regla-header">
+                  <span className="regla-header-dot" aria-hidden />
+                  <div className="regla-header-title">{getRuleTitle(regla, lang)}</div>
                 </div>
 
-                <div style={{ fontSize: '1.09rem', color: '#e0e0e0', lineHeight: 1.7 }}>
+                <div className="regla-body">
                   {typeof regla.descripcion === 'object' ? regla.descripcion[lang] : regla.descripcion}
                 </div>
               </div>
             ))}
 
-            {/* Nota final más cordial y profesional */}
-            <div
-              style={{
-                marginTop: '2.5rem',
-                padding: '1.2rem',
-                background: 'linear-gradient(90deg, #181818 80%, #23201a 100%)',
-                borderRadius: 16,
-                color: '#b3cfff',
-                fontSize: '1.12rem',
-                textAlign: 'center',
-                boxShadow: '0 2px 12px #0007',
-                border: '1.5px solid #7289da44',
-                animation: 'fadeInUp 1.2s cubic-bezier(.39,.575,.565,1) both'
-              }}
-            >
+            <div className="reglas-note">
               <b>
                 {lang === 'es' ? 'Código de conducta:' : lang === 'en' ? 'Code of conduct:' : 'Código de conduta:'}
               </b>{' '}
@@ -1649,100 +1427,33 @@ const Reglas = () => {
                 <>
                   Te pedimos mantener un trato respetuoso y seguir estas directrices. El incumplimiento puede derivar en medidas correctivas, incluida la exclusión del evento. 
                   Para soporte o consultas, utiliza nuestro{' '}
-                  <a
-                    href="https://discord.rustaco.site"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}
-                  >
-                    Discord oficial
-                  </a>.
+                  <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}>Discord oficial</a>.
                 </>
               )}
               {lang === 'en' && (
                 <>
                   Please remain respectful and follow these guidelines. Non-compliance may lead to corrective measures, including removal from the event. 
                   For support or questions, use our{' '}
-                  <a
-                    href="https://discord.rustaco.site"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}
-                  >
-                    official Discord
-                  </a>.
+                  <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}>official Discord</a>.
                 </>
               )}
               {lang === 'pt' && (
                 <>
                   Pedimos que mantenha o respeito e siga estas diretrizes. O não cumprimento pode resultar em medidas corretivas, incluindo exclusão do evento. 
                   Para suporte ou dúvidas, utilize nosso{' '}
-                  <a
-                    href="https://discord.rustaco.site"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}
-                  >
-                    Discord oficial
-                  </a>.
+                  <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}>Discord oficial</a>.
                 </>
               )}
             </div>
 
-            <div
-              style={{
-                marginTop: '2.5rem',
-                display: 'flex',
-                justifyContent: 'center',
-                gap: 16,
-                animation: 'fadeInUp 1.4s cubic-bezier(.39,.575,.565,1) both'
-              }}
-            >
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                style={{
-                  background: 'linear-gradient(90deg, #e25822 60%, #7289da 100%)',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '1.15rem',
-                  padding: '0.9rem 2.5rem',
-                  border: 'none',
-                  borderRadius: 14,
-                  boxShadow: '0 2px 12px #0007',
-                  cursor: 'pointer',
-                  transition: 'background 0.2s, transform 0.2s',
-                  letterSpacing: '1px'
-                }}
-                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
-                onMouseOut={ e => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                {lang === 'es' ? 'Volver arriba' : lang === 'en' ? 'Back to top' : 'Voltar ao topo'}
-              </button>
-              <button
-                onClick={() => history.push('/')}
-                style={{
-                  background: 'linear-gradient(90deg, #7289da 60%, #e25822 100%)',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '1.15rem',
-                  padding: '0.9rem 2.5rem',
-                  border: 'none',
-                  borderRadius: 14,
-                  boxShadow: '0 2px 12px #0007',
-                  cursor: 'pointer',
-                  transition: 'background 0.2s, transform 0.2s',
-                  letterSpacing: '1px'
-                }}
-                onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.07)')}
-                onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                {lang === 'es' ? 'Ir al inicio' : lang === 'en' ? 'Go to Home' : 'Ir para o início'}
-              </button>
+            <div className="reglas-cta-row">
+              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="reglas-cta primary">{lang === 'es' ? 'Volver arriba' : lang === 'en' ? 'Back to top' : 'Voltar ao topo'}</button>
+              <button onClick={() => history.push('/')} className="reglas-cta secondary">{lang === 'es' ? 'Ir al inicio' : lang === 'en' ? 'Go to Home' : 'Ir para o início'}</button>
             </div>
           </div>
         </div>
 
-        <style>
+  <style>
           {`
             /* Limpieza de estilos previos del TOC (ya no se usa) */
 
@@ -1755,7 +1466,7 @@ const Reglas = () => {
             }
           `}
         </style>
-      </div>
+  </div>
     </>
   );
 }

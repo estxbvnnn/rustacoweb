@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import fondo from "../assets/img/fondo.jpg";
+import rustgamedark from "../assets/img/rustgamedark.jpg";
+import '../assets/home-dark.css';
 import cantosogangLogo from "../assets/img/cantosogang.webp";
 import juninLogo from "../assets/img/juninlogo.png";
 import salomonLogo from "../assets/img/salomonlogo.png";
@@ -117,7 +118,7 @@ const teamLSTChannels = [
   { url: "https://www.twitch.tv/606rust", name: "606rust", tipo: "twitch" }
 ];
 
-const teams = [
+export const TEAMS = [
   {
     name: "Team cG",
     logo: cantosogangLogo,
@@ -192,66 +193,9 @@ const teamMeta = (team) => {
 };
 
 const AnimatedBackground = () => (
-  <div
-    style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      zIndex: 0,
-      pointerEvents: 'none',
-      overflow: 'hidden'
-    }}
-  >
-    <div
-      style={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundImage: `url(${fondo})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'blur(8px) brightness(0.45) grayscale(0.1)',
-        opacity: 0.7,
-        zIndex: 1
-      }}
-    />
-    <svg
-      width="100vw"
-      height="100vh"
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 2,
-        pointerEvents: 'none'
-      }}
-    >
-      {[...Array(18)].map((_, i) => (
-        <circle
-          key={i}
-          cx={Math.random() * window.innerWidth}
-          cy={Math.random() * window.innerHeight}
-          r={18 + Math.random() * 22}
-          fill={i % 3 === 0 ? "#e25822" : i % 2 === 0 ? "#7289da" : "#27ae60"}
-          opacity={0.13 + Math.random() * 0.09}
-        >
-          <animate
-            attributeName="cy"
-            values={`0;${window.innerHeight};0`}
-            dur={`${6 + Math.random() * 6}s`}
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="cx"
-            values={`${Math.random() * window.innerWidth};${Math.random() * window.innerWidth};${Math.random() * window.innerWidth}`}
-            dur={`${8 + Math.random() * 8}s`}
-            repeatCount="indefinite"
-          />
-        </circle>
-      ))}
-    </svg>
+  <div className="animated-bg" aria-hidden>
+    <div className="animated-bg-image" style={{ backgroundImage: `url(${rustgamedark})` }} />
+    <div className="animated-bg-overlay" />
   </div>
 );
 
@@ -268,245 +212,62 @@ const TeamCard = ({ team, idx, onOpen }) => {
       whileHover={{ y: -6, scale: 1.01 }}
       whileTap={{ scale: 0.99 }}
       onClick={() => confirmed && onOpen(team)}
-      style={{
-        background: confirmed
-          ? `linear-gradient(135deg, #23201a 70%, ${idx === 0 ? "#e25822" : "#3a4bd8"} 100%)`
-          : "linear-gradient(135deg, #23201a 70%, #2e2e2e 100%)",
-        borderRadius: 18,
-        boxShadow: confirmed
-          ? `0 10px 28px ${idx === 0 ? "#e25822aa" : "#3a4bd8aa"}, 0 0 0 2px #ffffff22`
-          : "0 10px 28px #0009, 0 0 0 1px #ffffff18",
-        padding: "1.6rem 1.1rem",
-        minHeight: 210,
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        alignItems: "center",
-        justifyContent: "space-between",
-        color: "#fff",
-        cursor: confirmed ? "pointer" : "default",
-        position: "relative",
-        overflow: "hidden"
-      }}
+      className="team-card"
     >
-      {/* Glow decorativo */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: -40,
-          background: confirmed ? "radial-gradient(800px 120px at 0% 0%, #ffffff08, transparent)" : "transparent",
-          pointerEvents: "none"
-        }}
-      />
-      {/* Header: logo + nombre */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+      <div aria-hidden className="team-decor" />
+
+      <div className="team-header">
         {team.logo && (
-          <div
-            style={{
-              width: 72,
-              height: 72,
-              borderRadius: "50%",
-              background: "#0008",
-              display: "grid",
-              placeItems: "center",
-              boxShadow: "0 2px 12px #000a, 0 0 0 2px #ffffff22"
-            }}
-          >
-            <img
-              src={team.logo}
-              alt={`${team.name} Logo`}
-              loading="lazy"
-              style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover" }}
-              onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-            />
+          <div className="team-logo">
+            <img src={team.logo} alt={`${team.name} Logo`} loading="lazy" style={{ width: 56, height: 56, borderRadius: '50%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} />
           </div>
         )}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: "1.1rem", fontWeight: 900, letterSpacing: 1 }}>
-            {team.name}
-          </span>
-          {!confirmed && (
-            <span
-              title="A confirmar"
-              style={{
-                fontSize: "0.78rem",
-                fontWeight: 800,
-                color: "#fff",
-                background: "linear-gradient(90deg,#666,#999)",
-                padding: "2px 8px",
-                borderRadius: 999,
-                border: "1px solid #ffffff33",
-                letterSpacing: 0.5
-              }}
-            >
-              A confirmar
-            </span>
-          )}
+        <div>
+          <div className="team-name">{team.name}</div>
+          {!confirmed && <div className="team-status">A confirmar</div>}
         </div>
       </div>
 
-      {/* Badges de plataformas */}
-      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <span style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          background: "#0008",
-          border: "1px solid #ffffff1e",
-          color: "#b3cfff",
-          padding: "4px 10px",
-          borderRadius: 999,
-          fontSize: 12,
-          fontWeight: 800
-        }}>
-          <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden>
-            <rect width="32" height="32" rx="7" fill="#9147ff" />
-          </svg>
-          Twitch {meta.twitch}
-        </span>
-        <span style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          background: "#0008",
-          border: "1px solid #ffffff1e",
-          color: "#d6ffd6",
-          padding: "4px 10px",
-          borderRadius: 999,
-          fontSize: 12,
-          fontWeight: 800
-        }}>
-          <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden>
-            <rect width="32" height="32" rx="7" fill="#53fc18" />
-          </svg>
-          Kick {meta.kick}
-        </span>
+      <div className="team-badges">
+        <div className="badge"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden><rect width="32" height="32" rx="7" fill="#9147ff" /></svg> Twitch {meta.twitch}</div>
+        <div className="badge"><svg width="16" height="16" viewBox="0 0 32 32" aria-hidden><rect width="32" height="32" rx="7" fill="#53fc18" /></svg> Kick {meta.kick}</div>
       </div>
 
-      {/* CTA */}
-      <div style={{ height: 32 }}>
-        {confirmed ? (
-          <span style={{ fontSize: 13, color: "#ffffffd9", opacity: 0.9 }}>
-            Click para ver canales
-          </span>
-        ) : (
-          <span style={{ fontSize: 13, color: "#ffffffb3" }}>
-            Próximamente
-          </span>
-        )}
-      </div>
+      <div className="team-cta">{confirmed ? 'Click para ver canales' : 'Próximamente'}</div>
     </motion.div>
   );
 };
 
 // Modal con detalle de canales
-const TeamModal = ({ team, onClose }) => {
+export const TeamModal = ({ team, onClose }) => {
   if (!team) return null;
   const meta = teamMeta(team);
 
   return (
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.55)",
-        zIndex: 9999,
-        display: "grid",
-        placeItems: "center",
-        padding: "1rem"
-      }}
-    >
-      <motion.div
-        onClick={(e) => e.stopPropagation()}
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 160, damping: 18 }}
-        style={{
-          width: "min(92vw, 560px)",
-          background: "linear-gradient(180deg, rgba(35,32,26,0.98), rgba(35,32,26,0.92))",
-          borderRadius: 18,
-          boxShadow: "0 12px 48px #000c, 0 0 0 2px #ffffff22",
-          padding: "1.2rem",
-          color: "#fff",
-          fontFamily: "Montserrat, Arial, sans-serif",
-          position: "relative"
-        }}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Cerrar"
-          style={{
-            position: "absolute",
-            top: 10,
-            right: 12,
-            background: "none",
-            border: "none",
-            color: "#fff",
-            fontSize: 26,
-            cursor: "pointer",
-            lineHeight: 1
-          }}
-        >
-          ×
-        </button>
+    <div className="team-modal-backdrop" onClick={onClose}>
+      <motion.div className="team-modal" onClick={(e) => e.stopPropagation()} initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ type: 'spring', stiffness: 160, damping: 18 }}>
+        <button onClick={onClose} aria-label="Cerrar" className="close-btn" style={{ position: 'absolute', top: 10, right: 12, background: 'none', border: 'none', color: '#fff', fontSize: 26, cursor: 'pointer' }}>×</button>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
-          {team.logo && (
-            <img
-              src={team.logo}
-              alt={`${team.name} Logo`}
-              loading="lazy"
-              style={{ width: 54, height: 54, borderRadius: "50%", objectFit: "cover", boxShadow: "0 2px 12px #0008" }}
-            />
-          )}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontWeight: 900, fontSize: "1.2rem", letterSpacing: 0.5 }}>{team.name}</div>
-            <div style={{ display: "flex", gap: 10, marginTop: 6, fontSize: 12 }}>
-              <span style={{ color: "#b3cfff" }}>Twitch: {meta.twitch}</span>
-              <span style={{ color: "#d6ffd6" }}>Kick: {meta.kick}</span>
+        <div className="modal-header">
+          {team.logo && <img src={team.logo} alt={`${team.name} Logo`} loading="lazy" style={{ width: 54, height: 54, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 2px 12px #0008' }} />}
+          <div>
+            <div style={{ fontWeight: 900, fontSize: '1.2rem', letterSpacing: 0.5 }}>{team.name}</div>
+            <div style={{ display: 'flex', gap: 10, marginTop: 6, fontSize: 12 }}>
+              <span style={{ color: '#b3cfff' }}>Twitch: {meta.twitch}</span>
+              <span style={{ color: '#d6ffd6' }}>Kick: {meta.kick}</span>
             </div>
           </div>
         </div>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: 8,
-          maxHeight: 320,
-          overflowY: "auto",
-          paddingRight: 4,
-          marginTop: 6
-        }}>
+        <div className="modal-channels">
           {(team.channels || []).map((ch, i) => {
             const t = ch.tipo || platformFromUrl(ch.url);
-            const isKick = t === "kick";
+            const isKick = t === 'kick';
             return (
-              <a
-                key={i}
-                href={ch.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  background: "rgba(0,0,0,0.18)",
-                  border: "1px solid #ffffff22",
-                  borderRadius: 12,
-                  padding: "0.55rem 0.7rem",
-                  color: isKick ? "#d6ffd6" : "#e1d4ff",
-                  fontWeight: 800,
-                  textDecoration: "none",
-                  letterSpacing: 0.4
-                }}
-              >
-                <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden>
-                  <rect width="32" height="32" rx="7" fill={isKick ? "#53fc18" : "#9147ff"} />
-                </svg>
-                <span style={{ flex: 1, wordBreak: "break-word" }}>{ch.name}</span>
-                <span style={{ fontSize: 12, opacity: 0.9 }}>{isKick ? "Kick" : "Twitch"}</span>
+              <a key={i} className="channel-row" href={ch.url} target="_blank" rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 32 32" aria-hidden><rect width="32" height="32" rx="7" fill={isKick ? '#53fc18' : '#9147ff'} /></svg>
+                <span style={{ flex: 1, wordBreak: 'break-word' }}>{ch.name}</span>
+                <span style={{ fontSize: 12, opacity: 0.9 }}>{isKick ? 'Kick' : 'Twitch'}</span>
               </a>
             );
           })}
@@ -523,61 +284,11 @@ const Equipos = () => {
   const [sort, setSort] = useState("featured"); // featured | az
   const [openTeam, setOpenTeam] = useState(null);
 
-  // Fuente original de equipos
-  const teams = [
-    {
-      name: "Team cG",
-      logo: cantosogangLogo,
-      channels: cantosoChannels
-    },
-    {
-      name: "Team Junin",
-      logo: juninLogo,
-      channels: team2Channels
-    },
-    {
-      name: "Team OT",
-      logo: teamOTLogo,
-      channels: teamOTChannels
-    },
-    {
-      name: "Team Lagtam",
-      logo: salomonLogo,
-      channels: teamLagtamChannels
-    },
-    {
-      name: "Team MCV",
-      logo: mcompanyvLogo,
-      channels: teamMCVChannels
-    },
-    {
-      name: "Team AAAA",
-      logo: aaaaLogo,
-      channels: teamAAAAChannels
-    },
-    {
-      name: "Team LoS Muchacho's",
-      logo: losmuchachoslogo,
-      channels: losMuchachosChannels
-    },
-    {
-      name: "Team OT Main",
-      logo: teamotmainlogo,
-      channels: teamOTMainChannels
-    },
-    {
-      name: "Team LST",
-      logo: teamlstlogo,
-      channels: teamLSTChannels
-    },
-    ...Array.from({ length: 7 }, (_, i) => ({
-      name: `Team ${i + 10}`
-    }))
-  ];
+  // use shared TEAMS data
 
   // Cálculo profesional de filtros/orden
   const filtered = useMemo(() => {
-    let list = teams.map(t => ({
+    let list = TEAMS.map(t => ({
       ...t,
       _meta: teamMeta(t)
     }));
@@ -608,188 +319,48 @@ const Equipos = () => {
   }, [query, platform, confirmedOnly, sort]);
 
   return (
-    <div style={{ minHeight: "100vh", position: "relative", zIndex: 2 }}>
+    <div className="page-container">
       <AnimatedBackground />
 
-      {/* Barra superior: volver + Glass toolbar */}
-      <div style={{ position: "fixed", top: 18, right: 20, left: 20, zIndex: 10, display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
-        <Link to="/" style={{
-          background: "linear-gradient(90deg, #27ae60 60%, #e25822 100%)",
-          color: "#fff",
-          fontWeight: 800,
-          fontSize: "0.98rem",
-          padding: "0.55rem 1.1rem",
-          border: "none",
-          borderRadius: 10,
-          boxShadow: "0 2px 10px #0009",
-          textDecoration: "none",
-          letterSpacing: 0.6
-        }}>
+      <div className="page-hud">
+        <Link to="/" className="btn-primary" style={{ textDecoration: 'none' }}>
           <span style={{ marginRight: 8 }}>🏠</span> Inicio
         </Link>
+      </div>
 
-        <div style={{
-          flex: 1,
-          display: "flex",
-          gap: 10,
-          alignItems: "center",
-          justifyContent: "flex-end",
-          background: "rgba(15,15,15,0.45)",
-          border: "1px solid #ffffff22",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          borderRadius: 12,
-          padding: "0.5rem 0.6rem",
-          boxShadow: "0 8px 32px #000a"
-        }}>
-          <input
-            type="search"
-            placeholder="Buscar equipo o canal..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            style={{
-              flex: 1,
-              minWidth: 180,
-              background: "rgba(0,0,0,0.25)",
-              border: "1px solid #ffffff22",
-              borderRadius: 10,
-              padding: "0.55rem 0.7rem",
-              color: "#fff",
-              outline: "none",
-              fontWeight: 700,
-              letterSpacing: 0.3
-            }}
-          />
-          <select
-            value={platform}
-            onChange={(e) => setPlatform(e.target.value)}
-            title="Filtrar por plataforma"
-            style={{
-              background: "rgba(0,0,0,0.25)",
-              border: "1px solid #ffffff22",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 10,
-              padding: "0.55rem 0.7rem",
-              outline: "none",
-              letterSpacing: 0.4
-            }}
-          >
+      <motion.div initial="hidden" animate="visible" variants={fadeVariants} style={{ padding: '6.5rem 0 2.5rem 0', position: 'relative', zIndex: 3, maxWidth: 1200, margin: '0 auto' }}>
+        <h1 style={{ color: '#fff', fontWeight: 900, fontSize: '2.2rem', letterSpacing: '2px', textAlign: 'center', marginBottom: '2rem', textShadow: '2px 2px 12px #000b' }}>
+          <span style={{ background: 'linear-gradient(90deg, #e25822 60%, #fff 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Equipos del Torneo</span>
+        </h1>
+
+        <div className="filters-panel">
+          <input type="search" placeholder="Buscar equipo o canal..." value={query} onChange={(e) => setQuery(e.target.value)} className="search-input" />
+          <select value={platform} onChange={(e) => setPlatform(e.target.value)} className="select-input" title="Filtrar por plataforma">
             <option value="all">Todas</option>
             <option value="twitch">Twitch</option>
             <option value="kick">Kick</option>
           </select>
-          <label style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#fff", fontWeight: 800, fontSize: 13 }}>
-            <input
-              type="checkbox"
-              checked={confirmedOnly}
-              onChange={(e) => setConfirmedOnly(e.target.checked)}
-            />
-            Confirmados
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#fff', fontWeight: 800, fontSize: 13 }}>
+            <input type="checkbox" checked={confirmedOnly} onChange={(e) => setConfirmedOnly(e.target.checked)} /> Confirmados
           </label>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            title="Ordenar"
-            style={{
-              background: "rgba(0,0,0,0.25)",
-              border: "1px solid #ffffff22",
-              color: "#fff",
-              fontWeight: 800,
-              borderRadius: 10,
-              padding: "0.55rem 0.7rem",
-              outline: "none",
-              letterSpacing: 0.4
-            }}
-          >
+          <select value={sort} onChange={(e) => setSort(e.target.value)} className="select-input" title="Ordenar">
             <option value="featured">Destacados</option>
             <option value="az">A-Z</option>
           </select>
         </div>
-      </div>
 
-      {/* Contenido */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeVariants}
-        style={{
-          padding: "6.5rem 0 2.5rem 0",
-          position: "relative",
-          zIndex: 3,
-          maxWidth: 1200,
-          margin: "0 auto"
-        }}
-      >
-        <h1 style={{
-          color: "#fff",
-          fontWeight: 900,
-          fontSize: "2.2rem",
-          letterSpacing: "2px",
-          textAlign: "center",
-          marginBottom: "2rem",
-          textShadow: "2px 2px 12px #000b"
-        }}>
-          <span style={{
-            background: "linear-gradient(90deg, #e25822 60%, #fff 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent"
-          }}>
-            Equipos del Torneo
-          </span>
-        </h1>
-
-        {/* Grid de equipos */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeVariants}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "1.6rem",
-            maxWidth: 1100,
-            margin: "0 auto"
-          }}
-        >
+        <motion.div initial="hidden" animate="visible" variants={fadeVariants} className="team-grid">
           {filtered.map((team, idx) => (
             <TeamCard key={team.name + idx} team={team} idx={idx} onOpen={setOpenTeam} />
           ))}
         </motion.div>
 
-        {/* Estado vacío */}
         {filtered.length === 0 && (
-          <div style={{ color: "#fff", opacity: 0.85, textAlign: "center", marginTop: 24, fontWeight: 700 }}>
-            No se encontraron equipos con esos filtros.
-          </div>
+          <div className="empty-state">No se encontraron equipos con esos filtros.</div>
         )}
       </motion.div>
 
-      {/* Modal */}
       {openTeam && <TeamModal team={openTeam} onClose={() => setOpenTeam(null)} />}
-
-      {/* --- CSS RESPONSIVO --- */}
-      <style>
-        {`
-          @media (max-width: 1100px) {
-            div[style*="grid-template-columns: repeat(4"] {
-              grid-template-columns: repeat(3, 1fr) !important;
-            }
-          }
-          @media (max-width: 900px) {
-            h1 { font-size: 1.6rem !important; }
-            div[style*="grid-template-columns: repeat(3"] {
-              grid-template-columns: repeat(2, 1fr) !important;
-            }
-          }
-          @media (max-width: 600px) {
-            div[style*="grid-template-columns: repeat(2"] {
-              grid-template-columns: 1fr !important;
-            }
-          }
-        `}
-      </style>
-      {/* --- FIN CSS RESPONSIVO --- */}
     </div>
   );
 };
