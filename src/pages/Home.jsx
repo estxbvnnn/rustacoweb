@@ -21,6 +21,15 @@ import srLogo from '../assets/img/srlogo.png';
 import rustypotlogo from '../assets/img/rustypotlogo.png';
 import logodiscord2 from '../assets/img/logodiscord2.png';
 
+// Admin steam IDs
+const ADMIN_STEAM_IDS = [
+  '76561198416933402',
+  '76561198067186042',
+  '76561199167906871',
+  '76561199220103836',
+  '76561198301561047'
+];
+
 const flagChile = "https://flagcdn.com/w20/cl.png";
 const flagUSA = "https://flagcdn.com/w20/us.png";
 const flagBrazil = "https://flagcdn.com/w20/br.png";
@@ -31,7 +40,7 @@ const translations = {
   pt: { formato: 'Formato', sobre: 'Sobre o Rustaco', equipos: 'Equipes', verReglas: 'Ver Regras' }
 };
 
-function TopBar({ lang, setLang }) {
+function TopBar({ lang, setLang, user, onLogout }) {
   return (
     <div className="TopBar" style={{ position: 'sticky', top: 0, zIndex: 200 }}>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.8rem 1rem' }}>
@@ -51,10 +60,22 @@ function TopBar({ lang, setLang }) {
             <button className="icon-btn flag" onClick={() => setLang('en')} title="English"><img src={flagUSA} alt="EN" /></button>
             <button className="icon-btn flag" onClick={() => setLang('pt')} title="Português"><img src={flagBrazil} alt="PT" /></button>
           </div>
-          <a href="https://www.rustaco.site/auth/steam" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(90deg,#23201a 60%,#27ae60)', color: '#fff', padding: '0.45rem 0.6rem', borderRadius: 10, textDecoration: 'none', fontWeight: 700 }}>
-            <span className="icon-btn steam"><img src={steamlogo} alt="Steam" /></span>
-            <span style={{ marginLeft: 6 }}>Login Steam</span>
-          </a>
+          {/* Mostrar perfil si está logeado */}
+          {user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <img src={user.avatar} alt="avatar" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover', border: '2px solid #27ae60' }} />
+              <span style={{ color: '#fff', fontWeight: 700 }}>{user.personaname}</span>
+              <button onClick={onLogout} style={{ background: 'none', border: 'none', color: '#fff', fontWeight: 700, cursor: 'pointer', padding: '0.4rem 0.7rem', borderRadius: 8 }}>Logout</button>
+              {ADMIN_STEAM_IDS.includes(user.steamid) && (
+                <Link to="/admin" className="nav-btn btn-primary" style={{ padding: '0.4rem 0.7rem', background: '#e67e22' }}>Admin Panel</Link>
+              )}
+            </div>
+          ) : (
+            <a href="https://www.rustaco.site/auth/steam" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(90deg,#23201a 60%,#27ae60)', color: '#fff', padding: '0.45rem 0.6rem', borderRadius: 10, textDecoration: 'none', fontWeight: 700 }}>
+              <span className="icon-btn steam"><img src={steamlogo} alt="Steam" /></span>
+              <span style={{ marginLeft: 6 }}>Login Steam</span>
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -77,6 +98,9 @@ export default function Home() {
   const [openTeam, setOpenTeam] = useState(null);
   const history = useHistory();
   const [showAuthNotice, setShowAuthNotice] = useState(false);
+
+  // Estado para usuario autenticado
+  const [user, setUser] = useState(null);
 
   // Countdown state
   const [timeLeft, setTimeLeft] = useState(() => {
@@ -119,26 +143,38 @@ export default function Home() {
     return { days, hours, minutes, seconds };
   };
 
-  // Check authentication via backend API; returns true if logged
+  // Check authentication via backend API; returns user object if logged
   const checkAuth = async () => {
     try {
       const res = await fetch('/api/user', { credentials: 'include' });
-      if (!res.ok) return false;
+      if (!res.ok) return null;
       const j = await res.json();
-      return Boolean(j && j.steamid);
+      return j && j.steamid ? j : null;
     } catch (e) {
-      return false;
+      return null;
     }
   };
 
+  // Al montar, obtener usuario
+  React.useEffect(() => {
+    checkAuth().then(u => setUser(u));
+  }, []);
+
+  // Logout
+  const handleLogout = async () => {
+    try {
+      await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+    } catch (e) {}
+    setUser(null);
+    window.location.reload();
+  };
+
   const handleApply = async () => {
-    const ok = await checkAuth();
-    if (ok) {
+    const u = await checkAuth();
+    if (u) {
       history.push('/applys');
     } else {
-      // show small notice prompting to login first
       setShowAuthNotice(true);
-      // auto-hide after 6s
       setTimeout(() => setShowAuthNotice(false), 6000);
     }
   };
@@ -156,7 +192,7 @@ export default function Home() {
   return (
     <div className="home-dark">
       <AnimatedBackground />
-      <TopBar lang={lang} setLang={setLang} />
+      <TopBar lang={lang} setLang={setLang} user={user} onLogout={handleLogout} />
       {/* Banner Discord y Rustypot a la izquierda, marcados pero sin colores */}
       <div
         style={{
