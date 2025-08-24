@@ -7,7 +7,77 @@ const ADMIN_STEAM_IDS = [
   '76561199167906871',
   '76561199220103836',
   '76561198301561047'
-]; // Agrega ambos SteamID
+];
+
+function AdminPanelMenu({ active, setActive }) {
+  return (
+    <div style={{
+      display: 'flex',
+      gap: 18,
+      justifyContent: 'center',
+      marginBottom: 32,
+      marginTop: 8
+    }}>
+      <button
+        onClick={() => setActive('dashboard')}
+        className={active === 'dashboard' ? 'active' : ''}
+        style={{
+          padding: '0.7rem 2.2rem',
+          fontWeight: 800,
+          fontSize: '1.08rem',
+          borderRadius: 10,
+          border: 'none',
+          background: active === 'dashboard' ? '#27ae60' : '#23201a',
+          color: '#fff',
+          boxShadow: active === 'dashboard' ? '0 2px 8px #27ae60' : '0 2px 8px #0007',
+          cursor: 'pointer',
+          letterSpacing: '1px',
+          transition: 'background 0.2s'
+        }}
+      >
+        Dashboard
+      </button>
+      <button
+        onClick={() => setActive('users')}
+        className={active === 'users' ? 'active' : ''}
+        style={{
+          padding: '0.7rem 2.2rem',
+          fontWeight: 800,
+          fontSize: '1.08rem',
+          borderRadius: 10,
+          border: 'none',
+          background: active === 'users' ? '#27ae60' : '#23201a',
+          color: '#fff',
+          boxShadow: active === 'users' ? '0 2px 8px #27ae60' : '0 2px 8px #0007',
+          cursor: 'pointer',
+          letterSpacing: '1px',
+          transition: 'background 0.2s'
+        }}
+      >
+        Usuarios
+      </button>
+      <button
+        onClick={() => setActive('applys')}
+        className={active === 'applys' ? 'active' : ''}
+        style={{
+          padding: '0.7rem 2.2rem',
+          fontWeight: 800,
+          fontSize: '1.08rem',
+          borderRadius: 10,
+          border: 'none',
+          background: active === 'applys' ? '#27ae60' : '#23201a',
+          color: '#fff',
+          boxShadow: active === 'applys' ? '0 2px 8px #27ae60' : '0 2px 8px #0007',
+          cursor: 'pointer',
+          letterSpacing: '1px',
+          transition: 'background 0.2s'
+        }}
+      >
+        Solicitudes
+      </button>
+    </div>
+  );
+}
 
 const ApplyDetailModal = ({ apply, user, onClose }) => {
   if (!apply) return null;
@@ -153,6 +223,7 @@ const Admin = () => {
   const [loadingApplys, setLoadingApplys] = useState(true);
   const [deletingIdx, setDeletingIdx] = useState(null);
   const [showApplyDetail, setShowApplyDetail] = useState(null);
+  const [activePanel, setActivePanel] = useState('dashboard');
   const history = useHistory();
 
   useEffect(() => {
@@ -270,146 +341,163 @@ const Admin = () => {
       }}>
         Admin Panel
       </h1>
-      <div style={{
-        background: 'linear-gradient(90deg, #23201a 70%, #27ae60 100%)',
-        borderRadius: 14,
-        boxShadow: '0 2px 12px #27ae6088',
-        padding: '1.2rem 1rem',
-        marginBottom: '2.5rem',
-        fontSize: '1.18rem',
-        fontWeight: 600,
-        color: '#fff',
-        letterSpacing: '1px',
-        textShadow: '0 1px 8px #000a',
-        border: '1.5px solid #27ae60cc'
-      }}>
-        Bienvenido, {user.name} <br />
-        Aquí puedes gestionar el evento y ver información exclusiva de administración.
-      </div>
-      {/* Usuarios autenticados por Steam */}
-      <div style={{
-        margin: '2.5rem 0 0 0',
-        background: '#23201a',
-        borderRadius: 18,
-        boxShadow: '0 2px 12px #0007',
-        padding: '1.2rem 1rem',
-        color: '#fff',
-        fontFamily: 'Montserrat, Arial, sans-serif'
-      }}>
-        <h2 style={{ color: '#e25822', fontWeight: 800, fontSize: '1.3rem', marginBottom: 18 }}>
-          Usuarios registrados por Steam
-        </h2>
-        {loadingUsers ? (
-          <div>Cargando usuarios...</div>
-        ) : users.length === 0 ? (
-          <div>No hay usuarios registrados aún.</div>
-        ) : (
-          <table style={{
-            width: '100%',
-            color: '#fff',
-            borderCollapse: 'collapse',
-            fontSize: '1rem',
-            background: '#181818',
-            borderRadius: 12,
-            overflow: 'hidden',
-            marginBottom: 24
-          }}>
-            <thead style={{ background: '#23201a' }}>
-              <tr>
-                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Avatar</th>
-                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>SteamID</th>
-                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Nombre</th>
-                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Último login</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(u => (
-                <tr key={u.steamid} style={{ background: '#23201a' }}>
-                  <td style={{ padding: 10 }}>
-                    <img src={u.avatar} alt="avatar" style={{ width: 38, height: 38, borderRadius: '50%', border: '2px solid #7289da' }} />
-                  </td>
-                  <td style={{ padding: 10 }}>{u.steamid}</td>
-                  <td style={{ padding: 10 }}>{u.name}</td>
-                  <td style={{ padding: 10 }}>{u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
+      <AdminPanelMenu active={activePanel} setActive={setActivePanel} />
+
+      {activePanel === 'dashboard' && (
+        <div style={{
+          background: '#23201a',
+          borderRadius: 14,
+          boxShadow: '0 2px 12px #27ae6088',
+          padding: '2rem 1.5rem',
+          marginBottom: '2.5rem',
+          fontSize: '1.18rem',
+          fontWeight: 600,
+          color: '#fff',
+          letterSpacing: '1px',
+          textShadow: '0 1px 8px #000a',
+          border: '1.5px solid #27ae60cc'
+        }}>
+          <div style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: 12 }}>
+            Bienvenido, {user.name}
+          </div>
+          <div>
+            <span style={{ color: '#b3cfff' }}>Usuarios registrados:</span> {users.length}
+            <span style={{ marginLeft: 24, color: '#e25822' }}>Solicitudes:</span> {applys.length}
+          </div>
+          <div style={{ marginTop: 18, fontSize: '1.08rem', color: '#fff', opacity: 0.85 }}>
+            Usa el menú superior para gestionar usuarios y solicitudes.
+          </div>
+        </div>
+      )}
+
+      {activePanel === 'users' && (
+        <div style={{
+          margin: '2.5rem 0 0 0',
+          background: '#23201a',
+          borderRadius: 18,
+          boxShadow: '0 2px 12px #0007',
+          padding: '1.2rem 1rem',
+          color: '#fff',
+          fontFamily: 'Montserrat, Arial, sans-serif'
+        }}>
+          <h2 style={{ color: '#e25822', fontWeight: 800, fontSize: '1.3rem', marginBottom: 18 }}>
+            Usuarios registrados por Steam
+          </h2>
+          {loadingUsers ? (
+            <div>Cargando usuarios...</div>
+          ) : users.length === 0 ? (
+            <div>No hay usuarios registrados aún.</div>
+          ) : (
+            <table style={{
+              width: '100%',
+              color: '#fff',
+              borderCollapse: 'collapse',
+              fontSize: '1rem',
+              background: '#181818',
+              borderRadius: 12,
+              overflow: 'hidden',
+              marginBottom: 24
+            }}>
+              <thead style={{ background: '#23201a' }}>
+                <tr>
+                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Avatar</th>
+                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>SteamID</th>
+                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Nombre</th>
+                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Último login</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-      {/* Solicitudes de inscripción */}
-      <div style={{
-        margin: '2.5rem 0 0 0',
-        background: '#23201a',
-        borderRadius: 18,
-        boxShadow: '0 2px 12px #0007',
-        padding: '1.2rem 1rem',
-        color: '#fff',
-        fontFamily: 'Montserrat, Arial, sans-serif'
-      }}>
-        <h2 style={{ color: '#27ae60', fontWeight: 800, fontSize: '1.3rem', marginBottom: 18 }}>
-          Solicitudes de inscripción
-        </h2>
-        {loadingApplys ? (
-          <div>Cargando solicitudes...</div>
-        ) : applys.length === 0 ? (
-          <div>No hay solicitudes de inscripción aún.</div>
-        ) : (
-          <table style={{
-            width: '100%',
-            color: '#fff',
-            borderCollapse: 'collapse',
-            fontSize: '1rem',
-            background: '#181818',
-            borderRadius: 12,
-            overflow: 'hidden'
-          }}>
-            <thead style={{ background: '#23201a' }}>
-              <tr>
-                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Equipo</th>
-                <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Postulante</th>
-                <th style={{ textAlign: 'center', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {applys.map((a, idx) => (
-                <tr key={idx} style={{ background: idx % 2 === 0 ? '#23201a' : '#181818' }}>
-                  <td style={{ padding: 10 }}>{a.teamName}</td>
-                  <td style={{ padding: 10 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <img src={users.find(u => u.steamid === a.submittedBy)?.avatar} alt="avatar" style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid #7289da' }} />
-                      <span style={{ color: '#b3cfff', fontWeight: 700 }}>{a.submittedByName}</span>
-                      <span style={{ color: '#fff', fontSize: '0.95rem' }}>({a.submittedBy})</span>
-                    </div>
-                  </td>
-                  <td style={{ padding: 10, textAlign: 'center' }}>
-                    <button
-                      onClick={() => setShowApplyDetail({ apply: a, user: users.find(u => u.steamid === a.submittedBy) })}
-                      style={{
-                        background: 'linear-gradient(90deg, #27ae60 60%, #e25822 100%)',
-                        color: '#fff',
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        padding: '0.5rem 1.2rem',
-                        border: 'none',
-                        borderRadius: 8,
-                        boxShadow: '0 2px 8px #0007',
-                        cursor: 'pointer',
-                        letterSpacing: '1px',
-                        textDecoration: 'none',
-                        transition: 'background 0.2s, transform 0.2s',
-                        marginRight: 8
-                      }}
-                    >
-                      Ver Apply
-                    </button>
-                  </td>
+              </thead>
+              <tbody>
+                {users.map(u => (
+                  <tr key={u.steamid} style={{ background: '#23201a' }}>
+                    <td style={{ padding: 10 }}>
+                      <img src={u.avatar} alt="avatar" style={{ width: 38, height: 38, borderRadius: '50%', border: '2px solid #7289da' }} />
+                    </td>
+                    <td style={{ padding: 10 }}>{u.steamid}</td>
+                    <td style={{ padding: 10 }}>{u.name}</td>
+                    <td style={{ padding: 10 }}>{u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
+      {activePanel === 'applys' && (
+        <div style={{
+          margin: '2.5rem 0 0 0',
+          background: '#23201a',
+          borderRadius: 18,
+          boxShadow: '0 2px 12px #0007',
+          padding: '1.2rem 1rem',
+          color: '#fff',
+          fontFamily: 'Montserrat, Arial, sans-serif'
+        }}>
+          <h2 style={{ color: '#27ae60', fontWeight: 800, fontSize: '1.3rem', marginBottom: 18 }}>
+            Solicitudes de inscripción
+          </h2>
+          {loadingApplys ? (
+            <div>Cargando solicitudes...</div>
+          ) : applys.length === 0 ? (
+            <div>No hay solicitudes de inscripción aún.</div>
+          ) : (
+            <table style={{
+              width: '100%',
+              color: '#fff',
+              borderCollapse: 'collapse',
+              fontSize: '1rem',
+              background: '#181818',
+              borderRadius: 12,
+              overflow: 'hidden'
+            }}>
+              <thead style={{ background: '#23201a' }}>
+                <tr>
+                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Equipo</th>
+                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Postulante</th>
+                  <th style={{ textAlign: 'center', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Acción</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+              </thead>
+              <tbody>
+                {applys.map((a, idx) => (
+                  <tr key={idx} style={{ background: idx % 2 === 0 ? '#23201a' : '#181818' }}>
+                    <td style={{ padding: 10 }}>{a.teamName}</td>
+                    <td style={{ padding: 10 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <img src={users.find(u => u.steamid === a.submittedBy)?.avatar} alt="avatar" style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid #7289da' }} />
+                        <span style={{ color: '#b3cfff', fontWeight: 700 }}>{a.submittedByName}</span>
+                        <span style={{ color: '#fff', fontSize: '0.95rem' }}>({a.submittedBy})</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: 10, textAlign: 'center' }}>
+                      <button
+                        onClick={() => setShowApplyDetail({ apply: a, user: users.find(u => u.steamid === a.submittedBy) })}
+                        style={{
+                          background: 'linear-gradient(90deg, #27ae60 60%, #e25822 100%)',
+                          color: '#fff',
+                          fontWeight: 700,
+                          fontSize: '1rem',
+                          padding: '0.5rem 1.2rem',
+                          border: 'none',
+                          borderRadius: 8,
+                          boxShadow: '0 2px 8px #0007',
+                          cursor: 'pointer',
+                          letterSpacing: '1px',
+                          textDecoration: 'none',
+                          transition: 'background 0.2s, transform 0.2s',
+                          marginRight: 8
+                        }}
+                      >
+                        Ver Apply
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
       <button
         onClick={() => history.push('/')}
         style={{

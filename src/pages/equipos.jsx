@@ -12,6 +12,8 @@ import teamOTLogo from "../assets/img/teamlogoot.webp";
 import losmuchachoslogo from "../assets/img/losmuchachoslogo.webp";
 import teamotmainlogo from "../assets/img/teamotmainlogo.png";
 import teamlstlogo from "../assets/img/teamlstlogo.png";
+import srLogo from "../assets/img/srlogo.png";
+import logononames from "../assets/img/logononames.jpg";
 
 // Animación de fade-in
 const fadeVariants = {
@@ -163,6 +165,34 @@ export const TEAMS = [
     name: "Team LST",
     logo: teamlstlogo,
     channels: teamLSTChannels
+  },
+  {
+    name: "Team SR",
+    logo: srLogo,
+    channels: [
+      { url: "https://www.twitch.tv/kjj_j", name: "kj", tipo: "twitch" },
+      { url: "https://www.twitch.tv/lazh94", name: "lazh", tipo: "twitch" },
+      { url: "https://www.twitch.tv/xechoklez", name: "xECHOKLEz", tipo: "twitch" },
+      { url: "https://www.twitch.tv/xlarturolx", name: "arturo", tipo: "twitch" },
+      { url: "https://www.twitch.tv/king_hoppen", name: "hoppen", tipo: "twitch" },
+      { url: "https://www.twitch.tv/liontrol", name: "ares", tipo: "twitch" },
+      { url: "https://www.twitch.tv/mythear", name: "mythear", tipo: "twitch" },
+      { url: "https://www.twitch.tv/peppadig_", name: "peppa", tipo: "twitch" }
+    ]
+  },
+  {
+    name: "NONAMES",
+    logo: logononames,
+    channels: [
+      { url: "https://www.twitch.tv/trytum", name: "trytum", tipo: "twitch" },
+      { url: "https://www.twitch.tv/jita____", name: "jita____", tipo: "twitch" },
+      { url: "https://www.twitch.tv/thebanankiller03", name: "thebanankiller03", tipo: "twitch" },
+      { url: "https://www.twitch.tv/elprote", name: "elprote", tipo: "twitch" },
+      { url: "https://www.twitch.tv/moousas", name: "moousas", tipo: "twitch" },
+      { url: "https://www.twitch.tv/unluckyk0z4", name: "unluckyk0z4", tipo: "twitch" },
+      { url: "https://www.twitch.tv/ramondeverano", name: "ramondeverano", tipo: "twitch" },
+      { url: "https://www.twitch.tv/gaucho_08", name: "gaucho_08", tipo: "twitch" }
+    ]
   },
   ...Array.from({ length: 7 }, (_, i) => ({
     name: `Team ${i + 10}`

@@ -1,0 +1,111 @@
+.dark-theme-bg {
+  background: #181a20;
+  color: #e2e8f0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.dark-theme-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+
+.dark-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.dark-theme-card {
+  background: #23272f;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  padding: 2rem;
+  transition: box-shadow 0.2s;
+  border: 1px solid #2d323c;
+}
+
+.dark-theme-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+
+.dark-theme-team {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
+}
+
+.dark-theme-label {
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.dark-theme-players ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.dark-theme-player {
+  font-weight: 500;
+  color: #f1f5f9;
+  margin-right: 0.5rem;
+}
+
+.dark-theme-steamid {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-right: 0.5rem;
+}
+
+.dark-theme-twitch {
+  color: #38bdf8;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  margin-left: 0.5rem;
+}
+
+.dark-theme-date {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.dark-theme-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.dark-theme-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dark-theme-btn-approve {
+  background: #22c55e;
+  color: #fff;
+}
+
+.dark-theme-btn-approve:hover {
+  background: #16a34a;
+}
+
+.dark-theme-btn-reject {
+  background: #ef4444;
+  color: #fff;
+}
+
+.dark-theme-btn-reject:hover {
+  background: #b91c1c;
+}

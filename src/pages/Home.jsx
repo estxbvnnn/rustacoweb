@@ -17,6 +17,9 @@ import teamOTLogo from '../assets/img/teamlogoot.webp';
 import losmuchachoslogo from '../assets/img/losmuchachoslogo.webp';
 import teamotmainlogo from '../assets/img/teamotmainlogo.png';
 import teamlstlogo from '../assets/img/teamlstlogo.png';
+import srLogo from '../assets/img/srlogo.png';
+import rustypotlogo from '../assets/img/rustypotlogo.png';
+import logodiscord2 from '../assets/img/logodiscord2.png';
 
 const flagChile = "https://flagcdn.com/w20/cl.png";
 const flagUSA = "https://flagcdn.com/w20/us.png";
@@ -82,13 +85,21 @@ export default function Home() {
     return Math.max(0, target.getTime() - Date.now());
   });
 
-  // Prepare displayed teams: confirmed teams first, then alphabetical
-  const displayedTeams = [...TEAMS].slice().sort((a, b) => {
-    const aConfirmed = (a.channels || []).length > 0 ? 1 : 0;
-    const bConfirmed = (b.channels || []).length > 0 ? 1 : 0;
-    if (aConfirmed !== bConfirmed) return bConfirmed - aConfirmed; // confirmed first
-    return (a.name || '').localeCompare(b.name || '');
-  });
+  // Prepare displayed teams: custom order first, then the rest
+  const priorityOrder = [
+    "Team cG",
+    "Team Junin",
+    "Team OT",
+    "Team OT Main",
+    "Team LoS Muchacho's"
+  ];
+
+  const displayedTeams = [
+    ...priorityOrder
+      .map(name => TEAMS.find(t => t.name === name))
+      .filter(Boolean),
+    ...TEAMS.filter(t => !priorityOrder.includes(t.name))
+  ].slice(0, 16);
 
   React.useEffect(() => {
     const target = new Date(Date.UTC(2025, 8, 11, 18, 0, 0));
@@ -146,7 +157,89 @@ export default function Home() {
     <div className="home-dark">
       <AnimatedBackground />
       <TopBar lang={lang} setLang={setLang} />
-  <main style={{ position: 'relative', zIndex: 20, paddingTop: 80, paddingBottom: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', gap: 24 }}>
+      {/* Banner Discord y Rustypot a la izquierda, marcados pero sin colores */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 120,
+          left: 24,
+          zIndex: 201,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: '14px',
+          minWidth: 260,
+          maxWidth: 340
+        }}
+      >
+        <a
+          href="https://discord.rustaco.site"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: '#fff',
+            fontWeight: 800,
+            fontSize: '1.08rem',
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '12px 18px',
+            borderRadius: '12px',
+            border: '2px solid #fff',
+            background: 'none',
+            boxShadow: '0 2px 12px #0008'
+          }}
+        >
+          <img
+            src={logodiscord2}
+            alt="Discord"
+            style={{
+              width: 44,
+              height: 44,
+              marginRight: 8,
+              background: 'transparent',
+              borderRadius: '50%',
+              objectFit: 'contain'
+            }}
+          />
+          <span>¡Únete a nuestro Discord!</span>
+        </a>
+        <a
+          href="https://rustypot.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: '#fff',
+            fontWeight: 800,
+            fontSize: '1.08rem',
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '12px 18px',
+            borderRadius: '12px',
+            border: '2px solid #fff',
+            background: 'none',
+            boxShadow: '0 2px 12px #0008'
+          }}
+        >
+          <span style={{ fontWeight: 800 }}>Sponsored by</span>
+          <img
+            src={rustypotlogo}
+            alt="Rustypot Logo"
+            style={{
+              height: 44,
+              width: 144,
+              marginLeft: 8,
+              borderRadius: '50%',
+              background: 'transparent',
+              objectFit: 'contain'
+            }}
+          />
+        </a>
+      </div>
+      <main style={{ position: 'relative', zIndex: 20, paddingTop: 80, paddingBottom: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', gap: 24 }}>
         <div className="logo-grid">
           <div className="logo-spot left" aria-hidden>
             <div className="logo-glow left"></div>
@@ -232,14 +325,16 @@ export default function Home() {
               <div className="columnteams" key={(team.name||'team') + idx} role="listitem">
                 <div className="team-item team-item--v4 team-4" onClick={() => (team.channels && team.channels.length) ? setOpenTeam(team) : null} title={team.name}>
                   <a href="#" className="team-item__thumbnail" onClick={(e) => e.preventDefault()}>
-                    {/* If we have a team logo, show it as the primary image only. Otherwise keep a generic background. */}
-                    {team.logo ? (
-                      <div className="team-item__img-primary" style={{ backgroundImage: `url(${team.logo})` }} />
-                    ) : (
-                      <div className="team-item__bg-holder">
-                        <div className="team-item__bg" style={{ backgroundImage: `url(${rustgamedark})` }} />
-                      </div>
-                    )}
+                    {/* Solución: envuelve la expresión condicional en un fragmento */}
+                    <>
+                      {team.logo ? (
+                        <div className="team-item__img-primary" style={{ backgroundImage: `url(${team.logo === srLogo ? srLogo : team.logo})` }} />
+                      ) : (
+                        <div className="team-item__bg-holder">
+                          <div className="team-item__bg" style={{ backgroundImage: `url(${rustgamedark})` }} />
+                        </div>
+                      )}
+                    </>
                   </a>
                   <span className="team-item__subtitle h6">{team.channels && team.channels.length ? 'Equipo Confirmado' : 'A confirmar'}</span>
                   <h2 className="team-item__title">{team.name}</h2>
