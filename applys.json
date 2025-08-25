@@ -579,34 +579,42 @@
     "players": [
       {
         "name": "kj",
+        "steamid": "76561198022916865",
         "twitch": "https://www.twitch.tv/kjj_j"
       },
       {
         "name": "lazh",
+        "steamid": "76561198080743092",
         "twitch": "https://www.twitch.tv/lazh94"
       },
       {
         "name": "xECHOKLEz",
+        "steamid": "76561197960516323",
         "twitch": "https://www.twitch.tv/xechoklez"
       },
       {
         "name": "arturo",
+        "steamid": "76561198367081774",
         "twitch": "https://www.twitch.tv/xlarturolx"
       },
       {
         "name": "hoppen",
+        "steamid": "76561198969444993",
         "twitch": "https://www.twitch.tv/king_hoppen"
       },
       {
         "name": "ares",
+        "steamid": "76561198068446679",
         "twitch": "https://www.twitch.tv/liontrol"
       },
       {
         "name": "mythear",
+        "steamid": "76561199015483097",
         "twitch": "https://www.twitch.tv/mythear"
       },
       {
         "name": "peppa",
+        "steamid": "76561199131143004",
         "twitch": "https://www.twitch.tv/peppadig_"
       }
     ],
