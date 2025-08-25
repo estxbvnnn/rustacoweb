@@ -46,8 +46,6 @@ function TopBar({ lang, setLang, user, onLogout }) {
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.8rem 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <img src={logorustaco} alt="Rustaco" style={{ width: 56, height: 56, borderRadius: 8, objectFit: 'cover' }} />
-          {/* Logo Rustypotlogo.png al lado de Rustaco */}
-          <img src={rustypotlogo} alt="Rustypot Logo" style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover', marginLeft: 10 }} />
           <nav style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <Link to="/equipos" className="nav-btn">{translations[lang].equipos}</Link>
             <Link to="/reglas" className="nav-btn">{translations[lang].verReglas}</Link>
@@ -282,41 +280,89 @@ export default function Home() {
           <div className="logo-spot left" aria-hidden>
             <div className="logo-glow left"></div>
             <div className="logo-fill" />
-            {/* Logo Poionako: social-panel solo visible al hacer click */}
-            <div style={{ position: 'relative' }}>
+            {/* Logo Poionako: social-panel solo visible al hacer click, decorado y con botón cerrar */}
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img
                 src={poionakologo}
                 alt="Poionako"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', width: 120, height: 120, borderRadius: '50%', objectFit: 'contain' }}
                 onClick={() => {
-                  const panel = document.getElementById('poionako-social-panel');
+                  const panel = document.getElementById('poionako-info-panel');
                   if (panel) panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
                 }}
               />
               <div
-                id="poionako-social-panel"
-                className="social-panel"
+                id="poionako-info-panel"
+                className="poionako-info-panel"
                 aria-hidden
                 style={{
                   display: 'none',
-                  position: 'absolute',
-                  top: '110%',
-                  left: 0,
-                  background: '#23201a',
-                  borderRadius: 10,
-                  boxShadow: '0 2px 12px #0008',
-                  padding: '10px 18px',
+                  position: 'static',
+                  marginTop: 24,
+                  background: 'rgba(34,34,34,0.98)',
+                  borderRadius: 18,
+                  boxShadow: '0 2px 18px #000a',
+                  padding: '22px 32px',
                   zIndex: 10,
                   flexDirection: 'column',
-                  gap: '8px'
+                  gap: '18px',
+                  alignItems: 'center',
+                  minWidth: 320,
+                  maxWidth: 420,
+                  position: 'relative'
                 }}
               >
-                <a className="social-link" href="https://solo.to/poionako" target="_blank" rel="noopener noreferrer"><span className="social-icon">🔗</span><span className="social-label">Link</span></a>
-                <a className="social-link" href="https://www.youtube.com/@PoiOnako" target="_blank" rel="noopener noreferrer"><span className="social-icon">▶</span><span className="social-label">YouTube</span></a>
-                <a className="social-link" href="https://kick.com/poionako" target="_blank" rel="noopener noreferrer"><span className="social-icon">⚡</span><span className="social-label">Kick</span></a>
-                <a className="social-link" href="https://x.com/poionako" target="_blank" rel="noopener noreferrer"><span className="social-icon">✦</span><span className="social-label">X</span></a>
-                <a className="social-link" href="https://www.tiktok.com/@poionako" target="_blank" rel="noopener noreferrer"><span className="social-icon">♪</span><span className="social-label">TikTok</span></a>
-                <a className="social-link" href="https://www.instagram.com/poionako" target="_blank" rel="noopener noreferrer"><span className="social-icon">📸</span><span className="social-label">Instagram</span></a>
+                {/* Botón cerrar dentro del panel */}
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => {
+                      const panel = document.getElementById('poionako-info-panel');
+                      if (panel) panel.style.display = 'none';
+                    }}
+                    style={{
+                      background: '#e74c3c',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 6,
+                      padding: '0.25rem 0.7rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      fontSize: 16,
+                      boxShadow: '0 2px 8px #0007',
+                      lineHeight: 1,
+                      marginBottom: 8
+                    }}
+                    aria-label="Cerrar"
+                  >
+                    cerrar
+                  </button>
+                </div>
+                <div style={{ fontWeight: 900, fontSize: '1.5rem', color: '#53fc18', marginBottom: 8, textAlign: 'center', letterSpacing: 1 }}>
+                  Poionako
+                </div>
+                <div style={{ color: '#fff', fontSize: '1.08rem', textAlign: 'center', marginBottom: 8 }}>
+                  Streamer y creador de contenido. Colaborador en Rustaco II.
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+                  <a className="social-link" href="https://solo.to/poionako" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#53fc18', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    🔗 Link
+                  </a>
+                  <a className="social-link" href="https://www.youtube.com/@PoiOnako" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#e25822', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    ▶ YouTube
+                  </a>
+                  <a className="social-link" href="https://kick.com/poionako" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#9147ff', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    ⚡ Kick
+                  </a>
+                  <a className="social-link" href="https://x.com/poionako" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#23201a', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    ✦ X (Twitter)
+                  </a>
+                  <a className="social-link" href="https://www.tiktok.com/@poionako" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#ff0050', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    ♪ TikTok
+                  </a>
+                  <a className="social-link" href="https://www.instagram.com/poionako" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#fccc63', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none' }}>
+                    📸 Instagram
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -332,45 +378,89 @@ export default function Home() {
           <div className="logo-spot right" aria-hidden>
             <div className="logo-glow right"></div>
             <div className="logo-fill" />
-            {/* Usar rustypotlogo.png aún más grande */}
-            <div style={{ position: 'relative' }}>
+            {/* Usar rustypotlogo.png grande y mostrar info abajo de forma profesional, con botón para cerrar */}
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img
                 src={rustypotlogo}
                 alt="Rustypot"
                 style={{
                   cursor: 'pointer',
-                  width: 2222,
-                  height: 144,
+                  width: 420,
+                  height: 420,
                   borderRadius: '50%',
                   objectFit: 'contain'
                 }}
                 onClick={() => {
-                  const panel = document.getElementById('rustypot-social-panel');
+                  const panel = document.getElementById('rustypot-info-panel');
                   if (panel) panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
                 }}
               />
               <div
-                id="rustypot-social-panel"
-                className="social-panel"
+                id="rustypot-info-panel"
+                className="rustypot-info-panel"
                 aria-hidden
                 style={{
                   display: 'none',
-                  position: 'absolute',
-                  top: '110%',
-                  left: 0,
-                  background: '#23201a',
-                  borderRadius: 10,
-                  boxShadow: '0 2px 12px #0008',
-                  padding: '10px 18px',
+                  position: 'static',
+                  marginTop: 24,
+                  background: 'rgba(34,34,34,0.98)',
+                  borderRadius: 18,
+                  boxShadow: '0 2px 18px #000a',
+                  padding: '22px 32px',
                   zIndex: 10,
                   flexDirection: 'column',
-                  gap: '8px'
+                  gap: '18px',
+                  alignItems: 'center',
+                  minWidth: 320,
+                  maxWidth: 420,
+                  position: 'relative'
                 }}
               >
-                <a className="social-link" href="https://rustypot.com" target="_blank" rel="noopener noreferrer"><span className="social-icon">🌐</span><span className="social-label">Web</span></a>
-                <a className="social-link" href="https://x.com/RustyPot" target="_blank" rel="noopener noreferrer"><span className="social-icon">✦</span><span className="social-label">X</span></a>
-                <a className="social-link" href="https://www.instagram.com/rustypotofficial" target="_blank" rel="noopener noreferrer"><span className="social-icon">📸</span><span className="social-label">Instagram</span></a>
-                <a className="social-link" href="https://discord.com/invite/by5bykp" target="_blank" rel="noopener noreferrer"><span className="social-icon">💬</span><span className="social-label">Discord</span></a>
+                {/* Botón cerrar dentro del panel */}
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => {
+                      const panel = document.getElementById('rustypot-info-panel');
+                      if (panel) panel.style.display = 'none';
+                    }}
+                    style={{
+                      background: '#e74c3c',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 6,
+                      padding: '0.25rem 0.7rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      fontSize: 16,
+                      boxShadow: '0 2px 8px #0007',
+                      lineHeight: 1,
+                      marginBottom: 8
+                    }}
+                    aria-label="Cerrar"
+                  >
+                    cerrar
+                  </button>
+                </div>
+                <div style={{ fontWeight: 900, fontSize: '1.5rem', color: '#e25822', marginBottom: 8, textAlign: 'center', letterSpacing: 1 }}>
+                  Rustypot
+                </div>
+                <div style={{ color: '#fff', fontSize: '1.08rem', textAlign: 'center', marginBottom: 8 }}>
+                  Rustypot es el sitio #1 de apuestas con skins de Rust. Patrocinador oficial de Rustaco II.
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+                  <a className="social-link" href="https://rustypot.com" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#e25822', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    🌐 Sitio Web
+                  </a>
+                  <a className="social-link" href="https://x.com/RustyPot" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#23201a', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    ✦ X (Twitter)
+                  </a>
+                  <a className="social-link" href="https://www.instagram.com/rustypotofficial" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#9147ff', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none', marginBottom: 4 }}>
+                    📸 Instagram
+                  </a>
+                  <a className="social-link" href="https://discord.com/invite/by5bykp" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700, color: '#fff', background: '#5865F2', borderRadius: 8, padding: '10px', textAlign: 'center', textDecoration: 'none' }}>
+                    💬 Discord
+                  </a>
+                </div>
               </div>
             </div>
           </div>
