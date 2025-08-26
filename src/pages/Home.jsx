@@ -20,6 +20,7 @@ import teamlstlogo from '../assets/img/teamlstlogo.png';
 import srLogo from '../assets/img/srlogo.png';
 import rustypotlogo from '../assets/img/rustypotlogo.png';
 import logodiscord2 from '../assets/img/logodiscord2.png';
+import rustypotfree from '../assets/img/rustypotfree.png';
 
 // Admin steam IDs
 const ADMIN_STEAM_IDS = [
@@ -193,17 +194,18 @@ export default function Home() {
     <div className="home-dark">
       <AnimatedBackground />
       <TopBar lang={lang} setLang={setLang} user={user} onLogout={handleLogout} />
-      {/* Banner Discord y Rustypot a la derecha, marcados pero sin colores */}
+
+      {/* Banners Discord y Rustypot a la derecha, en columna y posición fija */}
       <div
         style={{
           position: 'fixed',
           top: 120,
-          right: 24, // <-- cambiado de 'left: 24' a 'right: 24'
+          right: 24,
           zIndex: 201,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-end', // <-- opcional, para alinear a la derecha
-          gap: '14px',
+          alignItems: 'flex-end',
+          gap: '18px',
           minWidth: 260,
           maxWidth: 340
         }}
@@ -246,37 +248,46 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           style={{
-            color: '#fff',
-            fontWeight: 800,
-            fontSize: '1.08rem',
-            textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
-            gap: '16px',
-            padding: '12px 18px',
-            borderRadius: '12px',
+            justifyContent: 'center',
+            padding: '11px 18px',
+            borderRadius: '10px',
             border: '2px solid #fff',
             background: 'none',
-            boxShadow: '0 2px 12px #0008'
+            boxShadow: '0 2px 12px #0008',
+            minHeight: 200,
+            minWidth: 290
           }}
         >
-          <span style={{ fontWeight: 800 }}>Sponsored by</span>
           <img
-            src={rustypotlogo}
-            alt="Rustypot Logo"
+            src={rustypotfree}
+            alt="Rustypot Free"
             style={{
-              height: 44,
-              width: 144,
-              marginLeft: 8,
-              borderRadius: '50%',
+              height: 200,
+              width: 'auto',
+              // borderRadius: 12, // <-- elimina el borde redondeado de la imagen
               background: 'transparent',
-              objectFit: 'contain'
+              objectFit: 'contain',
+              filter: 'brightness(1.15) drop-shadow(0 0 6px #fff8)'
             }}
           />
         </a>
       </div>
-      <main style={{ position: 'relative', zIndex: 20, paddingTop: 80, paddingBottom: 80, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', gap: 24 }}>
-        <div className="logo-grid">
+      <main style={{
+        position: 'relative',
+        zIndex: 20,
+        paddingTop: 40,
+        paddingBottom: 80,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        gap: 24,
+        width: '100%'
+      }}>
+        {/* Centraliza el logo grid */}
+        <div className="logo-grid" style={{ margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <div className="logo-spot left" aria-hidden>
             <div className="logo-glow left"></div>
             <div className="logo-fill" />
@@ -466,8 +477,23 @@ export default function Home() {
           </div>
         </div>
         {/* Event countdown and apply CTA (directly under the logos) */}
-        <section style={{ width: '100%', maxWidth: 1200, marginTop: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-          <div className="panel" style={{ padding: '14px 20px', display: 'flex', gap: 12, alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <section style={{
+          width: '100%',
+          maxWidth: 1200,
+          marginTop: 18,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 12
+        }}>
+          <div className="panel" style={{
+            padding: '14px 20px',
+            display: 'flex',
+            gap: 12,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column'
+          }}>
             <div className="countdown-panel">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div className="countdown-title">{lang === 'es' ? 'Cuenta regresiva hasta Rustaco II' : lang === 'en' ? 'Countdown to Rustaco II' : 'Contagem regressiva para Rustaco II'}</div>
@@ -501,7 +527,31 @@ export default function Home() {
             </div>
 
           <div style={{ display: 'flex', gap: 12, flexDirection: 'column', alignItems: 'center' }}>
-            <button onClick={handleApply} className="btn-primary">{lang === 'es' ? 'Postula al Evento ya' : lang === 'en' ? 'Apply to Event Now' : 'Postule ao Evento já'}</button>
+            <button
+              onClick={handleApply}
+              className="btn-primary"
+              style={{
+                background: '#000000',
+                color: '#fff',
+                fontWeight: 700,
+                border: 'none',
+                borderRadius: 10,
+                padding: '0.7rem 1.4rem',
+                boxShadow: `
+                  inset 0 2px 8px #101417,
+                  inset 0 1px 4px #111518,
+                  inset 0 -2px 8px #111517,
+                  0 2px 12px #101418,
+                  0 1px 6px #101416
+                `,
+                letterSpacing: 1,
+                fontSize: '1.08rem',
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}
+            >
+              {lang === 'es' ? 'Postula al Evento ya' : lang === 'en' ? 'Apply to Event Now' : 'Postule ao Evento já'}
+            </button>
             {/* If not authenticated, show small hint with login link */}
             <AuthNotice />
           </div>
@@ -509,7 +559,14 @@ export default function Home() {
         </section>
 
         {/* Teams gallery — column-style cards inspired by the provided HTML */}
-        <section className="teams-section panel" aria-label="Equipos" style={{ width: '100%', maxWidth: 1200, marginTop: 48 }}>
+        <section className="teams-section panel" aria-label="Equipos" style={{
+          width: '100%',
+          maxWidth: 1200,
+          marginTop: 48,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
           <div className="columnteam" role="list">
             {displayedTeams.slice(0, 16).map((team, idx) => (
               <div className="columnteams" key={(team.name||'team') + idx} role="listitem">
