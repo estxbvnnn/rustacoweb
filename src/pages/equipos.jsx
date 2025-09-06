@@ -14,6 +14,11 @@ import teamotmainlogo from "../assets/img/teamotmainlogo.png";
 import teamlstlogo from "../assets/img/teamlstlogo.png";
 import srLogo from "../assets/img/srlogo.png";
 import logononames from "../assets/img/logononames.jpg";
+import zsLogo from "../assets/img/ZS.png"; 
+import teamwpLogo from "../assets/img/teamwp.png";
+import teamlatampowerLogo from "../assets/img/teamlatampower.png";
+import teammantencaLogo from "../assets/img/teammanteca.png";
+import teamshLogo from "../assets/img/teamsh.jpg";
 
 // Animación de fade-in
 const fadeVariants = {
@@ -25,8 +30,8 @@ const cantosoChannels = [
   { url: "https://www.twitch.tv/lukasito", name: "Lukasito" },
   { url: "https://www.twitch.tv/adriidr", name: "Adriidr" },
   { url: "https://www.twitch.tv/02tez", name: "02tez" },
-  { url: "https://www.twitch.tv/murloc_cg", name: "Murloc_cg" },
-  { url: "https://www.twitch.tv/nadiahq", name: "Nadiahq" },
+  { url: "https://www.twitch.tv/iivyy___", name: "iivyy___" },
+  { url: "https://www.twitch.tv/silaszz_", name: "silaszz_" },
   { url: "https://www.twitch.tv/edinz_", name: "Edinz_" },
   { url: "https://www.twitch.tv/playbackkr", name: "playbackkr" },
   { url: "https://kick.com/poionako", name: "Poionako" }
@@ -80,7 +85,7 @@ const teamOTChannels = [
   { url: "https://www.twitch.tv/deathwingua", name: "deathwingua", tipo: "twitch" },
   { url: "https://www.twitch.tv/riqqeloff", name: "riqqeloff", tipo: "twitch" },
   { url: "https://www.twitch.tv/hutnik", name: "hutnik", tipo: "twitch" },
-  { url: "https://www.twitch.tv/oilrats", name: "oilrats" },
+  { url: "https://www.twitch.tv/raidorust", name: "raidorust" },
   { url: "https://www.twitch.tv/mango", name: "mango", tipo: "twitch" },
   { url: "https://www.twitch.tv/farmerlucas", name: "farmerlucas", tipo: "twitch" },
   { url: "https://www.twitch.tv/basetradetv", name: "basetradetv", tipo: "twitch" },
@@ -89,7 +94,7 @@ const teamOTChannels = [
 
 const losMuchachosChannels = [
   { url: "https://www.twitch.tv/spinky_r", name: "spinky_r", tipo: "twitch" },
-  { url: "https://www.twitch.tv/spiicyrust", name: "spiicyrust", tipo: "twitch" },
+  { url: "https://www.twitch.tv/sebbbbe", name: "sebbbbe", tipo: "twitch" },
   { url: "https://www.twitch.tv/ferb", name: "ferb", tipo: "twitch" },
   { url: "https://www.twitch.tv/snowmers", name: "snowmers", tipo: "twitch" },
   { url: "https://www.twitch.tv/vectiong", name: "vectiong", tipo: "twitch" },
@@ -181,7 +186,7 @@ export const TEAMS = [
     ]
   },
   {
-    name: "NONAMES",
+    name: "Team NoNames",
     logo: logononames,
     channels: [
       { url: "https://www.twitch.tv/trytum", name: "trytum", tipo: "twitch" },
@@ -194,9 +199,76 @@ export const TEAMS = [
       { url: "https://www.twitch.tv/gaucho_08", name: "gaucho_08", tipo: "twitch" }
     ]
   },
-  ...Array.from({ length: 7 }, (_, i) => ({
-    name: `Team ${i + 10}`
-  }))
+  {
+    name: "Team ZS",
+    logo: zsLogo,
+    channels: [
+      { url: "https://www.twitch.tv/zalexzera", name: "zalexzera", tipo: "twitch" },
+      { url: "https://www.twitch.tv/jesusqm94", name: "jesusqm94", tipo: "twitch" },
+      { url: "https://www.twitch.tv/sweetcianux", name: "sweetcianux", tipo: "twitch" },
+      { url: "https://www.twitch.tv/tvcaritas", name: "tvcaritas", tipo: "twitch" },
+      { url: "https://www.twitch.tv/jkonky9", name: "jkonky9", tipo: "twitch" },
+      { url: "https://www.twitch.tv/alessandritohz", name: "alessandritohz", tipo: "twitch" },
+      { url: "https://www.twitch.tv/buho_x", name: "buho_x", tipo: "twitch" },
+      { url: "https://www.twitch.tv/panxito_fn", name: "panxito_fn", tipo: "twitch" }
+    ]
+  },
+  {
+    name: "Team WP",
+    logo: teamwpLogo,
+    channels: [
+      { url: "https://www.twitch.tv/b3ckbr", name: "b3ckbr", tipo: "twitch" },
+      { url: "https://www.twitch.tv/lipee_brr", name: "lipee_brr", tipo: "twitch" },
+      { url: "https://kick.com/tchubi", name: "tchubi", tipo: "kick" },
+      { url: "https://kick.com/lcszika", name: "lcszika", tipo: "kick" },
+      { url: "https://www.twitch.tv/scorrei4", name: "scorrei4", tipo: "twitch" },
+      { url: "https://www.twitch.tv/profect_oficial", name: "profect_oficial", tipo: "twitch" },
+      { url: "https://www.twitch.tv/chitadobr", name: "chitadobr", tipo: "twitch" },
+      { url: "https://www.twitch.tv/alanw0w", name: "alanw0w", tipo: "twitch" }
+    ]
+  },
+  {
+    name: "Team Latam Power",
+    logo: teamlatampowerLogo,
+    channels: [
+      { url: "https://kick.com/144rust", name: "144rust", tipo: "kick" },
+      { url: "https://www.twitch.tv/s3kox", name: "s3kox", tipo: "twitch" },
+      { url: "https://www.twitch.tv/islautaarg00", name: "islautaarg00", tipo: "twitch" },
+      { url: "https://twitch.tv/blood__rust", name: "blood__rust", tipo: "twitch" },
+      { url: "https://www.twitch.tv/samuzineo", name: "samuzineo", tipo: "twitch" },
+      { url: "https://www.twitch.tv/rushhrust", name: "rushhrust", tipo: "twitch" },
+      { url: "https://www.twitch.tv/er4zo_", name: "er4zo_", tipo: "twitch" },
+      { url: "https://www.twitch.tv/tinigoo", name: "tinigoo", tipo: "twitch" }
+    ]
+  },
+  {
+    name: "Team Manteca",
+    logo: teammantencaLogo,
+    channels: [
+      { url: "https://kick.com/pyr4x", name: "pyr4x", tipo: "kick" },
+      { url: "https://kick.com/finooos", name: "finooos", tipo: "kick" },
+      { url: "https://www.twitch.tv/Zeycce", name: "Zeycce", tipo: "twitch" },
+      { url: "https://www.twitch.tv/jjoacoantissapo", name: "jjoacoantissapo", tipo: "twitch" },
+      { url: "https://kick.com/zeritoo", name: "zeritoo", tipo: "kick" },
+      { url: "https://www.twitch.tv/fitoo__", name: "fitoo__", tipo: "twitch" },
+      { url: "https://www.twitch.tv/oilrat3", name: "oilrat3", tipo: "twitch" },
+      { url: "https://kick.com/facecheckl", name: "facecheckl", tipo: "kick" }
+    ]
+  },
+  {
+    name: "Team sH",
+    logo: teamshLogo,
+    channels: [
+      { url: "https://www.twitch.tv/rusitohhh", name: "rusitohhh", tipo: "twitch" },
+      { url: "https://www.twitch.tv/240hz_____", name: "240hz_____", tipo: "twitch" },
+      { url: "https://www.twitch.tv/kixonee", name: "kixonee", tipo: "twitch" },
+      { url: "https://www.twitch.tv/zeiikzz", name: "zeiikzz", tipo: "twitch" },
+      { url: "https://www.twitch.tv/mrzeu5", name: "mrzeu5", tipo: "twitch" },
+      { url: "https://www.twitch.tv/maletaclub", name: "maletaclub", tipo: "twitch" },
+      { url: "https://www.twitch.tv/wreiken", name: "wreiken", tipo: "twitch" },
+      { url: "https://www.twitch.tv/rodrezz", name: "rodrezz", tipo: "twitch" }
+    ]
+  }
 ];
 
 // Utilidad: detectar plataforma por URL si no viene en 'tipo'
@@ -248,8 +320,25 @@ const TeamCard = ({ team, idx, onOpen }) => {
 
       <div className="team-header">
         {team.logo && (
-          <div className="team-logo">
-            <img src={team.logo} alt={`${team.name} Logo`} loading="lazy" style={{ width: 56, height: 56, borderRadius: '50%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} />
+          // reemplazado: wrapper circular con overflow; zoom sólo para Team latampower
+          <div className="team-logo" style={{ width: 56, height: 56, borderRadius: '50%', overflow: 'hidden', display: 'inline-block' }}>
+            {team.name === "Team latampower" ? (
+              <img
+                src={team.logo}
+                alt={`${team.name} Logo`}
+                loading="lazy"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.6)', transformOrigin: 'center' }}
+                onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+              />
+            ) : (
+              <img
+                src={team.logo}
+                alt={`${team.name} Logo`}
+                loading="lazy"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
+              />
+            )}
           </div>
         )}
         <div>
@@ -396,4 +485,3 @@ const Equipos = () => {
 };
 
 export default Equipos;
-

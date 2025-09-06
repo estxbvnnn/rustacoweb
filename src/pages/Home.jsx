@@ -21,6 +21,11 @@ import srLogo from '../assets/img/srlogo.png';
 import rustypotlogo from '../assets/img/rustypotlogo.png';
 import logodiscord2 from '../assets/img/logodiscord2.png';
 import rustypotfree from '../assets/img/rustypotfree.png';
+import teamwp from '../assets/img/teamwp.png';
+import teamlatampower from '../assets/img/teamlatampower.png';
+import teammantenca from '../assets/img/teammanteca.png';
+import teamsh from '../assets/img/teamsh.jpg';
+import { TEAMS, TeamModal } from './equipos';
 
 // Admin steam IDs
 const ADMIN_STEAM_IDS = [
@@ -91,8 +96,6 @@ function AnimatedBackground() {
     </div>
   );
 }
-
-import { TEAMS, TeamModal } from './equipos';
 
 export default function Home() {
   const [lang, setLang] = useState('es');
@@ -528,7 +531,7 @@ export default function Home() {
 
           <div style={{ display: 'flex', gap: 12, flexDirection: 'column', alignItems: 'center' }}>
             <button
-              onClick={handleApply}
+              disabled
               className="btn-primary"
               style={{
                 background: '#000000',
@@ -546,17 +549,63 @@ export default function Home() {
                 `,
                 letterSpacing: 1,
                 fontSize: '1.08rem',
-                cursor: 'pointer',
+                cursor: 'not-allowed',
+                opacity: 0.6,
                 transition: 'background 0.2s'
               }}
+              title="Aplicaciones cerradas"
             >
-              {lang === 'es' ? 'Postula al Evento ya' : lang === 'en' ? 'Apply to Event Now' : 'Postule ao Evento já'}
+              Aplicaciones Cerradas!
             </button>
             {/* If not authenticated, show small hint with login link */}
             <AuthNotice />
           </div>
           </div>
         </section>
+
+        {/* Inicio/Fin del evento (decorado) */}
+        <div style={{ marginTop: 14, width: '100%', maxWidth: 820, display: 'flex', justifyContent: 'center' }}>
+          <div
+            role="note"
+            aria-label="Fechas del evento"
+            style={{
+              width: '100%',
+              background: 'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
+              borderRadius: 14,
+              padding: '12px 16px',
+              boxShadow: '0 8px 28px rgba(0,0,0,0.55)',
+              border: '1px solid rgba(255,255,255,0.04)',
+              display: 'flex',
+              gap: 12,
+              alignItems: 'center',
+              color: '#e6f7e6'
+            }}
+          >
+            <div style={{ width: 56, height: 56, borderRadius: 12, background: 'linear-gradient(135deg,#e25822 0,#53fc18 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, boxShadow: '0 6px 18px rgba(0,0,0,0.6)' }}>
+              📅
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+              <div style={{ fontWeight: 900, fontSize: 15, color: '#fff' }}>
+                {lang === 'es' ? 'Rustaco II — Fechas del evento' : lang === 'en' ? 'Rustaco II — Event dates' : 'Rustaco II — Datas do evento'}
+              </div>
+
+              <div style={{ display: 'flex', gap: 18, alignItems: 'center', marginTop: 8, flexWrap: 'wrap', color: '#dfe7ee' }}>
+                <div style={{ minWidth: 160 }}>
+                  <div style={{ fontSize: 12, opacity: 0.9 }}>{lang === 'es' ? 'Inicio' : lang === 'en' ? 'Start' : 'Início'}</div>
+                  <div style={{ fontWeight: 800 }}>{lang === 'es' ? 'Jue 11 Sep — 15:00 (GMT-3)' : lang === 'en' ? 'Thu 11 Sep — 15:00 (GMT-3)' : 'Qui 11 Set — 15:00 (GMT-3)'}</div>
+                </div>
+
+                <div style={{ width: 1, height: 44, background: 'rgba(255,255,255,0.06)' }} />
+
+                <div style={{ minWidth: 160 }}>
+                  <div style={{ fontSize: 12, opacity: 0.9 }}>{lang === 'es' ? 'Fin' : lang === 'en' ? 'End' : 'Fim'}</div>
+                  <div style={{ fontWeight: 800 }}>{lang === 'es' ? 'Dom 14 Sep' : lang === 'en' ? 'Sun 14 Sep' : 'Dom 14 Set'}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Teams gallery — column-style cards inspired by the provided HTML */}
         <section className="teams-section panel" aria-label="Equipos" style={{
@@ -575,7 +624,14 @@ export default function Home() {
                     {/* Solución: envuelve la expresión condicional en un fragmento */}
                     <>
                       {team.logo ? (
-                        <div className="team-item__img-primary" style={{ backgroundImage: `url(${team.logo === srLogo ? srLogo : team.logo})` }} />
+                        <div
+                          className="team-item__img-primary"
+                          style={{
+                            backgroundImage: `url(${team.logo === srLogo ? srLogo : team.logo})`,
+                            backgroundPosition: 'center',
+                            backgroundSize: team.name === "Team Latam Power" ? '120%' : 'cover'
+                          }}
+                        />
                       ) : (
                         <div className="team-item__bg-holder">
                           <div className="team-item__bg" style={{ backgroundImage: `url(${rustgamedark})` }} />
