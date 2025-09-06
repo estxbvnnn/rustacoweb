@@ -253,28 +253,32 @@ export default function Home() {
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            padding: '11px 18px',
-            borderRadius: '10px',
-            border: '2px solid #fff',
-            background: 'none',
-            boxShadow: '0 2px 12px #0008',
-            minHeight: 200,
-            minWidth: 290
+            gap: 12,
+            padding: '12px 16px',
+            borderRadius: 12,
+            border: '2px solid rgba(255,255,255,0.12)',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
+            boxShadow: '0 6px 18px rgba(0,0,0,0.55)',
+            minHeight: 88,
+            minWidth: 260,
+            textDecoration: 'none'
           }}
         >
           <img
-            src={rustypotfree}
-            alt="Rustypot Free"
+            src={rustypotlogo}
+            alt="Rustypot"
             style={{
-              height: 200,
+              height: 56,
               width: 'auto',
-              // borderRadius: 12, // <-- elimina el borde redondeado de la imagen
               background: 'transparent',
               objectFit: 'contain',
-              filter: 'brightness(1.15) drop-shadow(0 0 6px #fff8)'
+              borderRadius: 8,
+              boxShadow: '0 6px 20px rgba(0,0,0,0.5)'
             }}
           />
+          <div style={{ display: 'flex', flexDirection: 'column', color: '#fff' }}>
+            <span style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>Sponsored by rustypotlogo.png</span>
+          </div>
         </a>
       </div>
       <main style={{
