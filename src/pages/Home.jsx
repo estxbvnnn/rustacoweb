@@ -264,21 +264,10 @@ export default function Home() {
             textDecoration: 'none'
           }}
         >
-          <img
-            src={rustypotlogo}
-            alt="Rustypot"
-            style={{
-              height: 56,
-              width: 'auto',
-              background: 'transparent',
-              objectFit: 'contain',
-              borderRadius: 8,
-              boxShadow: '0 6px 20px rgba(0,0,0,0.5)'
-            }}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', color: '#fff' }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>Sponsored by rustypotlogo.png</span>
-          </div>
+           <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#fff' }}>
+             <span style={{ fontSize: 16, fontWeight: 800, color: '#fff' }}>Sponsored by</span>
+             <img src={rustypotlogo} alt="Rustypot logo" style={{ height: 28, width: 'auto', objectFit: 'contain', filter: 'brightness(1.05)' }} />
+           </div>
         </a>
       </div>
       <main style={{
