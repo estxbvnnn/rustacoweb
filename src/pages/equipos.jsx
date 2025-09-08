@@ -20,7 +20,6 @@ import teamlatampowerLogo from "../assets/img/teamlatampower.png";
 import teammantencaLogo from "../assets/img/teammanteca.png";
 import teamshLogo from "../assets/img/teamsh.jpg";
 
-// Animación de fade-in
 const fadeVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.39, 0.575, 0.565, 1] } }
@@ -245,7 +244,7 @@ export const TEAMS = [
     name: "Team Manteca",
     logo: teammantencaLogo,
     channels: [
-      { url: "https://kick.com/pyr4x", name: "pyr4x", tipo: "kick" },
+      { url: "https://kick.com/uruguayo28", name: "uruguayo28", tipo: "kick" },
       { url: "https://kick.com/finooos", name: "finooos", tipo: "kick" },
       { url: "https://www.twitch.tv/Zeycce", name: "Zeycce", tipo: "twitch" },
       { url: "https://www.twitch.tv/jjoacoantissapo", name: "jjoacoantissapo", tipo: "twitch" },
