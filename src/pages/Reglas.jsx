@@ -605,7 +605,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>No está permitido sobrepasar los límites de la zona asignada, incluyendo la zona de huerto.</span>
           </li>
           <li>
-            El <b>TC (armario principal)</b> de la base main debe ser accesible en todo momento. Solo puede estar protegido por puertas o ventanas, <b>no puede estar completamente cerrado ni grifeado</b>.
+            El <b>TC (armario principal)</b> de la base main y del huerto/garage debe ser accesible en todo momento. Solo puede estar protegido por puertas o ventanas, <b>no puede estar completamente cerrado ni grifeado</b>.
           </li>
           <li>
             El <b>TC</b> puede ser movido en caso de ser necesario, pero <b>debe solicitarse el cambio a la administración</b>. <br />
@@ -629,7 +629,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>It is not allowed to exceed the limits of the assigned area, including the garden area.</span>
           </li>
           <li>
-            The <b>TC (main cabinet)</b> of the main base must be accessible at all times. It can only be protected by doors or windows, <b>it cannot be completely closed or grifed</b>.
+            The <b>TC (main cabinet)</b> of the main base and the garden/garage must be accessible at all times. It can only be protected by doors or windows, <b>it cannot be completely closed or grifed</b>.
           </li>
           <li>
             The <b>TC</b> can be moved if necessary, but <b>the change must be requested from the administration</b>. <br />
@@ -653,7 +653,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>Não é permitido ultrapassar os limites da área designada, incluindo a área do jardim.</span>
           </li>
           <li>
-            O <b>TC (armário principal)</b> da base principal deve ser acessível o tempo todo. Pode estar protegido apenas por portas ou janelas, <b>não pode estar completamente fechado ou grifado</b>.
+            O <b>TC (armário principal)</b> da base principal e do huerto/garage deve ser acessível o tempo todo. Pode estar protegido apenas por portas ou janelas, <b>não pode estar completamente fechado ou grifado</b>.
           </li>
           <li>
             O <b>TC</b> pode ser movido se necessário, mas <b>a mudança deve ser solicitada à administração</b>. <br />
@@ -1000,6 +1000,12 @@ const reglas = [
           <br />
           Las alianzas (merge) están permitidas únicamente para raideos, con un máximo de 3 equipos aliados. No se permite el merge raid de más de 3 equipos bajo ninguna circunstancia.
           <br />
+          <br />
+          La base del huerto/garage podrá ser raideada a partir de la <b>Era Tier 2</b>.
+          <br />
+          <br />
+          <b>Counter raids:</b> Cualquier COUNTER RAID deberá dirigirse únicamente a las FOVs enemigas que estén participando activamente en el raid.
+          <br />
           <span style={{ color: "#f39c12" }}>
             La comunicación entre equipos aliados durante los raideos debe realizarse exclusivamente por el chat de voz del juego. No está permitido el uso de otros medios de comunicación externos para coordinar raids.
           </span>
@@ -1010,6 +1016,9 @@ const reglas = [
           To raid another team's <b>main base</b>, it is only allowed during the <b>RAIDS ERA</b>. 
           <br />
           Alliances (merges) are only allowed for raiding, with a maximum of 3 allied teams. Merge raiding of more than 3 teams is not allowed under any circumstances.
+          <br />
+          <br />
+          The garden/garage base may be raided starting from <b>Era Tier 2</b>.
           <br />
           <span style={{ color: "#f39c12" }}>
             Communication between allied teams during raids must be done exclusively through the in-game voice chat. The use of other external communication means to coordinate raids is not allowed.
@@ -1022,8 +1031,50 @@ const reglas = [
           <br />
           Alianças (merge) são permitidas apenas para raids, com um máximo de 3 equipes aliadas. Não é permitido o merge raid de mais de 3 equipes sob nenhuma circunstância.
           <br />
+          <br />
+          A base do huerto/garage pode ser raidada a partir da <b>Era Tier 2</b>.
+          <br />
+          <br />
+          <b>Counter raids:</b> Qualquer COUNTER RAID deverá ser direcionado apenas às FOVs inimigas que estejam participando ativamente do raid.
+          <br />
           <span style={{ color: "#f39c12" }}>
-            A comunicação entre equipes aliadas durante os raids deve ser feita exclusivamente pelo chat de voz do jogo. Não é permitido o uso de outros meios de comunicação externos para coordeninar raids.
+            A comunicação entre equipes aliadas durante os raids deve ser feita exclusivamente pelo chat de voz do jogo. Não é permitido o uso de outros meios de comunicação externos para coordenar raids.
+          </span>
+        </div>
+      )
+    }
+  },
+  {
+    titulo: {
+      es: "12.1. Tugboats",
+      en: "12.1. Tugboats",
+      pt: "12.1. Tugboats"
+    },
+    descripcion: {
+      es: (
+        <div>
+          Los <b>tugboats</b> spawnearán en cada isla a partir de la <b>Era Tier 2</b>, y desde esa misma era los <b>tugboats serán raidables</b>.
+          <br />
+          <span style={{ color: "#f39c12" }}>
+            Ten en cuenta que los tugboats pueden ser objeto de competición entre equipos; respeta las normas de raid y las alianzas permitidas.
+          </span>
+        </div>
+      ),
+      en: (
+        <div>
+          <b>Tugboats</b> will spawn on each island starting in <b>Era Tier 2</b>, and from that era <b>tugboats will be raidable</b>.
+          <br />
+          <span style={{ color: "#f39c12" }}>
+            Keep in mind tugboats may be contested by teams; respect raid rules and allowed alliances.
+          </span>
+        </div>
+      ),
+      pt: (
+        <div>
+          Os <b>tugboats</b> irão spawnar em cada ilha a partir da <b>Era Tier 2</b>, e a partir dessa era os <b>tugboats serão raidáveis</b>.
+          <br />
+          <span style={{ color: "#f39c12" }}>
+            Tenha em mente que os tugboats podem ser contestados pelas equipes; respeite as regras de raid e as alianças permitidas.
           </span>
         </div>
       )
