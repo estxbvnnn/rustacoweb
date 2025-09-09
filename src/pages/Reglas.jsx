@@ -1020,6 +1020,9 @@ const reglas = [
           <br />
           The garden/garage base may be raided starting from <b>Era Tier 2</b>.
           <br />
+          <br />
+          <b>Counter raids:</b> Any COUNTER RAID must be directed only at enemy FOVs that are actively participating in the raid.
+          <br />
           <span style={{ color: "#f39c12" }}>
             Communication between allied teams during raids must be done exclusively through the in-game voice chat. The use of other external communication means to coordinate raids is not allowed.
           </span>
