@@ -195,7 +195,7 @@ export const TEAMS = [
       { url: "https://www.twitch.tv/moousas", name: "moousas", tipo: "twitch" },
       { url: "https://www.twitch.tv/unluckyk0z4", name: "unluckyk0z4", tipo: "twitch" },
       { url: "https://www.twitch.tv/ramondeverano", name: "ramondeverano", tipo: "twitch" },
-      { url: "https://www.twitch.tv/gaucho_08", name: "gaucho_08", tipo: "twitch" }
+      { url: "https://www.twitch.tv/0skina", name: "0skina", tipo: "twitch" }
     ]
   },
   {
