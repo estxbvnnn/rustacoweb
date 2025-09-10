@@ -116,7 +116,7 @@ const teamOTMainChannels = [
 const teamLSTChannels = [
   { url: "https://www.twitch.tv/7trunks_", name: "7trunks_", tipo: "twitch" },
   { url: "https://kick.com/pipenux", name: "pipenux", tipo: "kick" },
-  { url: "https://www.twitch.tv/anaanashei", name: "anaanashei", tipo: "twitch" },
+  { url: "https://www.twitch.tv/7yonagunii_", name: "7yonagunii_", tipo: "twitch" },
   { url: "https://www.twitch.tv/raiden23x", name: "raiden23x", tipo: "twitch" },
   { url: "https://kick.com/santy3249", name: "santy3249", tipo: "kick" },
   { url: "https://www.twitch.tv/cinquestellew", name: "cinquestellew", tipo: "twitch" },
