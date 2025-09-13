@@ -262,7 +262,7 @@ export const TEAMS = [
       { url: "https://www.twitch.tv/240hz_____", name: "240hz_____", tipo: "twitch" },
       { url: "https://www.twitch.tv/kixonee", name: "kixonee", tipo: "twitch" },
       { url: "https://www.twitch.tv/zeiikzz", name: "zeiikzz", tipo: "twitch" },
-      { url: "https://www.twitch.tv/mrzeu5", name: "mrzeu5", tipo: "twitch" },
+      { url: "https://www.twitch.tv/z6z_ng", name: "z6z_ng", tipo: "twitch" },
       { url: "https://www.twitch.tv/maletaclub", name: "maletaclub", tipo: "twitch" },
       { url: "https://www.twitch.tv/wreiken", name: "wreiken", tipo: "twitch" },
       { url: "https://www.twitch.tv/rodrezz", name: "rodrezz", tipo: "twitch" }
