@@ -605,7 +605,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>No está permitido sobrepasar los límites de la zona asignada, incluyendo la zona de huerto.</span>
           </li>
           <li>
-            El <b>TC (armario principal)</b> de la base main y del huerto/garage debe ser accesible en todo momento. Solo puede estar protegido por puertas o ventanas, <b>no puede estar completamente cerrado ni grifeado</b>.
+            <b>Todo TC</b> no debe estar grifeado, tiene que tener acceso a ventana/puerta, en resumen ser accesible en todo momento.
           </li>
           <li>
             El <b>TC</b> puede ser movido en caso de ser necesario, pero <b>debe solicitarse el cambio a la administración</b>. <br />
@@ -629,7 +629,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>It is not allowed to exceed the limits of the assigned area, including the garden area.</span>
           </li>
           <li>
-            The <b>TC (main cabinet)</b> of the main base and the garden/garage must be accessible at all times. It can only be protected by doors or windows, <b>it cannot be completely closed or grifed</b>.
+            <b>All TCs</b> must not be griefed, must have access via window/door, in summary, must be accessible at all times.
           </li>
           <li>
             The <b>TC</b> can be moved if necessary, but <b>the change must be requested from the administration</b>. <br />
@@ -653,7 +653,7 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>Não é permitido ultrapassar os limites da área designada, incluindo a área do jardim.</span>
           </li>
           <li>
-            O <b>TC (armário principal)</b> da base principal e do huerto/garage deve ser acessível o tempo todo. Pode estar protegido apenas por portas ou janelas, <b>não pode estar completamente fechado ou grifado</b>.
+            <b>Todo TC</b> não deve estar grifado, deve ter acesso por janela/porta, ou seja, ser acessível em todo momento.
           </li>
           <li>
             O <b>TC</b> pode ser movido se necessário, mas <b>a mudança deve ser solicitada à administração</b>. <br />
