@@ -925,6 +925,10 @@ const reglas = [
       es: (
         <div>
           Por los alrededores del mapa, cerca de los monumentos principales, habrá <b>mini parcelas</b> que los equipos podrán tomar y construir lo que deseen dentro de esa base. Estas parcelas podrán ser raideadas en cualquier momento del evento, sin restricción de era.
+          <br />
+          <span style={{ color: "#f39c12", fontWeight: 600 }}>
+            Solo se puede construir dentro de la parcela y todo (incluyendo torretas, trampas, etc.) debe colocarse dentro de la parcela.
+          </span>
           <div style={{ marginTop: 14 }}>
             <img
               src={buildingexterior}
@@ -946,6 +950,10 @@ const reglas = [
       en: (
         <div>
           Around the map, near the main monuments, there will be <b>mini parcels</b> that teams can take and build whatever they want inside that base. These parcels can be raided at any time during the event, without era restriction.
+          <br />
+          <span style={{ color: "#f39c12", fontWeight: 600 }}>
+            Building is only allowed inside the parcel and everything (including turrets, traps, etc.) must be placed within the parcel boundaries.
+          </span>
           <div style={{ marginTop: 14 }}>
             <img
               src={buildingexterior}
@@ -967,6 +975,10 @@ const reglas = [
       pt: (
         <div>
           Nos arredores do mapa, perto dos principais monumentos, haverá <b>mini parcelas</b> que as equipes poderão ocupar e construir o que desejarem dentro dessa base. Essas parcelas poderão ser raidada a qualquer momento do evento, sem restrição de era.
+          <br />
+          <span style={{ color: "#f39c12", fontWeight: 600 }}>
+            Só é permitido construir dentro da parcela e tudo (incluindo torretas, armadilhas, etc.) deve ser colocado dentro dos limites da parcela.
+          </span>
           <div style={{ marginTop: 14 }}>
             <img
               src={buildingexterior}
