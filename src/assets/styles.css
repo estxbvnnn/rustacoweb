@@ -13,13 +13,45 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', 'Arial Black', Arial, sans-serif;
-  background: linear-gradient(120deg, #181818 0%, #23201a 60%, #e25822 160%);
-  background-attachment: fixed;
+
+  /* antes: background: linear-gradient(...) */
+  background: #000; /* base neutra para todo el sitio */
+  background-attachment: initial;
+
   color: var(--rust-text);
   min-height: 100vh;
   animation: fadeIn 1.2s;
   scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+/* Solo en Home: sin fondo encima (solo video) */
+body.has-video-bg{
+  background: transparent !important;
+}
+
+/* Solo en Home (video background): no tapes el video con la barra naranja/gris */
+/* body.has-video-bg .TopBar{
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+}
+*/
+
+/* Si algún día quieres transparente, úsalo con clase */
+body.has-video-bg .TopBar.TopBar--transparent{
+  background: transparent !important;
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+}
+
+/* En Home con video: TopBar visible (no transparente) */
+body.has-video-bg .TopBar{
+  background: linear-gradient(90deg, rgba(10,10,12,0.78), rgba(226,88,34,0.18)) !important;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.55) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 a {
@@ -810,3 +842,39 @@ html {
   }
 }
 /* --- FIN CSS RESPONSIVO PROFESIONAL --- */
+
+/* Mantener el contenido React arriba del video */
+#root{
+  position: relative;
+  z-index: 1;
+}
+
+/* Video background (inyectado en public/index.html) */
+#bg-video-wrapper{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000;
+  opacity: 0; /* oculto si no estás en Home */
+}
+
+#bg-video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0; /* oculto hasta "100% buffer" */
+  transition: opacity 240ms ease;
+}
+
+/* Solo en Home: habilita el wrapper */
+body.has-video-bg #bg-video-wrapper{
+  opacity: 1;
+}
+
+/* Solo cuando el script marca ready (o fallback) */
+html.bg-video-ready body.has-video-bg #bg-video,
+html.bg-video-show body.has-video-bg #bg-video{
+  opacity: 1;
+}

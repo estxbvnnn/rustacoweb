@@ -1,164 +1,118 @@
-import React from 'react';
-import '../assets/home-dark.css';
-import { useHistory } from 'react-router-dom';
-import ammoGrenadeLauncherHE from '../assets/img/ammo.grenadelauncher.he.png';
-import ammoRocketHV from '../assets/img/ammo.rocket.hv.png';
-import grenadeF1 from '../assets/img/grenade.f1.png';
-import eraPrimitivo from '../assets/img/primitivo.png';
-import eraTier1 from '../assets/img/tier1.png';
-import eraTier2 from '../assets/img/tier2.png';
-import eraTier3 from '../assets/img/tier3.png';
-import eraRaids from '../assets/img/raids.png';
-import samsite from '../assets/img/samsite.png';
-import flameturret from '../assets/img/flameturret.png';
-import autoturret from '../assets/img/autoturret.png';
-import guntrap from '../assets/img/guntrap.png';
-import buildingexterior from '../assets/img/buildingexterior.png';
-import heavyHelmet from '../assets/img/heavy.plate.helmet.png';
-import heavyJacket from '../assets/img/heavy.plate.jacket.png';
-import heavyPants from '../assets/img/heavy.plate.pants.png';
-import scope8x from '../assets/img/weapon.mod.8x.scope.png';
-import scope16x from '../assets/img/weapon.mod.16x.scope.png';
-import rifleL96 from '../assets/img/rifle.l96.png';
-import muzzleBoost from '../assets/img/weapon.mod.muzzleboost.png';
-import oilFilterSilencer from '../assets/img/weapon.mod.oilfiltersilencer.png';
-import silencer from '../assets/img/weapon.mod.silencer.png';
-import sodaCanSilencer from '../assets/img/weapon.mod.sodacansilencer.png';
-import sulfurOre from '../assets/img/sulfur.ore.png';
-import hqMetalOre from '../assets/img/hq.metal.ore.png';
-import armoredDoor from '../assets/img/door.hinged.toptier.png';
-import armoredDoubleDoor from '../assets/img/door.double.hinged.toptier.png';
-import stone from '../assets/img/stones.png';
-import metalOre from '../assets/img/metal.ore.png';
-import wood from '../assets/img/wood.png';
-import metalFragments from '../assets/img/metal.fragments.png';
-import mapaRustacooo from '../assets/img/maparustacooo.png';
-import shotgunM4 from '../assets/img/shotgun.m4.png';
-import logo from '../assets/img/logorustaco.png';
-import rustGamedark from '../assets/img/rustgamedark.jpg';
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import "../assets/home-dark.css";
 
-// Banderas usadas en la HUD (añadir estas constantes)
-const flagChile = "https://flagcdn.com/w20/cl.png";
-const flagUSA  = "https://flagcdn.com/w20/us.png";
-const flagBrazil = "https://flagcdn.com/w20/br.png";
+import ammoGrenadeLauncherHE from "../assets/img/ammo.grenadelauncher.he.png";
+import ammoRocketHV from "../assets/img/ammo.rocket.hv.png";
+import grenadeF1 from "../assets/img/grenade.f1.png";
+import eraPrimitivo from "../assets/img/primitivo.png";
+import eraTier1 from "../assets/img/tier1.png";
+import eraTier2 from "../assets/img/tier2.png";
+import eraTier3 from "../assets/img/tier3.png";
+import samsite from "../assets/img/samsite.png";
+import flameturret from "../assets/img/flameturret.png";
+import autoturret from "../assets/img/autoturret.png";
+import guntrap from "../assets/img/guntrap.png";
+import buildingexterior from "../assets/img/buildingexterior.png";
+import heavyHelmet from "../assets/img/heavy.plate.helmet.png";
+import heavyJacket from "../assets/img/heavy.plate.jacket.png";
+import heavyPants from "../assets/img/heavy.plate.pants.png";
+import scope8x from "../assets/img/weapon.mod.8x.scope.png";
+import scope16x from "../assets/img/weapon.mod.16x.scope.png";
+import rifleL96 from "../assets/img/rifle.l96.png";
+import oilFilterSilencer from "../assets/img/weapon.mod.oilfiltersilencer.png";
+import silencer from "../assets/img/weapon.mod.silencer.png";
+import sodaCanSilencer from "../assets/img/weapon.mod.sodacansilencer.png";
+import sulfurOre from "../assets/img/sulfur.ore.png";
+import hqMetalOre from "../assets/img/hq.metal.ore.png";
+import armoredDoor from "../assets/img/door.hinged.toptier.png";
+import armoredDoubleDoor from "../assets/img/door.double.hinged.toptier.png";
+import stone from "../assets/img/stones.png";
+import metalOre from "../assets/img/metal.ore.png";
+import wood from "../assets/img/wood.png";
+import metalFragments from "../assets/img/metal.fragments.png";
+import shotgunM4 from "../assets/img/shotgun.m4.png";
+import logo from "../assets/img/logorustaco.png";
+// import reglasPdf from "../assets/docs/reglas-rustaco.pdf"; // ⬅ ELIMINAR/COMENTAR ESTA LÍNEA
 
-const SideAnimation = ({ side = 'left' }) => (
+const SideAnimation = ({ side = "left" }) => (
   <div className={`side-animation ${side}`} aria-hidden>
     <div className="glow-pill" />
   </div>
 );
 
-const fadeInDelay = delay => ({
-  animation: `fadeInUp 0.8s cubic-bezier(.39,.575,.565,1) both`,
-  animationDelay: `${delay}s`
-});
-
 const iconStyle = {
   width: 38,
   height: 38,
-  objectFit: 'contain',
-  verticalAlign: 'middle',
+  objectFit: "contain",
+  verticalAlign: "middle",
   marginRight: 10,
-  background: '#181818',
+  background: "#181818",
   borderRadius: 8,
-  boxShadow: '0 1px 8px #0007',
-  transition: 'transform 0.3s cubic-bezier(.39,.575,.565,1), box-shadow 0.3s cubic-bezier(.39,.575,.565,1)',
-  willChange: 'transform'
+  boxShadow: "0 1px 8px #0007",
+  transition: "transform 0.3s cubic-bezier(.39,.575,.565,1), box-shadow 0.3s cubic-bezier(.39,.575,.565,1)",
+  willChange: "transform",
 };
 
 const eraCardStyle = {
-  background: 'linear-gradient(120deg, #23201a 80%, #3a4bd8 100%)',
-  borderRadius: '14px',
-  boxShadow: '0 2px 16px #000a',
-  padding: '1.2rem 1.2rem',
-  marginBottom: '1.2rem',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '1.5rem',
-  borderLeft: '5px solid #7289da',
-  transition: 'transform 0.2s cubic-bezier(.39,.575,.565,1), box-shadow 0.2s cubic-bezier(.39,.575,.565,1)'
-};
-
-const reglaCardStyle = {
-  background: 'linear-gradient(120deg, #23201a 80%, #2d2d2d 100%)',
-  borderRadius: '18px',
-  boxShadow: '0 8px 32px #000b',
-  padding: '2.1rem 2.2rem',
-  marginBottom: '2.2rem',
-  borderLeft: '7px solid var(--rust-orange)',
-  borderRight: '2px solid #7289da55',
-  transition: 'box-shadow 0.2s, transform 0.2s',
-  position: 'relative',
-  zIndex: 1,
-  overflow: 'hidden'
+  background: "linear-gradient(120deg, #23201a 80%, #3a4bd8 100%)",
+  borderRadius: "14px",
+  boxShadow: "0 2px 16px #000a",
+  padding: "1.2rem 1.2rem",
+  marginBottom: "1.2rem",
+  display: "flex",
+  alignItems: "center",
+  gap: "1.5rem",
+  borderLeft: "5px solid #7289da",
+  transition: "transform 0.2s cubic-bezier(.39,.575,.565,1), box-shadow 0.2s cubic-bezier(.39,.575,.565,1)",
 };
 
 const getEras = (lang) => [
   {
-    nombre: {
-      es: "Era Primitivo",
-      en: "Primitive Era",
-      pt: "Era Primitiva"
-    }[lang],
+    nombre: { es: "Era Primitivo", en: "Primitive Era", pt: "Era Primitiva" }[lang],
     imagen: eraPrimitivo,
     descripcion: {
       es: "Comienzo del evento con armas y herramientas primitivas.",
       en: "The event starts with primitive weapons and tools.",
-      pt: "Início do evento com armas e ferramentas primitivas."
-    }[lang]
+      pt: "Início do evento com armas e ferramentas primitivas.",
+    }[lang],
   },
   {
-    nombre: {
-      es: "Era Tier 1",
-      en: "Tier 1 Era",
-      pt: "Era Tier 1"
-    }[lang],
+    nombre: { es: "Era Tier 1", en: "Tier 1 Era", pt: "Era Tier 1" }[lang],
     imagen: eraTier1,
     descripcion: {
       es: "Acceso a equipamiento y armas de Tier 1.",
       en: "Access to Tier 1 equipment and weapons.",
-      pt: "Acesso a equipamentos e armas de Tier 1."
-    }[lang]
+      pt: "Acesso a equipamentos e armas de Tier 1.",
+    }[lang],
   },
   {
-    nombre: {
-      es: "Era Tier 2",
-      en: "Tier 2 Era",
-      pt: "Era Tier 2"
-    }[lang],
+    nombre: { es: "Era Tier 2", en: "Tier 2 Era", pt: "Era Tier 2" }[lang],
     imagen: eraTier2,
     descripcion: {
       es: "Se habilitan armas y objetos de Tier 2.",
       en: "Tier 2 weapons and items are enabled.",
-      pt: "Armas e itens de Tier 2 são habilitados."
-    }[lang]
+      pt: "Armas e itens de Tier 2 são habilitados.",
+    }[lang],
   },
   {
-    nombre: {
-      es: "Era Tier 3",
-      en: "Tier 3 Era",
-      pt: "Era Tier 3"
-    }[lang],
+    nombre: { es: "Era Tier 3", en: "Tier 3 Era", pt: "Era Tier 3" }[lang],
     imagen: eraTier3,
     descripcion: {
       es: "Desbloqueo de todo el arsenal y equipamiento de Tier 3.",
       en: "Unlock of all Tier 3 arsenal and equipment.",
-      pt: "Desbloqueio de todo o arsenal e equipamentos de Tier 3."
-    }[lang]
+      pt: "Desbloqueio de todo o arsenal e equipamentos de Tier 3.",
+    }[lang],
   },
   {
-    nombre: {
-      es: "Era Raids",
-      en: "Raids Era",
-      pt: "Era Raids"
-    }[lang],
-    imagen: eraRaids,
+    nombre: { es: "Era Raids", en: "Raids Era", pt: "Era Raids" }[lang],
+    imagen: eraTier3,
     descripcion: {
       es: "Comienza la era de raideos, se habilitan los ataques a las Bases MAIN.",
       en: "The raiding era begins, attacks on MAIN Bases are enabled.",
-      pt: "Começa a era dos raids, ataques às Bases MAIN são permitidos."
-    }[lang]
-  }
+      pt: "Começa a era dos raids, ataques às Bases MAIN são permitidos.",
+    }[lang],
+  },
 ];
 
 const reglas = [
@@ -171,24 +125,24 @@ const reglas = [
     descripcion: {
       es: (
         <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
-          <li><b>128 jugadores</b> en total.</li>
-          <li><b>Equipos de 8 participantes</b>.</li>
+          <li><b>100 jugadores</b> en total.</li>
+          <li><b>10 equipos</b> de <b>10 participantes</b> cada uno.</li>
           <li>Se realizarán <b>diversos eventos especiales</b> durante el evento.</li>
           <li><b>Fishing Bandits</b>.</li>
         </ul>
       ),
       en: (
         <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
-          <li><b>128 players</b> in total.</li>
-          <li><b>Teams of 8 participants</b>.</li>
+          <li><b>100 players</b> in total.</li>
+          <li><b>10 teams</b> of <b>10 participants</b> each.</li>
           <li><b>Various special events</b> will be held during the event.</li>
           <li><b>Fishing Bandits</b>.</li>
         </ul>
       ),
       pt: (
         <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
-          <li><b>128 jogadores</b> no total.</li>
-          <li><b>Equipes de 8 participantes</b>.</li>
+          <li><b>100 jogadores</b> no total.</li>
+          <li><b>10 equipes</b> de <b>10 participantes</b> cada.</li>
           <li><b>Diversos eventos especiais</b> serão realizados durante o evento.</li>
           <li><b>Fishing Bandits</b>.</li>
         </ul>
@@ -215,7 +169,7 @@ const reglas = [
             <li>
               <img src={scope8x} alt="8x Scope" style={iconStyle} />
               <img src={scope16x} alt="16x Scope" style={iconStyle} />
-              Mira 8x (<b>8x Scope</b>) y Mira 16x (<b>16x Scope</b>)
+              Mira 8x (<b>8x Scope</b>)
             </li>
             <li>
               <img src={rifleL96} alt="Rifle L96" style={iconStyle} />
@@ -224,10 +178,6 @@ const reglas = [
             <li>
               <img src={shotgunM4} alt="M4 Shotgun" style={iconStyle} />
               M4 Shotgun (<b>M4 Shotgun</b>)
-            </li>
-            <li>
-              <img src={muzzleBoost} alt="Muzzle Boost" style={iconStyle} />
-              Muzzle Boost (<b>Bocacha de aceleración</b>)
             </li>
             <li>
               <img src={oilFilterSilencer} alt="Oil Filter Silencer" style={iconStyle} />
@@ -276,10 +226,6 @@ const reglas = [
               M4 Shotgun
             </li>
             <li>
-              <img src={muzzleBoost} alt="Muzzle Boost" style={iconStyle} />
-              Muzzle Boost
-            </li>
-            <li>
               <img src={oilFilterSilencer} alt="Oil Filter Silencer" style={iconStyle} />
               Oil Filter Silencer
             </li>
@@ -304,7 +250,7 @@ const reglas = [
       ),
       pt: (
         <div>
-          Durante o evento, os seguintes itens estarão <b>totalmente proibidos</b> e não poderão ser usados sob nenhuma circunstância:
+          Durante o evento, os seguintes itens estarán <b>totalmente proibidos</b> e no podrán ser usados bajo ninguna circunstancia:
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
             <li>
               <img src={heavyHelmet} alt="Heavy Plate Helmet" style={iconStyle} />
@@ -324,10 +270,6 @@ const reglas = [
             <li>
               <img src={shotgunM4} alt="M4 Shotgun" style={iconStyle} />
               M4 Shotgun
-            </li>
-            <li>
-              <img src={muzzleBoost} alt="Muzzle Boost" style={iconStyle} />
-              Muzzle Boost
             </li>
             <li>
               <img src={oilFilterSilencer} alt="Oil Filter Silencer" style={iconStyle} />
@@ -605,11 +547,21 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>No está permitido sobrepasar los límites de la zona asignada, incluyendo la zona de huerto.</span>
           </li>
           <li>
-            <b>Todo TC</b> no debe estar grifeado, tiene que tener acceso a ventana/puerta, en resumen ser accesible en todo momento.
-          </li>
-          <li>
-            El <b>TC</b> puede ser movido en caso de ser necesario, pero <b>debe solicitarse el cambio a la administración</b>. <br />
-            <span style={{ color: "#f39c12" }}>El TC main solo podrá ser cambiado hasta 1 hora antes del inicio de la era de raideos.</span>
+            <b>Restricciones del armario de herramientas de la base principal (TC)</b>
+            <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
+              <li>El TC debe ser accesible en todo momento.</li>
+              <li>
+                El acceso al TC se define como:
+                <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+                  <li>Debe estar directamente detrás de una puerta, ventana o trampilla de escalera.</li>
+                  <li>Debe haber un camino directo a dicha ubicación, que se pueda atravesar independientemente de la altura.</li>
+                  <li>Debe ser transitable y accesible, de modo que el jugador pueda situarse donde estaba el TC cuando fue destruido sin destruir ninguna entidad.</li>
+                </ul>
+              </li>
+              <li>No se pueden colocar objetos desplegables delante de los armarios de herramientas, excepto ventanas (por ejemplo: está prohibido colocar una alfombra sobre una ventana).</li>
+              <li>Debe haber un camino desde el exterior de la base hasta el TC sin necesidad de destruir ninguna entidad fuera de una puerta/ventana/escalera.</li>
+              <li>Cualquier intento de ocultar el TC detrás de cualquier objeto colocable, sellarlo o colocarlo detrás de un búnker está estrictamente prohibido.</li>
+            </ul>
           </li>
         </ul>
       ),
@@ -629,11 +581,21 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>It is not allowed to exceed the limits of the assigned area, including the garden area.</span>
           </li>
           <li>
-            <b>All TCs</b> must not be griefed, must have access via window/door, in summary, must be accessible at all times.
-          </li>
-          <li>
-            The <b>TC</b> can be moved if necessary, but <b>the change must be requested from the administration</b>. <br />
-            <span style={{ color: "#f39c12" }}>The main TC can only be changed up to 1 hour before the start of the raiding era.</span>
+            <b>Restrictions for the main base Tool Cupboard (TC)</b>
+            <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
+              <li>The TC must be accessible at all times.</li>
+              <li>
+                Access to the TC is defined as:
+                <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+                  <li>It must be directly behind a door, window, or ladder hatch.</li>
+                  <li>There must be a direct path to that location that can be traversed regardless of height.</li>
+                  <li>It must be walkable and reachable so that a player can stand where the TC was when it was destroyed without destroying any entity.</li>
+                </ul>
+              </li>
+              <li>No deployable objects may be placed in front of Tool Cupboards, except windows (for example: placing a rug over a window is forbidden).</li>
+              <li>There must be a path from the outside of the base to the TC without having to destroy any entity other than a door/window/ladder.</li>
+              <li>Any attempt to hide the TC behind any placeable object, seal it, or place it behind a bunker is strictly prohibited.</li>
+            </ul>
           </li>
         </ul>
       ),
@@ -653,11 +615,21 @@ const reglas = [
             <span style={{ color: "#f39c12" }}>Não é permitido ultrapassar os limites da área designada, incluindo a área do jardim.</span>
           </li>
           <li>
-            <b>Todo TC</b> não deve estar grifado, deve ter acesso por janela/porta, ou seja, ser acessível em todo momento.
-          </li>
-          <li>
-            O <b>TC</b> pode ser movido se necessário, mas <b>a mudança deve ser solicitada à administração</b>. <br />
-            <span style={{ color: "#f39c12" }}>O TC principal só pode ser trocado até 1 hora antes do início da era de raids.</span>
+            <b>Restrições do armário de ferramentas da base principal (TC)</b>
+            <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'circle' }}>
+              <li>O TC deve ser acessível em todo momento.</li>
+              <li>
+                O acesso ao TC é definido como:
+                <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+                  <li>Deve estar diretamente atrás de uma porta, janela ou alçapão de escada.</li>
+                  <li>Deve haver um caminho direto até esse local, que possa ser percorrido independentemente da altura.</li>
+                  <li>Deve ser transitável e acessível, de modo que o jogador possa se posicionar onde o TC estava quando foi destruído sem destruir nenhuma entidade.</li>
+                </ul>
+              </li>
+              <li>Não é permitido colocar objetos deployables na frente dos armários de ferramentas, exceto janelas (por exemplo: é proibido colocar um tapete sobre uma janela).</li>
+              <li>Deve haver um caminho desde o exterior da base até o TC sem precisar destruir nenhuma entidade além de uma porta/janela/escada.</li>
+              <li>Qualquer tentativa de esconder o TC atrás de qualquer objeto colocável, selá-lo ou colocá-lo atrás de um bunker é estritamente proibida.</li>
+            </ul>
           </li>
         </ul>
       )
@@ -870,45 +842,45 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          El uso de torretas está limitado a un máximo de <b>12 Auto Turrets</b> y <b>12 Escopetas Trampa</b> por equipo.
+          El uso de torretas está limitado a un máximo de <b>12 Auto Turrets</b> y <b>12 Escopetas Trampa</b> por <b>TC</b>.
           <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 18 }}>
             <span>
               <img src={autoturret} alt="Auto Turret" style={iconStyle} />
-              <b>Auto Turret</b> (máx. 12)
+              <b>Auto Turret</b> (máx. 12 por TC)
             </span>
             <span>
               <img src={guntrap} alt="Gun Trap" style={iconStyle} />
-              <b>Escopeta Trampa</b> (máx. 12)
+              <b>Escopeta Trampa</b> (máx. 12 por TC)
             </span>
           </div>
         </div>
       ),
       en: (
         <div>
-          The use of turrets is limited to a maximum of <b>12 Auto Turrets</b> and <b>12 Shotgun Traps</b> per team.
+          The use of turrets is limited to a maximum of <b>12 Auto Turrets</b> and <b>12 Shotgun Traps</b> per <b>TC</b>.
           <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 18 }}>
             <span>
               <img src={autoturret} alt="Auto Turret" style={iconStyle} />
-              <b>Auto Turret</b> (max. 12)
+              <b>Auto Turret</b> (max. 12 per TC)
             </span>
             <span>
               <img src={guntrap} alt="Gun Trap" style={iconStyle} />
-              <b>Shotgun Trap</b> (max. 12)
+              <b>Shotgun Trap</b> (max. 12 per TC)
             </span>
           </div>
         </div>
       ),
       pt: (
         <div>
-          O uso de torretas está limitado a um máximo de <b>12 Auto Turrets</b> e <b>12 Escopetas Armadilha</b> por equipe.
+          O uso de torretas está limitado a um máximo de <b>12 Auto Turrets</b> e <b>12 Escopetas Armadilha</b> por <b>TC</b>.
           <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 18 }}>
             <span>
               <img src={autoturret} alt="Auto Turret" style={iconStyle} />
-              <b>Auto Turret</b> (máx. 12)
+              <b>Auto Turret</b> (máx. 12 por TC)
             </span>
             <span>
               <img src={guntrap} alt="Armadilha de Escopeta" style={iconStyle} />
-              <b>Escopeta Armadilha</b> (máx. 12)
+              <b>Escopeta Armadilha</b> (máx. 12 por TC)
             </span>
           </div>
         </div>
@@ -917,7 +889,7 @@ const reglas = [
   },
   {
     titulo: {
-      es: "11. Parcelas especiales alrededor del mapa",
+      es: "11. Parcelas especiales alrededores del mapa",
       en: "11. Special parcels around the map",
       pt: "11. Parcelas especiais ao redor do mapa"
     },
@@ -1013,7 +985,7 @@ const reglas = [
           Las alianzas (merge) están permitidas únicamente para raideos, con un máximo de 3 equipos aliados. No se permite el merge raid de más de 3 equipos bajo ninguna circunstancia.
           <br />
           <br />
-          La base del huerto/garage podrá ser raideada a partir de la <b>Era Tier 2</b>.
+          La base del huerto/garage podrá ser raideada a partir de la <b>Era Tier 3</b>.
           <br />
           <br />
           <b>Counter raids:</b> Cualquier COUNTER RAID deberá dirigirse únicamente a las FOVs enemigas que estén participando activamente en el raid.
@@ -1030,7 +1002,7 @@ const reglas = [
           Alliances (merges) are only allowed for raiding, with a maximum of 3 allied teams. Merge raiding of more than 3 teams is not allowed under any circumstances.
           <br />
           <br />
-          The garden/garage base may be raided starting from <b>Era Tier 2</b>.
+          The garden/garage base may be raided starting from <b>Era Tier 3</b>.
           <br />
           <br />
           <b>Counter raids:</b> Any COUNTER RAID must be directed only at enemy FOVs that are actively participating in the raid.
@@ -1047,7 +1019,7 @@ const reglas = [
           Alianças (merge) são permitidas apenas para raids, com um máximo de 3 equipes aliadas. Não é permitido o merge raid de mais de 3 equipes sob nenhuma circunstância.
           <br />
           <br />
-          A base do huerto/garage pode ser raidada a partir da <b>Era Tier 2</b>.
+          A base do huerto/garage pode ser raidada a partir da <b>Era Tier 3</b>.
           <br />
           <br />
           <b>Counter raids:</b> Qualquer COUNTER RAID deverá ser direcionado apenas às FOVs inimigas que estejam participando ativamente do raid.
@@ -1068,7 +1040,7 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          Los <b>tugboats</b> spawnearán en cada isla a partir de la <b>Era Tier 2</b>, y desde esa misma era los <b>tugboats serán raidables</b>.
+          Los <b>tugboats</b> spawnearán en cada isla a partir de la <b>Era Tier 3</b>, y desde esa misma era los <b>tugboats serán raidables</b>.
           <br />
           <span style={{ color: "#f39c12" }}>
             Ten en cuenta que los tugboats pueden ser objeto de competición entre equipos; respeta las normas de raid y las alianzas permitidas.
@@ -1077,7 +1049,7 @@ const reglas = [
       ),
       en: (
         <div>
-          <b>Tugboats</b> will spawn on each island starting in <b>Era Tier 2</b>, and from that era <b>tugboats will be raidable</b>.
+          <b>Tugboats</b> will spawn on each island starting in <b>Era Tier 3</b>, and from that era <b>tugboats will be raidable</b>.
           <br />
           <span style={{ color: "#f39c12" }}>
             Keep in mind tugboats may be contested by teams; respect raid rules and allowed alliances.
@@ -1086,7 +1058,7 @@ const reglas = [
       ),
       pt: (
         <div>
-          Os <b>tugboats</b> irão spawnar em cada ilha a partir da <b>Era Tier 2</b>, e a partir dessa era os <b>tugboats serão raidáveis</b>.
+          Os <b>tugboats</b> irão spawnar em cada ilha a partir da <b>Era Tier 3</b>, e a partir dessa era os <b>tugboats serão raidáveis</b>.
           <br />
           <span style={{ color: "#f39c12" }}>
             Tenha em mente que os tugboats podem ser contestados pelas equipes; respeite as regras de raid e as alianças permitidas.
@@ -1097,66 +1069,60 @@ const reglas = [
   },
   {
     titulo: {
-      es: "13. Eventos durante el evento",
-      en: "13. Events during the event",
-      pt: "13. Eventos durante o evento"
+      es: "12.2. Helicópteros y globos",
+      en: "12.2. Helicopters and balloons",
+      pt: "12.2. Helicópteros e balões"
     },
     descripcion: {
       es: (
         <div>
-          Durante todo el evento se realizarán diferentes <b>eventos especiales</b> para todos los equipos y jugadores, incluyendo:
-          <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-            <li>Convoys</li>
-            <li>Crates Guards</li>
-            <li>Cargo Plane Crash</li>
-            <li>TYardEvent</li>
-            <li>AirfieldEvent</li>
-            <li>Roams Event</li>
-            <li>Armored Train</li>
-            <li>Sputnik</li>
-            <li>Eventos customs</li>
-          </ul>
+          Todos los <b>helicópteros (minicopter, scrap transport & combat) y globos</b> del evento tendrán una <b>reducción del 30% en su vida máxima</b> para equilibrar su dominio aéreo.
+          <br />
           <span style={{ color: "#f39c12" }}>
-            La participación en estos eventos es opcional pero recomendada para obtener ventajas y recompensas.
+            Procura planificar reparaciones y protegerlos; el ajuste es permanente durante el evento.
           </span>
         </div>
       ),
       en: (
         <div>
-          Throughout the event, different <b>special events</b> will be held for all teams and players, including:
-          <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-            <li>Convoys</li>
-            <li>Crates Guards</li>
-            <li>Cargo Plane Crash</li>
-            <li>TYardEvent</li>
-            <li>AirfieldEvent</li>
-            <li>Roams Event</li>
-            <li>Armored Train</li>
-            <li>Sputnik</li>
-            <li>Custom events</li>
-          </ul>
+          All <b>helicopters (minicopter, scrap transport & combat) and balloons</b> in the event will have a <b>30% reduction to their maximum health</b> to balance aerial dominance.
+          <br />
           <span style={{ color: "#f39c12" }}>
-            Participation in these events is optional but recommended to gain advantages and rewards.
+            Plan repairs and protect them; the adjustment is permanent throughout the event.
           </span>
         </div>
       ),
       pt: (
         <div>
-          Durante todo o evento, diferentes <b>eventos especiais</b> serão realizados para todas as equipes e jogadores, incluindo:
-          <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-            <li>Convoys</li>
-            <li>Crates Guards</li>
-            <li>Cargo Plane Crash</li>
-            <li>TYardEvent</li>
-            <li>AirfieldEvent</li>
-            <li>Roams Event</li>
-            <li>Armored Train</li>
-            <li>Sputnik</li>
-            <li>Eventos personalizados</li>
-          </ul>
+          Todos os <b>helicópteros (minicopter, scrap transport & combat) e balões</b> do evento terão uma <b>redução de 30% na vida máxima</b> para equilibrar o domínio aéreo.
+          <br />
           <span style={{ color: "#f39c12" }}>
-            A participação nesses eventos é opcional, mas recomendada para obter vantagens e recompensas.
+            Planeje reparos e proteja-os; o ajuste é permanente durante o evento.
           </span>
+        </div>
+      )
+    }
+  },
+  {
+    titulo: {
+      es: "13. Eventos",
+      en: "13. Events",
+      pt: "13. Eventos"
+    },
+    descripcion: {
+      es: (
+        <div>
+          Durante todo el evento se van a realizar muchos eventos pequeños y grandes durante los 4 dias de evento que daran recompensas para poder ganar el evento, esto sera revelara durante el evento
+        </div>
+      ),
+      en: (
+        <div>
+          Throughout the 4 days of the event there will be many small and large events that will grant rewards to help you win; all of this will be revealed during the event.
+        </div>
+      ),
+      pt: (
+        <div>
+          Durante os 4 dias de evento acontecerão muitos eventos pequenos e grandes que darão recompensas para ajudar a vencer o evento; tudo isso será revelado durante o próprio evento.
         </div>
       )
     }
@@ -1218,41 +1184,17 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          <b>Todos los jugadores deben estar transmitiendo el evento en stream durante su participación.</b> No es necesario transmitir en calidad Full HD, pero la transmisión debe ser aceptable y que se vea correctamente.
-          <br />
-          <span style={{ color: "#f39c12" }}>
-            Si por dificultad técnica no puedes stremear, <b>debes grabar tu participación completa</b>. Si la organización solicita evidencia y no tienes grabación, <b>podrás ser sancionado o perjudicado en el evento</b>.
-          </span>
-          <br />
-          <span style={{ color: "#f39c12" }}>
-            El incumplimiento de esta norma puede resultar en sanciones o descalificación. El mapa estará lo más optimizado posible para que todos puedan stremear sin problemas de rendimiento.
-          </span>
+          <b>El stream es obligatorio siempre y cuando empiezen la activación de dogtags y main events que se veran a lo largo del dia, luego al tener la desactivación de dogtags, los jugadores pueden estar offstream siempre y cuando esten grabando, en caso de no grabar, se aplicara sancion.</b>
         </div>
       ),
       en: (
         <div>
-          <b>All players must be streaming the event during their participation.</b> It is not necessary to stream in Full HD, but the stream must be acceptable and clearly visible.
-          <br />
-          <span style={{ color: "#f39c12" }}>
-            If you have technical difficulties and cannot stream, <b>you must record your entire participation</b>. If the organization requests evidence and you do not have a recording, <b>you may be sanctioned or penalized in the event</b>.
-          </span>
-          <br />
-          <span style={{ color: "#f39c12" }}>
-            Failure to comply with this rule may result in sanctions or disqualification. The map will be as optimized as possible so everyone can stream without performance issues.
-          </span>
+          <b>Streaming is mandatory as long as dog tags and main events are activated throughout the day. Once dog tags are deactivated, players may go off-stream as long as they are recording. If they are not recording, penalties will apply.</b>
         </div>
       ),
       pt: (
         <div>
-          <b>Todos os jogadores devem transmitir o evento ao vivo durante sua participação.</b> Não é necessário transmitir em Full HD, mas a transmissão deve ser aceitável e com boa qualidade de imagem.
-          <br />
-          <span style={{ color: "#f39c12" }}>
-            Se por dificuldade técnica não conseguir fazer stream, <b>deve gravar toda a sua participação</b>. Se a organização solicitar evidências e você não tiver a gravação, <b>poderá ser sancionado ou prejudicado no evento</b>.
-          </span>
-          <br />
-          <span style={{ color: "#f39c12" }}>
-            O descumprimento desta regra pode resultar em sanções ou desclassificação. O mapa será otimizado ao máximo para que todos possam transmitir sem problemas de desempenho.
-          </span>
+          <b>A transmissão é obrigatória desde que comecem a ativação das dogtags e dos eventos principais que serão vistos ao longo do dia. Depois, com a desativação das dogtags, os jogadores podem ficar fora da transmissão desde que estejam gravando. Caso não gravem, será aplicada uma penalidade.</b>
         </div>
       )
     }
@@ -1284,7 +1226,7 @@ const reglas = [
         <div>
           O <b>beef</b> (provocações e rivalidade) é permitido dentro de um marco competitivo, mas se as brigas ou discussões excederem os limites normais, os envolvidos serão silenciados no chat do servidor. <br />
           <span style={{ color: "#f39c12" }}>
-            É totalmente proibido o racismo, xenofobia ou qualquer tipo de discriminação. Queremos um ambiente limpo, mas também competitivo.
+            Está totalmente proibido o racismo, xenofobia ou qualquer tipo de discriminação. Queremos um ambiente limpo, mas também competitivo.
           </span>
         </div>
       )
@@ -1320,7 +1262,7 @@ const reglas = [
           <b>Não é permitido o uso do aplicativo Rust+ durante o evento.</b> <br />
           Queremos promover uma experiência <b>vanilla</b> autêntica, onde você não saiba o que está acontecendo em sua base o tempo todo e tenha que confiar em seu instinto, trabalho em equipe e vigilância. <br />
           <span style={{ color: "#f39c12" }}>
-            A incerteza e o fator surpresa são partes fundamentais da experiência Rust.
+            A incerteza e o fator sorpresa são partes fundamentais da experiência Rust.
           </span>
         </div>
       )
@@ -1402,139 +1344,162 @@ const reglas = [
 
 // Utilidad: título por idioma (limpia numeración inicial: 1., 2.1., etc.)
 const getRuleTitle = (regla, lang) => {
-  const rawTitle = (typeof regla.titulo === 'object' ? regla.titulo[lang] : regla.titulo) || '';
-  return rawTitle.replace(/^\s*\d+(\.\d+)*\s*[\.\-:]?\s*/,''); // elimina "1.", "2.1.", etc.
+  const rawTitle = (typeof regla.titulo === "object" ? regla.titulo[lang] : regla.titulo) || "";
+  return rawTitle.replace(/^\s*\d+(\.\d+)*\s*[\.\-:]?\s*/, "");
 };
 
-const Reglas = () => {
+export default function Reglas() {
   const history = useHistory();
-  const [lang, setLang] = React.useState('es');
+  const [lang, setLang] = React.useState("es");
 
-  // Al entrar a Reglas, sube al inicio de la página
   React.useEffect(() => {
-    // usar RAF para asegurar que el render inicial terminó
-    const id = window.requestAnimationFrame(() =>
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-    );
-    return () => window.cancelAnimationFrame(id);
+    document.body.classList.add("has-video-bg");
+    return () => document.body.classList.remove("has-video-bg");
   }, []);
 
-  const handleHome = () => history.push('/');
-
   return (
-    <>
-      {/* HUD profesional fijo arriba */}
-      <div className="page-hud">
-        <div className="hud-left">
-          <img src={logo} alt="Rustaco" className="hud-logo" />
-          <div className="hud-title">{lang === 'es' ? 'Reglas del Evento' : lang === 'en' ? 'Event Rules' : 'Regras do Evento'}</div>
-        </div>
+    <div className="home-dark page-with-topbar">
+      <header
+        className="rules-header"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "1.25rem",
+          flexWrap: "wrap",
+          marginBottom: "2rem",
+        }}
+      >
+        <nav className="TopBar-links TopBar-links--left" aria-label="Navegación">
+          <Link to="/reglas" className="nav-btn">Rules</Link>
+          <Link to="/equipos" className="nav-btn">Teams</Link>
+          {/* eliminar el botón/link de Stats aquí */}
+          <div style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <button
+              type="button"
+              className="nav-btn"
+              onClick={() => history.push("/")}
+              title={lang === "es" ? "Home" : lang === "en" ? "Home" : "Início"}
+            >
+              {lang === "es" ? "Home" : lang === "en" ? "Home" : "Início"}
+            </button>
 
-        <div className="hud-right">
-          <button onClick={handleHome} title={lang === 'es' ? 'Inicio' : lang === 'en' ? 'Home' : 'Início'} className="btn-primary">🏠 {lang === 'es' ? 'Inicio' : lang === 'en' ? 'Home' : 'Início'}</button>
-
-          <div className="hud-flags">
-            <button onClick={() => setLang('es')} title="Español LATAM" className={`icon-btn flag ${lang === 'es' ? 'lang-btn-active' : ''}`}><img src={flagChile} alt="ES" /></button>
-            <button onClick={() => setLang('en')} title="English USA" className={`icon-btn flag ${lang === 'en' ? 'lang-btn-active' : ''}`}><img src={flagUSA} alt="EN" /></button>
-            <button onClick={() => setLang('pt')} title="Português Brasil" className={`icon-btn flag ${lang === 'pt' ? 'lang-btn-active' : ''}`}><img src={flagBrazil} alt="PT" /></button>
+            <div className="hud-flags" aria-label="Language">
+              <button
+                onClick={() => setLang("es")}
+                title="Español LATAM"
+                className={`icon-btn flag ${lang === "es" ? "lang-btn-active" : ""}`}
+                style={{ fontWeight: 700, fontSize: 12, color: "#fff" }}
+              >
+                ES
+              </button>
+              <button
+                onClick={() => setLang("en")}
+                title="English USA"
+                className={`icon-btn flag ${lang === "en" ? "lang-btn-active" : ""}`}
+                style={{ fontWeight: 700, fontSize: 12, color: "#fff" }}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang("pt")}
+                title="Português Brasil"
+                className={`icon-btn flag ${lang === "pt" ? "lang-btn-active" : ""}`}
+                style={{ fontWeight: 700, fontSize: 12, color: "#fff" }}
+              >
+                BR
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
+        </nav>
+      </header>
 
-      {/* Contenedor principal: agrega margen superior para no quedar bajo el HUD */}
-      <div className="panel home-dark page-container">
-        {/* animated background image */}
-        <div className="animated-bg-image" style={{ backgroundImage: `url(${rustGamedark})` }} aria-hidden />
-        {/* subtle overlay radials are handled by CSS helper */}
-        <div className="decorative-radials" aria-hidden />
-        <SideAnimation side="left" />
-        <SideAnimation side="right" />
+      <main style={{ position: "relative", zIndex: 20, padding: "2.6rem 1rem 3rem" }}>
+        <div className="panel home-dark" style={{ marginTop: 0 }}>
+          <SideAnimation side="left" />
+          <SideAnimation side="right" />
 
-  <h1 className="reglas-title" style={{ zIndex: 2, position: 'relative' }}>
-          {lang === 'es' ? 'Reglas del Evento' : lang === 'en' ? 'Event Rules' : 'Regras do Evento'}
-        </h1>
+          <h1 className="reglas-title" style={{ zIndex: 2, position: "relative" }}>
+            {lang === "es" ? "Reglas del Evento" : lang === "en" ? "Event Rules" : "Regras do Evento"}
+          </h1>
 
-        {/* Banner introductorio breve y educado */}
-        <div className="reglas-banner" role="note">
-          <span className="reglas-banner-icon">📘</span>
-          <div className="reglas-banner-text">
-            {lang === 'es' && 'Gracias por participar en Rustaco II. Estas directrices buscan una competencia justa, segura y respetuosa para todos.'}
-            {lang === 'en' && 'Thanks for joining Rustaco II. These guidelines aim for a fair, safe and respectful competition for everyone.'}
-            {lang === 'pt' && 'Obrigado por participar do Rustaco II. Estas diretrizes visam uma competição justa, segura e respeitosa para todos.'}
+          <div className="reglas-banner" role="note">
+            <span className="reglas-banner-icon">📘</span>
+            <div className="reglas-banner-text">
+              {lang === "es" && "Gracias por participar en Rustaco III. Estas directrices buscan una competencia justa, segura y respetuosa para todos."}
+              {lang === "en" && "Thanks for joining Rustaco III. These guidelines aim for a fair, safe and respectful competition for everyone."}
+              {lang === "pt" && "Obrigado por participar do Rustaco III. Estas diretrizes visam uma competição justa, segura e respeitosa para todos."}
+            </div>
           </div>
-        </div>
 
-        {/* Imagen del mapa entre el título y la regla 1 */}
-        <div className="reglas-map">
-          <img src={mapaRustacooo} alt="Mapa del evento" />
-        </div>
+          <div className="reglas-content">
+            <div>
+              {reglas.map((regla, idx) => (
+                <div key={idx} id={`rule-${idx + 1}`} className="regla-card">
+                  <div className="regla-header">
+                    <span className="regla-header-dot" aria-hidden />
+                    <div className="regla-header-title">{getRuleTitle(regla, lang)}</div>
+                  </div>
 
-        {/* Contenido en una sola columna (sin TOC lateral) */}
-        <div className="reglas-content">
-          <div>
-            {reglas.map((regla, idx) => (
-              <div key={idx} id={`rule-${idx + 1}`} className="regla-card">
-                <div className="regla-header">
-                  <span className="regla-header-dot" aria-hidden />
-                  <div className="regla-header-title">{getRuleTitle(regla, lang)}</div>
+                  <div className="regla-body">
+                    {typeof regla.descripcion === "object" ? regla.descripcion[lang] : regla.descripcion}
+                  </div>
                 </div>
+              ))}
 
-                <div className="regla-body">
-                  {typeof regla.descripcion === 'object' ? regla.descripcion[lang] : regla.descripcion}
-                </div>
+              <div className="reglas-note">
+                <b>{lang === "es" ? "Código de conducta:" : lang === "en" ? "Code of conduct:" : "Código de conduta:"}</b>{" "}
+                {lang === "es" && (
+                  <>
+                    Te pedimos mantener un trato respetuoso y seguir estas directrices. El incumplimiento puede derivar en medidas correctivas, incluida la exclusión del evento.
+                    {" "}Para soporte o consultas, utiliza nuestro{" "}
+                    <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: "#7289da", textDecoration: "underline", fontWeight: 600 }}>
+                      Discord oficial
+                    </a>.
+                  </>
+                )}
+                {lang === "en" && (
+                  <>
+                    Please remain respectful and follow these guidelines. Non-compliance may lead to corrective measures, including removal from the event.
+                    {" "}For support or questions, use our{" "}
+                    <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: "#7289da", textDecoration: "underline", fontWeight: 600 }}>
+                      official Discord
+                    </a>.
+                  </>
+                )}
+                {lang === "pt" && (
+                  <>
+                    Pedimos que mantenha o respeito e siga estas diretrizes. O não cumprimento pode resultar em medidas corretivas, incluindo exclusão do evento.
+                    {" "}Para suporte ou dúvidas, utilize nosso{" "}
+                    <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: "#7289da", textDecoration: "underline", fontWeight: 600 }}>
+                      Discord oficial
+                    </a>.
+                  </>
+                )}
               </div>
-            ))}
 
-            <div className="reglas-note">
-              <b>
-                {lang === 'es' ? 'Código de conducta:' : lang === 'en' ? 'Code of conduct:' : 'Código de conduta:'}
-              </b>{' '}
-              {lang === 'es' && (
-                <>
-                  Te pedimos mantener un trato respetuoso y seguir estas directrices. El incumplimiento puede derivar en medidas correctivas, incluida la exclusión del evento. 
-                  Para soporte o consultas, utiliza nuestro{' '}
-                  <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}>Discord oficial</a>.
-                </>
-              )}
-              {lang === 'en' && (
-                <>
-                  Please remain respectful and follow these guidelines. Non-compliance may lead to corrective measures, including removal from the event. 
-                  For support or questions, use our{' '}
-                  <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}>official Discord</a>.
-                </>
-              )}
-              {lang === 'pt' && (
-                <>
-                  Pedimos que mantenha o respeito e siga estas diretrizes. O não cumprimento pode resultar em medidas corretivas, incluindo exclusão do evento. 
-                  Para suporte ou dúvidas, utilize nosso{' '}
-                  <a href="https://discord.rustaco.site" target="_blank" rel="noopener noreferrer" style={{ color: '#7289da', textDecoration: 'underline', fontWeight: 600 }}>Discord oficial</a>.
-                </>
-              )}
-            </div>
+              <div className="reglas-cta-row">
+                <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="reglas-cta primary">
+                  {lang === "es" ? "Volver arriba" : lang === "en" ? "Back to top" : "Voltar ao topo"}
+                </button>
+                <button onClick={() => history.push("/")} className="reglas-cta secondary">
+                  {lang === "es" ? "Ir al inicio" : lang === "en" ? "Go to Home" : "Ir para o início"}
+                </button>
+              </div>
 
-            <div className="reglas-cta-row">
-              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="reglas-cta primary">{lang === 'es' ? 'Volver arriba' : lang === 'en' ? 'Back to top' : 'Voltar ao topo'}</button>
-              <button onClick={() => history.push('/')} className="reglas-cta secondary">{lang === 'es' ? 'Ir al inicio' : lang === 'en' ? 'Go to Home' : 'Ir para o início'}</button>
+              <style>
+                {`
+                  @media print {
+                    body * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 11px; color: #888; }
+                    .regla-card { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; border-right: 1px solid #ddd !important; }
+                  }
+                `}
+              </style>
             </div>
           </div>
         </div>
-
-  <style>
-          {`
-            /* Limpieza de estilos previos del TOC (ya no se usa) */
-
-            /* Mejora de impresión */
-            @media print {
-              body * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-              div[style*="position: fixed"][style*="top: 0"] { display: none !important; }
-              a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 11px; color: #888; }
-              .regla-card { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; border-right: 1px solid #ddd !important; }
-            }
-          `}
-        </style>
-  </div>
-    </>
+      </main>
+    </div>
   );
 }
-
-export default Reglas;

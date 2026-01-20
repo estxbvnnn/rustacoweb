@@ -261,3 +261,6 @@ app.listen(PORT, HOST, () => {
 //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
 // asegúrate que esto esté al final del archivo, después de todos los endpoints API.
+
+// Nota: este proyecto corre el frontend con `react-scripts`.
+// Si necesitas un backend Node/Express, define scripts separados (ej: "server").

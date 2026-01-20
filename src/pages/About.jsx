@@ -133,6 +133,11 @@ translations.pt.backHome = 'Voltar ao Início';
 
 export default function About() {
     const [lang, setLang] = React.useState('es');
+
+    React.useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }, []);
+
     return (
         <div className="home-dark">
             <div className="animated-bg" aria-hidden>
