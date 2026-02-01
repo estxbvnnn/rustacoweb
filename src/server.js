@@ -255,12 +255,21 @@ app.listen(PORT, HOST, () => {
 // Aquí están todos tus endpoints API
 
 // --- Servir archivos estáticos del frontend (si usas build) ---
-// Si tienes algo como:
-// app.use(express.static(path.join(__dirname, 'build')));
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
-// asegúrate que esto esté al final del archivo, después de todos los endpoints API.
+// Si has hecho `npm run build`, sirve los archivos estáticos desde la carpeta `build`
+const buildPath = path.join(__dirname, '..', 'build');
+if (fs.existsSync(buildPath)) {
+  app.use(express.static(buildPath));
+
+  // Devuelve index.html para cualquier ruta no gestionada por la API
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(buildPath, 'index.html'));
+  });
+} else {
+  // Mensaje informativo si no existe la carpeta build
+  console.warn('Build folder not found. Run `npm run build` in the project root to create it.');
+}
+
+// Asegúrate de que lo anterior está después de todos los endpoints API.
 
 // Nota: este proyecto corre el frontend con `react-scripts`.
 // Si necesitas un backend Node/Express, define scripts separados (ej: "server").
