@@ -1,4 +1,16 @@
 /* ===== Reset básico y tema oscuro global ===== */
+:root {
+  --rust-primary: #e25822;
+  --rust-secondary: #7289da;
+  --rust-surface: rgba(13, 13, 20, 0.94);
+  --rust-surface-alt: rgba(16, 16, 28, 0.86);
+  --rust-border: rgba(255, 255, 255, 0.08);
+  --rust-border-strong: rgba(226, 88, 34, 0.38);
+  --rust-text: #e7eef8;
+  --rust-muted: #b5c6e7;
+  --rust-shadow: 0 26px 70px rgba(0, 0, 0, 0.85);
+}
+
 html,
 body {
   margin: 0;
@@ -18,7 +30,7 @@ body {
   object-fit: cover;
   z-index: -1;
   pointer-events: none;
-  opacity: 0; /* por defecto oculto visualmente */
+  opacity: 0;
   transition: opacity 0.4s ease-out;
 }
 
@@ -30,8 +42,8 @@ body.has-video-bg #bg-video {
 /* ===== Contenedor principal oscuro (Home y Reglas) ===== */
 .home-dark {
   min-height: 100vh;
-  background: transparent; /* deja ver el video */
-  color: #e7eef8;
+  background: transparent;
+  color: var(--rust-text);
   display: flex;
   flex-direction: column;
 }
@@ -158,22 +170,38 @@ body.has-video-bg #bg-video {
 .panel {
   position: relative;
   z-index: 10;
-  max-width: 1050px;
-  margin: 4.5rem auto 3rem;
-  padding: 2.4rem 2rem;
-  padding-top: 5rem;
-  border-radius: 18px;
-  background: rgba(8, 8, 12, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.9);
+  max-width: 1100px;
+  margin: 4.5rem auto 3.2rem;
+  padding: clamp(2.4rem, 5vw, 3.4rem);
+  padding-top: clamp(4.6rem, 6vw, 5.6rem);
+  border-radius: 22px;
+  background: linear-gradient(160deg, var(--rust-surface) 0%, var(--rust-surface-alt) 100%);
+  border: 1px solid var(--rust-border);
+  box-shadow: var(--rust-shadow);
+  overflow: hidden;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  background: radial-gradient(circle at top left, rgba(226, 88, 34, 0.12), rgba(0, 0, 0, 0) 55%), radial-gradient(circle at bottom right, rgba(114, 137, 218, 0.12), rgba(0, 0, 0, 0) 55%);
+  pointer-events: none;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== Decoración lateral (SideAnimation en Reglas.jsx) ===== */
 .side-animation {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 70px;
+  top: 14%;
+  bottom: 14%;
+  width: 64px;
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -181,117 +209,148 @@ body.has-video-bg #bg-video {
 }
 
 .side-animation.left {
-  left: 0;
+  left: 10px;
 }
 
 .side-animation.right {
-  right: 0;
+  right: 10px;
 }
 
 .side-animation .glow-pill {
-  width: 12px;
-  height: 80%;
+  width: 8px;
+  height: 100%;
   border-radius: 999px;
-  background: linear-gradient(180deg, #e25822 0%, #23201a 100%);
-  box-shadow: 0 0 42px 16px rgba(226, 88, 34, 0.4);
+  background: linear-gradient(180deg, rgba(226, 88, 34, 0.7) 0%, rgba(35, 32, 26, 0.05) 100%);
+  box-shadow: 0 0 40px 14px rgba(226, 88, 34, 0.32);
+  backdrop-filter: blur(2px);
 }
 
 .side-animation.right .glow-pill {
-  background: linear-gradient(180deg, #7289da 0%, #23201a 100%);
-  box-shadow: 0 0 42px 16px rgba(114, 137, 218, 0.4);
+  background: linear-gradient(180deg, rgba(114, 137, 218, 0.7) 0%, rgba(35, 32, 26, 0.05) 100%);
+  box-shadow: 0 0 40px 14px rgba(114, 137, 218, 0.28);
 }
 
 /* ===== Título y banner de Reglas ===== */
 .reglas-title {
   text-align: center;
-  margin: 0 0 2rem;
-  font-size: 2.6rem;
+  margin: 0 0 2.3rem;
+  font-size: clamp(2.4rem, 4.5vw, 3.2rem);
   font-weight: 900;
-  letter-spacing: 2px;
-  color: #e25822;
-  text-shadow: 0 2px 16px #000;
+  letter-spacing: 2.6px;
+  background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.72) 30%, var(--rust-primary) 70%, var(--rust-secondary) 100%);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .reglas-banner {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0.9rem 1rem;
-  border-radius: 12px;
-  background: linear-gradient(
-    90deg,
-    rgba(39, 174, 96, 0.18),
-    rgba(226, 88, 34, 0.18)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: 1.8rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 16px;
+  background: linear-gradient(105deg, rgba(39, 174, 96, 0.18), rgba(114, 137, 218, 0.22));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  margin-bottom: 2.2rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
 }
 
 .reglas-banner-icon {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .reglas-banner-text {
-  font-size: 1rem;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--rust-muted);
 }
 
 /* ===== Layout de contenido de Reglas ===== */
 .reglas-content {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.6rem;
 }
 
 .regla-card {
-  background: linear-gradient(180deg, #191919, #141414);
-  border-radius: 16px;
-  padding: 1.5rem 1.4rem;
-  border-left: 6px solid #e25822;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+  position: relative;
+  background: linear-gradient(160deg, rgba(22, 22, 32, 0.92) 0%, rgba(13, 13, 20, 0.92) 100%);
+  border-radius: 20px;
+  padding: 1.8rem 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.65);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.regla-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(226, 88, 34, 0.16), rgba(114, 137, 218, 0.12));
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.regla-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.72);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.regla-card:hover::before {
+  opacity: 1;
 }
 
 .regla-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 0.6rem;
+  gap: 12px;
+  margin-bottom: 0.9rem;
 }
 
 .regla-header-dot {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #e25822, #7289da);
-  box-shadow: 0 0 10px rgba(226, 88, 34, 0.7);
+  background: linear-gradient(120deg, var(--rust-primary), var(--rust-secondary));
+  box-shadow: 0 0 0 4px rgba(226, 88, 34, 0.12);
 }
 
 .regla-header-title {
   font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  color: #f39c12;
+  font-size: 1.12rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #f7c973;
 }
 
 .regla-body {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #e0e0e0;
+  font-size: 1.01rem;
+  line-height: 1.75;
+  color: var(--rust-text);
 }
 
 .regla-body ul {
-  margin: 0.3rem 0 0.3rem 1.4rem;
+  margin: 0.5rem 0 0.5rem 1.5rem;
   padding: 0;
+  color: var(--rust-muted);
 }
 
 /* ===== Nota y CTAs de Reglas ===== */
 .reglas-note {
-  margin-top: 2.2rem;
-  padding: 1.1rem 1.3rem;
-  border-radius: 14px;
-  background: linear-gradient(90deg, #181818, #23201a);
-  border: 1px solid rgba(114, 137, 218, 0.5);
-  color: #b3cfff;
+  margin-top: 2.4rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 18px;
+  background: linear-gradient(120deg, rgba(17, 17, 27, 0.9), rgba(35, 32, 26, 0.85));
+  border: 1px solid rgba(114, 137, 218, 0.4);
+  color: var(--rust-muted);
   text-align: center;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
 }
 
 .reglas-cta-row {
@@ -313,12 +372,12 @@ body.has-video-bg #bg-video {
 }
 
 .reglas-cta.primary {
-  background: linear-gradient(90deg, #e25822 60%, #7289da 100%);
+  background: linear-gradient(90deg, var(--rust-primary) 60%, var(--rust-secondary) 100%);
   color: #fff;
 }
 
 .reglas-cta.secondary {
-  background: linear-gradient(90deg, #7289da 60%, #e25822 100%);
+  background: linear-gradient(90deg, var(--rust-secondary) 60%, var(--rust-primary) 100%);
   color: #fff;
 }
 
@@ -340,8 +399,8 @@ body.has-video-bg #bg-video {
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .panel {
-    margin: 3.5rem 0.8rem 2.4rem;
-    padding: 1.7rem 1.2rem;
+    margin: 3.4rem 0.8rem 2.4rem;
+    padding: 2rem 1.4rem 2.4rem;
   }
 
   .TopBar-links {
@@ -349,7 +408,16 @@ body.has-video-bg #bg-video {
   }
 
   .reglas-title {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
+    letter-spacing: 1.6px;
+  }
+
+  .reglas-content {
+    grid-template-columns: 1fr;
+  }
+
+  .side-animation {
+    display: none;
   }
 }
 

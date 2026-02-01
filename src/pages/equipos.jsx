@@ -8,6 +8,9 @@ import tchubiTeam from "../assets/img/tchubiteam.png";
 import dilanzitoTeam from "../assets/img/dilanzitoteam.png";
 import deathwinguaTeam from "../assets/img/deathwinguateam.png";
 import salomon96Team from "../assets/img/salomon96team.png";
+import juninTeam from "../assets/img/juninnewlogo.png";
+import alexdieciTeam from "../assets/img/alexdieci.webp";
+import captainmykoTeam from "../assets/img/captainmyko.png";
 import lootroomTextLogo from "../assets/img/lootroomlogo.png";
 import rustypotTextLogo from "../assets/img/rustypotlogo.png";
 import syvarLogo from "../assets/img/syvarlogo.png";
@@ -25,9 +28,9 @@ export default function Equipos() {
     { name: "Dilanzito Team", image: dilanzitoTeam },
     { name: "Deathwingua Team", image: deathwinguaTeam },
     { name: "SalomonL96 Team", image: salomon96Team },
-    { name: "To be confirmed", image: null },
-    { name: "To be confirmed", image: null },
-    { name: "To be confirmed", image: null },
+    { name: "Alexdieci Team", image: alexdieciTeam },
+    { name: "CaptainMyko Team", image: captainmykoTeam },
+    { name: "Junin Team", image: juninTeam },
     { name: "To be confirmed", image: null },
   ];
 

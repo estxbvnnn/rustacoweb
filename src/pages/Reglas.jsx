@@ -478,25 +478,43 @@ const reglas = [
     },
     descripcion: {
       es: (
-        <span>
-          El modo del torneo es mediante <b>dogtags únicos por cada jugador</b>. Cada vez que mates a un jugador, este soltará un dogtag. <br />
-          Para que el dogtag cuente para ganar, <b>debe ser depositado en el "altar" de la isla respectiva de cada team</b>. <br />
-          <span style={{ color: "#f39c12" }}>Solo los dogtags depositados correctamente en el altar sumarán puntos para el equipo.</span>
-        </span>
+        <div>
+          <p>
+            El modo del torneo se basa en <b>dogtags únicos por cada jugador</b>. Solo se generan cuando eliminas a un integrante de otro equipo que esté armado o portando un arma equipada; si el rival cae sin armamento, no deja dogtag válido.
+          </p>
+          <p>
+            Una vez recogido, el dogtag debe <b>depositarse en el "altar" situado en la isla de tu equipo</b> para que sume puntos. Los dogtags recuperados de tus propios compañeros se consideran dogtags denegados: sirven para impedir que el enemigo puntúe, pero <b>no otorgan puntos a tu equipo</b>.
+          </p>
+          <p style={{ color: "#f39c12" }}>
+            Solo los dogtags de enemigos depositados correctamente en el altar contabilizarán en el marcador final.
+          </p>
+        </div>
       ),
       en: (
-        <span>
-          The tournament mode uses <b>unique dogtags for each player</b>. Every time you kill a player, they will drop a dogtag. <br />
-          For the dogtag to count towards victory, <b>it must be deposited in the "altar" located on the respective team's island</b>. <br />
-          <span style={{ color: "#f39c12" }}>Only dogtags correctly deposited in the altar will count points for the team.</span>
-        </span>
+        <div>
+          <p>
+            The tournament revolves around <b>unique dogtags for every player</b>. A valid dogtag drops only when you eliminate a member of another team who is armed or has a weapon equipped; downed opponents without weapons do not generate a scoring tag.
+          </p>
+          <p>
+            After collecting it, the dogtag must be <b>deposited in the "altar" located on your team's island</b> to add points. Dogtags recovered from your own teammates are considered denied tags: they prevent the enemy from scoring, but <b>do not award points to your team</b>.
+          </p>
+          <p style={{ color: "#f39c12" }}>
+            Only enemy dogtags deposited correctly in the altar will be recorded on the scoreboard.
+          </p>
+        </div>
       ),
       pt: (
-        <span>
-          O modo do torneio utiliza <b>dogtags únicos para cada jogador</b>. Sempre que você eliminar um jogador, ele soltará um dogtag. <br />
-          Para que o dogtag conte para a vitória, <b>deve ser depositado no "altar" localizado na ilha respectiva de cada equipe</b>. <br />
-          <span style={{ color: "#f39c12" }}>Somente os dogtags depositados corretamente no altar contarão pontos para a equipe.</span>
-        </span>
+        <div>
+          <p>
+            O torneio gira em torno de <b>dogtags únicos para cada jogador</b>. Um dogtag válido só é gerado quando você elimina um membro de outra equipe que esteja armado ou com uma arma equipada; adversários abatidos sem armamento não deixam dogtag que valha pontos.
+          </p>
+          <p>
+            Depois de coletá-lo, o dogtag precisa ser <b>depositado no "altar" localizado na ilha da sua equipe</b> para somar pontos. Dogtags recuperados dos seus companheiros contam como dogtags negados: impedem que o inimigo pontue, mas <b>não concedem pontos para a sua equipe</b>.
+          </p>
+          <p style={{ color: "#f39c12" }}>
+            Somente os dogtags inimigos depositados corretamente no altar serão registrados na pontuação final.
+          </p>
+        </div>
       )
     }
   },
@@ -1112,17 +1130,56 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          Durante todo el evento se van a realizar muchos eventos pequeños y grandes durante los 4 dias de evento que daran recompensas para poder ganar el evento, esto sera revelara durante el evento
+          <div style={{ marginBottom: 12 }}>
+            Durante los 4 días del evento se realizarán diversos eventos especiales programados por la organización. A continuación se listan los eventos principales que aparecerán en el servidor:
+          </div>
+          <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+            <li><b>Hardpoint</b> — Drops Tags.</li>
+            <li><b>Convoys</b> — Drops Tags (recompensas variadas).</li>
+            <li><b>Roams</b> — Drops Tags.</li>
+            <li><b>Armored Train</b> — Drops Tags (botín especial).</li>
+            <li><b>Lockeds Crates</b> — Drops Tags (cajas con distinto contenido).</li>
+            <li><b>Sputnik</b> — Drops Tags (eventos únicos de recompensa).</li>
+          </ul>
+          <div style={{ marginTop: 10, color: '#f39c12' }}>
+            Nota: Los detalles exactos (frecuencia, variedad de recompensas y mecánicas específicas) se anunciarán en el Discord oficial y durante el propio evento.
+          </div>
         </div>
       ),
       en: (
         <div>
-          Throughout the 4 days of the event there will be many small and large events that will grant rewards to help you win; all of this will be revealed during the event.
+          <div style={{ marginBottom: 12 }}>
+            Throughout the 4 days of the event the organizers will run several scheduled special events. Below are the main server events you can expect:
+          </div>
+          <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+            <li><b>Hardpoint</b> — Drops Tags.</li>
+            <li><b>Convoys</b> — Drops Tags (varied rewards).</li>
+            <li><b>Roams</b> — Drops Tags.</li>
+            <li><b>Armored Train</b> — Drops Tags (special loot).</li>
+            <li><b>Lockeds Crates</b> — Drops Tags (crates with varied contents).</li>
+            <li><b>Sputnik</b> — Drops Tags (unique reward events).</li>
+          </ul>
+          <div style={{ marginTop: 10, color: '#f39c12' }}>
+            Note: Exact details (timing, reward variety and specific mechanics) will be announced on the official Discord and during the event itself.
+          </div>
         </div>
       ),
       pt: (
         <div>
-          Durante os 4 dias de evento acontecerão muitos eventos pequenos e grandes que darão recompensas para ajudar a vencer o evento; tudo isso será revelado durante o próprio evento.
+          <div style={{ marginBottom: 12 }}>
+            Durante os 4 dias do evento, os organizadores realizarão diversos eventos especiais programados. Abaixo estão os principais eventos do servidor que você pode esperar:
+          </div>
+          <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+            <li><b>Hardpoint</b> — Drops Tags.</li>
+            <li><b>Convoys</b> — Drops Tags (recompensas variadas).</li>
+            <li><b>Roams</b> — Drops Tags.</li>
+            <li><b>Armored Train</b> — Drops Tags (loot especial).</li>
+            <li><b>Lockeds Crates</b> — Drops Tags (caixas com conteúdo variado).</li>
+            <li><b>Sputnik</b> — Drops Tags (eventos únicos com recompensa).</li>
+          </ul>
+          <div style={{ marginTop: 10, color: '#f39c12' }}>
+            Nota: Detalhes exatos (cronograma, variedade de recompensas e mecânicas específicas) serão anunciados no Discord oficial e durante o próprio evento.
+          </div>
         </div>
       )
     }
@@ -1136,41 +1193,146 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          Toda la comunicación será a través del <b>Discord oficial</b> de Rustaco. 
+          Toda la comunicación operativa será a través del <b>Discord oficial</b> de Rustaco.
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-            <li>Cada equipo debe estar presente en su canal de voz asignado durante el evento.</li>
-            <li>Cada equipo contará con un chat privado para coordinar y comunicar todo lo necesario.</li>
-            <li>Los anuncios y avisos importantes se harán únicamente por Discord.</li>
+            <li>Cada equipo contará con <b>dos canales de voz</b> y <b>un canal de texto</b>; deben mantenerse activos durante cada era y actividad programada.</li>
+            <li>Los capitanes tendrán acceso prioritario al sistema de tickets para gestionar emergencias, pausas, reportes de bugs y cualquier incidente relevante junto al staff.</li>
+            <li>Existe un canal de anuncios urgentes; cualquier actualización crítica (hotfixes, cambios de horario) solo se publicará allí y debe revisarse constantemente.</li>
+            <li>Se habilitará un canal de reportes rápidos para bugs y conflictos; el staff confirmará la recepción dentro de un plazo máximo de 10 minutos.</li>
           </ul>
           <span style={{ color: "#f39c12" }}>
-            Es responsabilidad de los capitanes y jugadores estar atentos a los canales oficiales.
+            Es responsabilidad de capitanes y jugadores monitorear los canales oficiales y mantener comunicación abierta con la administración en todo momento.
           </span>
         </div>
       ),
       en: (
         <div>
-          All communication will be through the official Rustaco <b>Discord</b>. 
+          All operational communication will run through the official Rustaco <b>Discord</b>.
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-            <li>Each team must be present in their assigned voice channel during the event.</li>
-            <li>Each team will have a private chat to coordinate and communicate everything necessary.</li>
-            <li>Announcements and important notices will be made only through Discord.</li>
+            <li>Each team receives <b>two voice channels</b> plus <b>one text channel</b>; they must remain active throughout every era and scheduled activity.</li>
+            <li>Captains receive priority access to the ticketing system to handle emergencies, pauses, bug reports, and any relevant incidents alongside staff.</li>
+            <li>There is an urgent-announcement channel; any critical update (hotfixes, schedule changes) will be shared only there and must be checked constantly.</li>
+            <li>A quick-report channel is available for bugs and conflicts; staff will acknowledge receipt within a maximum of 10 minutes.</li>
           </ul>
           <span style={{ color: "#f39c12" }}>
-            It is the responsibility of the captains and players to pay attention to the official channels.
+            Captains and players are responsible for monitoring official channels and keeping communication open with the administration at all times.
           </span>
         </div>
       ),
       pt: (
         <div>
-          Toda a comunicação será feita através do <b>Discord oficial</b> do Rustaco. 
+          Toda a comunicação operacional será realizada através do <b>Discord oficial</b> do Rustaco.
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
-            <li>Cada equipe deve estar presente em seu canal de voz designado durante o evento.</li>
-            <li>Cada equipe terá um chat privado para coordenar e comunicar tudo o que for necessário.</li>
-            <li>Anúncios e avisos importantes serão feitos apenas pelo Discord.</li>
+            <li>Cada equipe contará com <b>dois canais de voz</b> e <b>um canal de texto</b>; eles devem permanecer ativos durante cada era e atividade programada.</li>
+            <li>Os capitães terão acesso prioritário ao sistema de tickets para gerir emergências, pausas, reportes de bugs e quaisquer incidentes relevantes com o staff.</li>
+            <li>Há um canal de anúncios urgentes; qualquer atualização crítica (hotfixes, ajustes de horário) será publicada apenas ali e deve ser monitorada constantemente.</li>
+            <li>Um canal de reportes rápidos estará disponível para bugs e conflitos; o staff confirmará o recebimento em no máximo 10 minutos.</li>
           </ul>
           <span style={{ color: "#f39c12" }}>
-            É responsabilidade dos capitães e jogadores ficarem atentos aos canais oficiais.
+            É responsabilidade dos capitães e jogadores monitorar os canais oficiais e manter comunicação aberta com a administração em todo momento.
           </span>
+        </div>
+      )
+    }
+  },
+  {
+    titulo: {
+      es: "14.1. Fair Play y Anti-cheat",
+      en: "14.1. Fair Play and Anti-cheat",
+      pt: "14.1. Fair Play e Anti-cheat"
+    },
+    descripcion: {
+      es: (
+        <div>
+          <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+            <li>Se prohíbe estrictamente el uso de software externo, macros o modificaciones de cliente que otorguen ventaja competitiva.</li>
+            <li>El staff puede solicitar grabaciones, POV o transmisión inmediata en caso de sospecha; negarse implica descalificación automática.</li>
+            <li>Los jugadores deben reportar de inmediato cualquier comportamiento sospechoso o bug que pueda explotarse.</li>
+            <li>Cada participante debe jugar exclusivamente con su cuenta principal; cualquier cambio de identidad o uso de cuentas alternas implica expulsión del equipo.</li>
+          </ul>
+          <span style={{ color: '#f39c12', display: 'block', marginTop: 8 }}>
+            La integridad competitiva es prioritaria: cualquier intento de abuso o trampa conlleva sanciones máximas.
+          </span>
+        </div>
+      ),
+      en: (
+        <div>
+          <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+            <li>External software, macros, or client modifications that grant a competitive advantage are strictly forbidden.</li>
+            <li>Staff may request recordings, POV, or immediate live streaming if suspicious activity arises; refusal leads to instant disqualification.</li>
+            <li>Players must promptly report any suspicious behavior or exploit-prone bug.</li>
+            <li>Every participant must play exclusively on their main account; identity swaps or alternate accounts lead to team expulsion.</li>
+          </ul>
+          <span style={{ color: '#f39c12', display: 'block', marginTop: 8 }}>
+            Competitive integrity is paramount: any attempt at abuse or cheating carries maximum penalties.
+          </span>
+        </div>
+      ),
+      pt: (
+        <div>
+          <ul style={{ margin: 0, paddingLeft: '1.5em', listStyle: 'disc' }}>
+            <li>É estritamente proibido o uso de software externo, macros ou modificações de cliente que concedam vantagem competitiva.</li>
+            <li>A equipe pode solicitar gravações, POV ou transmissão imediata em caso de suspeita; recusar implica desclassificação imediata.</li>
+            <li>Os jogadores devem reportar imediatamente qualquer comportamento suspeito ou bug passível de exploração.</li>
+            <li>Cada participante deve jogar exclusivamente com sua conta principal; mudança de identidade ou uso de contas alternativas implica expulsão da equipe.</li>
+          </ul>
+          <span style={{ color: '#f39c12', display: 'block', marginTop: 8 }}>
+            A integridade competitiva é prioridade: qualquer tentativa de abuso ou trapaça acarretará penalidades máximas.
+          </span>
+        </div>
+      )
+    }
+  },
+  {
+    titulo: {
+      es: "14.2. Sanciones y procedimientos",
+      en: "14.2. Sanctions and Procedures",
+      pt: "14.2. Sanções e procedimentos"
+    },
+    descripcion: {
+      es: (
+        <div>
+          <ol style={{ margin: 0, paddingLeft: '1.5em' }}>
+            <li><b>Advertencia formal:</b> se registra en Discord y queda notificada al capitán. Reiterar la falta escala la sanción.</li>
+            <li><b>Sanción temporal:</b> suspensión del jugador (o del equipo, según el caso) por un periodo definido por el staff.</li>
+            <li><b>Expulsión definitiva:</b> expulsión inmediata del evento sin derecho a reincorporación.</li>
+          </ol>
+          <p style={{ marginTop: 12 }}>
+            Cada sanción será comunicada en el canal de capitanes junto con el detalle del incidente y los pasos para apelar. Las apelaciones deben iniciarse dentro de los <b>15 minutos</b> posteriores a la notificación. El staff podrá revisar evidencias adicionales y emitir un veredicto final en un plazo máximo de 60 minutos.
+          </p>
+          <p style={{ color: '#f39c12' }}>
+            La reincidencia en conductas graves (cheats, toxicidad extrema, sabotaje) acorta el proceso: se aplicará expulsión directa sin paso previo por advertencia.
+          </p>
+        </div>
+      ),
+      en: (
+        <div>
+          <ol style={{ margin: 0, paddingLeft: '1.5em' }}>
+            <li><b>Formal warning:</b> recorded in Discord and notified to the captain. Repeating the offense escalates the sanction.</li>
+            <li><b>Temporary sanction:</b> suspension of the player (or the team, if applicable) for a period defined by staff.</li>
+            <li><b>Permanent expulsion:</b> immediate removal from the event with no right to rejoin.</li>
+          </ol>
+          <p style={{ marginTop: 12 }}>
+            Each sanction is communicated through the captains' channel, including incident details and appeal steps. Appeals must start within <b>15 minutes</b> of the notification. Staff may review additional evidence and deliver a final verdict within 60 minutes.
+          </p>
+          <p style={{ color: '#f39c12' }}>
+            Recurring severe behaviors (cheating, extreme toxicity, sabotage) shorten the process: direct expulsion will be applied without prior warning.
+          </p>
+        </div>
+      ),
+      pt: (
+        <div>
+          <ol style={{ margin: 0, paddingLeft: '1.5em' }}>
+            <li><b>Advertência formal:</b> registrada no Discord e notificada ao capitão. Repetir a infração faz a sanção escalar.</li>
+            <li><b>Sanção temporária:</b> suspensão do jogador (ou da equipe, conforme o caso) por um período definido pelo staff.</li>
+            <li><b>Expulsão definitiva:</b> remoção imediata do evento sem direito de retorno.</li>
+          </ol>
+          <p style={{ marginTop: 12 }}>
+            Cada sanção será comunicada no canal de capitães juntamente com os detalhes do incidente e os passos para apelação. As apelações devem começar dentro de <b>15 minutos</b> após a notificação. O staff poderá revisar evidências extras e emitir um veredito final em até 60 minutos.
+          </p>
+          <p style={{ color: '#f39c12' }}>
+            A reincidência em condutas graves (cheats, toxicidade extrema, sabotagem) encurta o processo: será aplicada expulsão direta sem advertência prévia.
+          </p>
         </div>
       )
     }
@@ -1184,17 +1346,23 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          <b>El stream es obligatorio siempre y cuando empiezen la activación de dogtags y main events que se veran a lo largo del dia, luego al tener la desactivación de dogtags, los jugadores pueden estar offstream siempre y cuando esten grabando, en caso de no grabar, se aplicara sancion.</b>
+          <b>El stream es obligatorio durante todo el tiempo en que las dogtags estén activas. No estar en directo durante este período será motivo de sanción (ban).
+          Una vez que las dogtags se desactiven, los jugadores podrán continuar off stream, pero deberán grabar su gameplay en todo momento.
+          No grabar no conlleva una sanción directa; sin embargo, perjudica exclusivamente al jugador en caso de existir un reporte, ya que la falta de evidencia puede jugar en su contra.</b>
         </div>
       ),
       en: (
         <div>
-          <b>Streaming is mandatory as long as dog tags and main events are activated throughout the day. Once dog tags are deactivated, players may go off-stream as long as they are recording. If they are not recording, penalties will apply.</b>
+          <b>Streaming is mandatory for as long as the dog tags are active. Failure to stream during this period will result in a penalty (ban).
+          Once the dog tags are deactivated, players may continue off stream, but must record their gameplay at all times.
+          Failure to record does not result in a direct penalty; however, it exclusively harms the player in the event of a report, as the lack of evidence can work against them.</b>
         </div>
       ),
       pt: (
         <div>
-          <b>A transmissão é obrigatória desde que comecem a ativação das dogtags e dos eventos principais que serão vistos ao longo do dia. Depois, com a desativação das dogtags, os jogadores podem ficar fora da transmissão desde que estejam gravando. Caso não gravem, será aplicada uma penalidade.</b>
+          <b>A transmissão é obrigatória durante todo o tempo em que as dogtags estiverem ativas. Não estar ao vivo durante esse período será motivo para sanção (banimento).
+          Uma vez que as dogtags forem desativadas, os jogadores poderão continuar fora da transmissão, mas deverão gravar sua jogabilidade em todos os momentos.
+          Não gravar não acarreta uma sanção direta; no entanto, prejudica exclusivamente o jogador em caso de denúncia, uma vez que a falta de provas pode jogar contra ele.</b>
         </div>
       )
     }
