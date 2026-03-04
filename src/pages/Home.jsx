@@ -16,14 +16,6 @@ const sponsorLogos = [
 ];
 
 export default function Home() {
-  const [showStatsNotice, setShowStatsNotice] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!showStatsNotice) return;
-    const t = setTimeout(() => setShowStatsNotice(false), 3500);
-    return () => clearTimeout(t);
-  }, [showStatsNotice]);
-
   React.useEffect(() => {
     document.body.classList.add("has-video-bg");
     return () => document.body.classList.remove("has-video-bg");
@@ -34,26 +26,10 @@ export default function Home() {
       <header className="TopBar TopBar--home">
         <nav className="TopBar-links TopBar-links--left" aria-label="Navegación">
           <Link to="/reglas" className="nav-btn">Rules</Link>
-          <Link to="/equipos" className="nav-btn">Teams</Link>
-          <button
-            type="button"
-            className="nav-btn"
-            onClick={() => setShowStatsNotice(true)}
-          >
-            Stats
-          </button>
+          <span className="nav-btn" aria-disabled="true">Teams (Soon..)</span>
+          <span className="nav-btn" aria-disabled="true">Stats (Soon..)</span>
         </nav>
       </header>
-
-      {showStatsNotice && (
-        <div
-          className="stats-alert"
-          role="alert"
-          onClick={() => setShowStatsNotice(false)}
-        >
-          Player stats will be available on event day
-        </div>
-      )}
 
       <main className="home-hero">
         <img className="home-hero-logo" src={logoNuevo} alt="Rustaco" />
@@ -97,7 +73,7 @@ export default function Home() {
                 textShadow: "0 2px 10px #000",
               }}
             >
-              March 12 to March 15
+              Soon..
             </span>
           </div>
         </div>

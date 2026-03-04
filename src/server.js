@@ -7,6 +7,7 @@ const cors = require('cors');
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
+const mysql = require('mysql2/promise');
 
 const app = express();
 
@@ -19,7 +20,9 @@ app.set('trust proxy', 1);
 // 1. Cambia el origin de CORS para aceptar solo localhost y 127.0.0.1
 app.use(cors({
   origin: [
-    'https://www.rustaco.site'
+    'https://www.rustaco.site',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
   ],
   credentials: true
 }));
@@ -38,6 +41,20 @@ app.use(passport.session());
 
 app.use(express.json()); // Para parsear JSON en POST
 
+const statsDb = mysql.createPool({
+  host: '34.75.205.174',
+  user: 'admin',
+  password: 'Rustaco.2000',
+  database: 'rustaco',
+  port: 3306,
+  waitForConnections: true,
+  connectionLimit: 5,
+  supportBigNumbers: true,
+  bigNumberStrings: true
+});
+
+const STEAM_API_KEY = process.env.STEAM_API_KEY || '3E6FB3DF729486B3EF9485399557CC45';
+
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -53,7 +70,7 @@ const steamUsers = {};
 passport.use(new SteamStrategy({
   returnURL: 'https://www.rustaco.site/auth/steam/return',
   realm: 'https://www.rustaco.site/',
-  apiKey: '3E6FB3DF729486B3EF9485399557CC45'
+  apiKey: STEAM_API_KEY
 }, (identifier, profile, done) => {
   process.nextTick(() => {
     profile.identifier = identifier;
@@ -74,6 +91,7 @@ passport.use(new SteamStrategy({
     });
   });
 }));
+
 
 // Cambia la ruta de inicio de login Steam para usar localhost
 app.get('/auth/steam', (req, res, next) => {
@@ -123,6 +141,227 @@ app.get('/api/user', (req, res) => {
     });
   } else {
     res.json({ steamid: null });
+  }
+});
+
+app.get('/api/stats', async (req, res) => {
+  const allowedTables = new Set(['PlayerStats', 'StatsStorage']);
+  const table = allowedTables.has(req.query.table) ? req.query.table : 'PlayerStats';
+  const limitRaw = parseInt(req.query.limit, 10);
+  const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(limitRaw, 1), 200) : 50;
+  const KILL_LOOT_TYPE = 6;
+  const DEATH_LOOT_TYPE = 9;
+
+  try {
+    if (table === 'PlayerStats') {
+      const [rows] = await statsDb.query(
+        'SELECT p.*, ' +
+        'COALESCE(k.ItemValue, 0) AS Kills, ' +
+        'COALESCE(d.ItemValue, 0) AS Deaths, ' +
+        'CASE WHEN COALESCE(d.ItemValue, 0) = 0 THEN COALESCE(k.ItemValue, 0) ' +
+        'ELSE ROUND(COALESCE(k.ItemValue, 0) / NULLIF(d.ItemValue, 0), 2) END AS KDR ' +
+        'FROM PlayerStats p ' +
+        'LEFT JOIN StatsStorage k ON k.UserId = p.UserId AND k.LootType = ? AND k.ShortName = ? ' +
+        'LEFT JOIN StatsStorage d ON d.UserId = p.UserId AND d.LootType = ? AND d.ShortName = ? ' +
+        'ORDER BY Kills DESC ' +
+        'LIMIT ?',
+        [
+          KILL_LOOT_TYPE, 'kills',
+          DEATH_LOOT_TYPE, 'deaths',
+          limit
+        ]
+      );
+      if (rows.length === 0) {
+        res.json({ table, rows });
+        return;
+      }
+
+      const resourceShortNames = [
+        'stones',
+        'metal.ore',
+        'hq.metal.ore',
+        'sulfur.ore',
+        'wood',
+        'cloth',
+        'leather',
+        'bone.fragments',
+        'mushroom',
+        'scrap',
+        'green.berry',
+        'red.berry',
+        'blue.berry',
+        'black.berry',
+        'yellow.berry',
+        'white.berry',
+        'corn',
+        'pumpkin',
+        'potato',
+        'wheat',
+        'ammo.rocket.basic',
+        'ammo.rocket.hv',
+        'ammo.rocket.fire',
+        'explosive.timed',
+        'ammo.rifle.explosive',
+        'crate_normal_2',
+        'crate_normal',
+        'crate_elite'
+      ];
+
+      const userIds = rows.map((row) => row.UserId).filter(Boolean);
+      const [resourceRows] = await statsDb.query(
+        'SELECT UserId, ShortName, SUM(ItemValue) AS ItemValue ' +
+        'FROM StatsStorage ' +
+        'WHERE UserId IN (?) AND ShortName IN (?) ' +
+        'GROUP BY UserId, ShortName',
+        [userIds, resourceShortNames]
+      );
+
+      const resourceMap = new Map();
+      resourceRows.forEach((row) => {
+        if (!resourceMap.has(row.UserId)) {
+          resourceMap.set(row.UserId, new Map());
+        }
+        resourceMap.get(row.UserId).set(row.ShortName, row.ItemValue);
+      });
+
+      const rowsWithResources = rows.map((row) => {
+        const perUser = resourceMap.get(row.UserId) || new Map();
+        const resources = {};
+        resourceShortNames.forEach((name) => {
+          resources[name] = perUser.get(name) || 0;
+        });
+        return { ...row, ...resources };
+      });
+
+      res.json({ table, rows: rowsWithResources });
+      return;
+    }
+
+    const [rows] = await statsDb.query('SELECT * FROM ?? LIMIT ?', [table, limit]);
+    res.json({ table, rows });
+  } catch (error) {
+    console.error('Stats query error:', error);
+    res.status(500).json({
+      error: 'Stats query failed',
+      code: error.code || null,
+      message: error.message || 'Unknown error'
+    });
+  }
+});
+
+app.get('/api/player-stats', async (req, res) => {
+  const userIdRaw = String(req.query.userId || '').trim();
+  const nicknameRaw = String(req.query.nickname || '').trim();
+  const isNumericId = (value) => /^[0-9]{5,20}$/.test(value);
+  const userId = isNumericId(userIdRaw) ? userIdRaw : (isNumericId(nicknameRaw) ? nicknameRaw : '');
+  if (!userId) {
+    res.status(400).json({ error: 'Invalid userId' });
+    return;
+  }
+
+  const KILL_LOOT_TYPE = 6;
+  const DEATH_LOOT_TYPE = 9;
+  const GATHER_LOOT_TYPE = 5;
+  const resourceShortNames = [
+    'stones',
+    'metal.ore',
+    'hq.metal.ore',
+    'sulfur.ore',
+    'wood',
+    'cloth',
+    'leather',
+    'bone.fragments',
+    'mushroom',
+    'scrap',
+    'green.berry',
+    'red.berry',
+    'blue.berry',
+    'black.berry',
+    'yellow.berry',
+    'white.berry',
+    'corn',
+    'pumpkin',
+    'potato',
+    'wheat',
+    'ammo.rocket.basic',
+    'ammo.rocket.hv',
+    'ammo.rocket.fire',
+    'explosive.timed',
+    'ammo.rifle.explosive',
+    'crate_normal_2',
+    'crate_normal',
+    'crate_elite'
+  ];
+
+  try {
+    const [players] = await statsDb.query(
+      'SELECT UserId, LastName, Points FROM PlayerStats WHERE UserId = ? LIMIT 1',
+      [userId]
+    );
+
+    const [killDeathRows] = await statsDb.query(
+      'SELECT ShortName, ItemValue FROM StatsStorage ' +
+      'WHERE UserId = ? AND LootType IN (?, ?) AND ShortName IN (?, ?)',
+      [userId, KILL_LOOT_TYPE, DEATH_LOOT_TYPE, 'kills', 'deaths']
+    );
+
+    const killDeathMap = new Map();
+    if (Array.isArray(killDeathRows)) {
+      killDeathRows.forEach((row) => {
+        killDeathMap.set(row.ShortName, row.ItemValue);
+      });
+    }
+
+    const kills = Number(killDeathMap.get('kills')) || 0;
+    const deaths = Number(killDeathMap.get('deaths')) || 0;
+    const kdr = deaths === 0 ? kills : Math.round((kills / deaths) * 100) / 100;
+
+    const [resources] = await statsDb.query(
+      'SELECT ShortName, SUM(ItemValue) AS ItemValue ' +
+      'FROM StatsStorage ' +
+      'WHERE UserId = ? AND ShortName IN (?) ' +
+      'GROUP BY ShortName ' +
+      'ORDER BY FIELD(ShortName, ?)',
+      [userId, resourceShortNames, resourceShortNames]
+    );
+
+    const resourceMap = new Map();
+    if (Array.isArray(resources)) {
+      resources.forEach((row) => {
+        resourceMap.set(row.ShortName, row);
+      });
+    }
+
+    const orderedResources = resourceShortNames.map((name) => {
+      const row = resourceMap.get(name);
+      return {
+        UserId: row?.UserId || userId,
+        LootType: GATHER_LOOT_TYPE,
+        ShortName: name,
+        ItemValue: row?.ItemValue || 0
+      };
+    });
+
+    const playerRow = Array.isArray(players) && players.length > 0 ? players[0] : null;
+
+    res.json({
+      player: {
+        UserId: playerRow?.UserId || userId,
+        LastName: playerRow?.LastName || nicknameRaw || 'Unknown',
+        Points: playerRow?.Points || 0,
+        Kills: kills,
+        Deaths: deaths,
+        KDR: kdr
+      },
+      resources: orderedResources
+    });
+  } catch (error) {
+    console.error('Player stats query error:', error);
+    res.status(500).json({
+      error: 'Player stats query failed',
+      code: error.code || null,
+      message: error.message || 'Unknown error'
+    });
   }
 });
 
