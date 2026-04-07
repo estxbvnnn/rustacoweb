@@ -305,7 +305,7 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          El daño recibido por jugadores de los siguientes explosivos será <b>reducido considerablemente</b> durante el evento:
+          El daño recibido por jugadores de los siguientes explosivos será <b>reducido en 40%</b> durante el evento:
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
             <li>
               <img src={ammoGrenadeLauncherHE} alt="40mm Grenade" style={iconStyle} />
@@ -327,7 +327,7 @@ const reglas = [
       ),
       en: (
         <div>
-          The damage received by players from the following explosives will be <b>considerably reduced</b> during the event:
+          The damage received by players from the following explosives will be <b>reduced by 40%</b> during the event:
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
             <li>
               <img src={ammoGrenadeLauncherHE} alt="40mm Grenade" style={iconStyle} />
@@ -349,7 +349,7 @@ const reglas = [
       ),
       pt: (
         <div>
-          O dano recebido pelos jogadores dos seguintes explosivos será <b>consideravelmente reduzido</b> durante o evento:
+          O dano recebido pelos jogadores dos seguintes explosivos será <b>reduzido em 40%</b> durante o evento:
           <ul style={{ margin: '10px 0 0 1.5em', padding: 0, listStyle: 'disc' }}>
             <li>
               <img src={ammoGrenadeLauncherHE} alt="Granada de 40mm" style={iconStyle} />
@@ -578,7 +578,7 @@ const reglas = [
               </li>
               <li>No se pueden colocar objetos desplegables delante de los armarios de herramientas, excepto ventanas (por ejemplo: está prohibido colocar una alfombra sobre una ventana).</li>
               <li>Debe haber un camino desde el exterior de la base hasta el TC sin necesidad de destruir ninguna entidad fuera de una puerta/ventana/escalera.</li>
-              <li>Cualquier intento de ocultar el TC detrás de cualquier objeto colocable, sellarlo o colocarlo detrás de un búnker está estrictamente prohibido.</li>
+              <li>El TC solo puede ocultarse con puertas. Cualquier intento de ocultarlo con otros objetos colocables, sellarlo o colocarlo detrás de un búnker está estrictamente prohibido.</li>
             </ul>
           </li>
         </ul>
@@ -612,7 +612,7 @@ const reglas = [
               </li>
               <li>No deployable objects may be placed in front of Tool Cupboards, except windows (for example: placing a rug over a window is forbidden).</li>
               <li>There must be a path from the outside of the base to the TC without having to destroy any entity other than a door/window/ladder.</li>
-              <li>Any attempt to hide the TC behind any placeable object, seal it, or place it behind a bunker is strictly prohibited.</li>
+              <li>The TC may only be hidden using doors. Any attempt to hide it with other placeable objects, seal it, or place it behind a bunker is strictly prohibited.</li>
             </ul>
           </li>
         </ul>
@@ -646,7 +646,7 @@ const reglas = [
               </li>
               <li>Não é permitido colocar objetos deployables na frente dos armários de ferramentas, exceto janelas (por exemplo: é proibido colocar um tapete sobre uma janela).</li>
               <li>Deve haver um caminho desde o exterior da base até o TC sem precisar destruir nenhuma entidade além de uma porta/janela/escada.</li>
-              <li>Qualquer tentativa de esconder o TC atrás de qualquer objeto colocável, selá-lo ou colocá-lo atrás de um bunker é estritamente proibida.</li>
+              <li>O TC só pode ser escondido com portas. Qualquer tentativa de escondê-lo com outros objetos colocáveis, selá-lo ou colocá-lo atrás de um bunker é estritamente proibida.</li>
             </ul>
           </li>
         </ul>
@@ -1094,7 +1094,7 @@ const reglas = [
     descripcion: {
       es: (
         <div>
-          Todos los <b>helicópteros (minicopter, scrap transport & combat) y globos</b> del evento tendrán una <b>reducción del 30% en su vida máxima</b> para equilibrar su dominio aéreo.
+          Todos los <b>helicópteros (minicopter, scrap transport & combat) y globos</b> del evento tendrán una <b>reducción del 50% en su vida máxima</b> para equilibrar su dominio aéreo.
           <br />
           <span style={{ color: "#f39c12" }}>
             Procura planificar reparaciones y protegerlos; el ajuste es permanente durante el evento.
@@ -1103,7 +1103,7 @@ const reglas = [
       ),
       en: (
         <div>
-          All <b>helicopters (minicopter, scrap transport & combat) and balloons</b> in the event will have a <b>30% reduction to their maximum health</b> to balance aerial dominance.
+          All <b>helicopters (minicopter, scrap transport & combat) and balloons</b> in the event will have a <b>50% reduction to their maximum health</b> to balance aerial dominance.
           <br />
           <span style={{ color: "#f39c12" }}>
             Plan repairs and protect them; the adjustment is permanent throughout the event.
@@ -1112,7 +1112,7 @@ const reglas = [
       ),
       pt: (
         <div>
-          Todos os <b>helicópteros (minicopter, scrap transport & combat) e balões</b> do evento terão uma <b>redução de 30% na vida máxima</b> para equilibrar o domínio aéreo.
+          Todos os <b>helicópteros (minicopter, scrap transport & combat) e balões</b> do evento terão uma <b>redução de 50% na vida máxima</b> para equilibrar o domínio aéreo.
           <br />
           <span style={{ color: "#f39c12" }}>
             Planeje reparos e proteja-os; o ajuste é permanente durante o evento.
@@ -1582,12 +1582,12 @@ export default function Reglas() {
         </nav>
       </header>
 
-      <main style={{ position: "relative", zIndex: 20, padding: "2.6rem 1rem 3rem" }}>
-        <div className="panel home-dark" style={{ marginTop: 0 }}>
+      <main className="rules-main">
+        <div className="panel rules-panel" style={{ marginTop: 0 }}>
           <SideAnimation side="left" />
           <SideAnimation side="right" />
 
-          <h1 className="reglas-title" style={{ zIndex: 2, position: "relative" }}>
+          <h1 className="reglas-title rules-title">
             {lang === "es" ? "Reglas del Evento" : lang === "en" ? "Event Rules" : "Regras do Evento"}
           </h1>
 
@@ -1601,7 +1601,7 @@ export default function Reglas() {
           </div>
 
           <div className="reglas-content">
-            <div>
+            <div className="reglas-column">
               {reglas.map((regla, idx) => (
                 <div key={idx} id={`rule-${idx + 1}`} className="regla-card">
                   <div className="regla-header">

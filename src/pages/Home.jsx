@@ -9,6 +9,22 @@ import syvarLogo from "../assets/img/syvarlogo.png";
 import rustypotTextLogo from "../assets/img/rustypotlogo.png";
 import prizepoolImg from "../assets/img/prizepool.png";
 
+const flagChile = "https://flagcdn.com/w20/cl.png";
+const flagUSA = "https://flagcdn.com/w20/us.png";
+const flagBrazil = "https://flagcdn.com/w20/br.png";
+
+const translations = {
+  es: {
+    eventDates: "9 al 12 de Abril",
+  },
+  en: {
+    eventDates: "April 9 to April 12",
+  },
+  pt: {
+    eventDates: "9 a 12 de Abril",
+  },
+};
+
 const sponsorLogos = [
   { src: lootroomTextLogo, alt: "Lootroom", width: 170 },
   { src: rustypotTextLogo, alt: "Rustypot", width: 150 },
@@ -16,6 +32,8 @@ const sponsorLogos = [
 ];
 
 export default function Home() {
+  const [lang, setLang] = React.useState("es");
+
   React.useEffect(() => {
     document.body.classList.add("has-video-bg");
     return () => document.body.classList.remove("has-video-bg");
@@ -26,9 +44,20 @@ export default function Home() {
       <header className="TopBar TopBar--home">
         <nav className="TopBar-links TopBar-links--left" aria-label="Navegación">
           <Link to="/reglas" className="nav-btn">Rules</Link>
-          <span className="nav-btn" aria-disabled="true">Teams (Soon..)</span>
-          <span className="nav-btn" aria-disabled="true">Stats (Soon..)</span>
+          <Link to="/equipos" className="nav-btn">Teams</Link>
+          <Link to="/events" className="nav-btn">Stats</Link>
         </nav>
+        <div className="hud-flags" style={{ marginLeft: "auto" }}>
+          <button className={`icon-btn flag ${lang === "es" ? "lang-btn-active" : ""}`} onClick={() => setLang("es")} title="Español LATAM">
+            <img src={flagChile} alt="Chile" style={{ width: 22, height: 15, display: "block" }} />
+          </button>
+          <button className={`icon-btn flag ${lang === "en" ? "lang-btn-active" : ""}`} onClick={() => setLang("en")} title="English USA">
+            <img src={flagUSA} alt="USA" style={{ width: 22, height: 15, display: "block" }} />
+          </button>
+          <button className={`icon-btn flag ${lang === "pt" ? "lang-btn-active" : ""}`} onClick={() => setLang("pt")} title="Português Brasil">
+            <img src={flagBrazil} alt="Brasil" style={{ width: 22, height: 15, display: "block" }} />
+          </button>
+        </div>
       </header>
 
       <main className="home-hero">
@@ -73,7 +102,7 @@ export default function Home() {
                 textShadow: "0 2px 10px #000",
               }}
             >
-              Soon..
+              {translations[lang].eventDates}
             </span>
           </div>
         </div>

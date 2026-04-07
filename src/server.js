@@ -42,8 +42,8 @@ app.use(passport.session());
 app.use(express.json()); // Para parsear JSON en POST
 
 const statsDb = mysql.createPool({
-  host: '34.75.205.174',
-  user: 'admin',
+  host: '34.139.33.19',
+  user: 'rustaco',
   password: 'Rustaco.2000',
   database: 'rustaco',
   port: 3306,

@@ -153,7 +153,7 @@ export default function About() {
                             <h1 style={{ margin: 0, fontSize: '2rem', color: 'var(--hd-text)', fontWeight: 900 }}>{translations[lang].title}</h1>
                             <div style={{ color: 'var(--hd-muted)', fontWeight: 800, marginTop: 6 }}>{translations[lang].subtitle}</div>
                         </div>
-                        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ marginLeft: 'auto', marginRight: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
                             <img src={rustaco2logo} alt="Rustaco II" style={{ width: 96, height: 96, objectFit: 'contain' }} />
                             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                                 <button className="icon-btn flag" onClick={() => setLang('es')} title="Español"><img src={flagChile} alt="ES" /></button>

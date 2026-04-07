@@ -44,6 +44,11 @@ const Events = () => {
   const [detailLoading, setDetailLoading] = React.useState(false);
   const [detailError, setDetailError] = React.useState('');
 
+  React.useEffect(() => {
+    document.body.classList.add('has-video-bg');
+    return () => document.body.classList.remove('has-video-bg');
+  }, []);
+
   const headerMeta = {
     Rank: { label: '#', icon: 'trophy' },
     UserId: { label: 'UserId', icon: 'person-badge' },
@@ -257,7 +262,7 @@ const Events = () => {
         }
       } catch (err) {
         if (isActive) {
-          setError('Unable to load stats.');
+          setError('Stats available during the event');
           setRows([]);
           setColumns([]);
         }

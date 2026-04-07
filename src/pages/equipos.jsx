@@ -2,18 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../assets/home-dark.css";
 
-import poionakoTeam from "../assets/img/poionakoteam.png";
-import lukasitoTeam from "../assets/img/lukasitoteam.png";
-import tchubiTeam from "../assets/img/tchubiteam.png";
-import dilanzitoTeam from "../assets/img/dilanzitoteam.png";
-import deathwinguaTeam from "../assets/img/deathwinguateam.png";
-import salomon96Team from "../assets/img/salomon96team.png";
-import juninTeam from "../assets/img/juninnewlogo.png";
-import alexdieciTeam from "../assets/img/alexdieci.webp";
-import captainmykoTeam from "../assets/img/captainmyko.png";
 import lootroomTextLogo from "../assets/img/lootroomlogo.png";
 import rustypotTextLogo from "../assets/img/rustypotlogo.png";
 import syvarLogo from "../assets/img/syvarlogo.png";
+import tchubiLogo from "../assets/img/tchubilogo.webp";
+import deowasdLogo from "../assets/img/deologo.webp";
+import poionakoLogo from "../assets/img/poionakologo.png";
+
+const getAvatarFromPlatform = (platform, username) => {
+  const safeUser = String(username || "").trim().toLowerCase();
+  if (!safeUser) return "";
+  return `https://unavatar.io/${platform}/${safeUser}`;
+};
 
 export default function Equipos() {
   React.useEffect(() => {
@@ -22,17 +22,73 @@ export default function Equipos() {
   }, []);
 
   const teams = [
-    { name: "PoiOnako Team", image: poionakoTeam },
-    { name: "Lukasito Team", image: lukasitoTeam },
-    { name: "TChubi Team", image: tchubiTeam },
-    { name: "Dilanzito Team", image: dilanzitoTeam },
-    { name: "Deathwingua Team", image: deathwinguaTeam },
-    { name: "SalomonL96 Team", image: salomon96Team },
-    { name: "Alexdieci Team", image: alexdieciTeam },
-    { name: "CaptainMyko Team", image: captainmykoTeam },
-    { name: "Junin Team", image: juninTeam },
-    { name: "To be confirmed", image: null },
-  ];
+    {
+      name: "CaptainMyko Team",
+      captain: "captainmyko",
+      platform: "twitch",
+      url: "https://www.twitch.tv/captainmyko",
+    },
+    {
+      name: "Alexdieci Team",
+      captain: "alexdieci",
+      platform: "twitch",
+      url: "https://www.twitch.tv/alexdieci",
+    },
+    {
+      name: "SalomonL96 Team",
+      captain: "salomonl96_",
+      platform: "twitch",
+      url: "https://www.twitch.tv/salomonl96_",
+    },
+    {
+      name: "Wideok Team",
+      captain: "wideok",
+      platform: "twitch",
+      url: "https://www.twitch.tv/wideok",
+    },
+    {
+      name: "Trytum Team",
+      captain: "trytum",
+      platform: "twitch",
+      url: "https://www.twitch.tv/trytum",
+    },
+    {
+      name: "Tchubi Team",
+      captain: "tchubi",
+      platform: "kick",
+      url: "https://kick.com/tchubi",
+      image: tchubiLogo,
+    },
+    {
+      name: "Poionako Team",
+      captain: "poionako",
+      platform: "kick",
+      url: "https://kick.com/poionako",
+      image: poionakoLogo,
+    },
+    {
+      name: "Lukasito Team",
+      captain: "lukasito",
+      platform: "twitch",
+      url: "https://www.twitch.tv/lukasito",
+    },
+    {
+      name: "Babayaga Team",
+      captain: "babayaga__0",
+      platform: "twitch",
+      url: "https://www.twitch.tv/babayaga__0",
+    },
+    {
+      name: "Deowasd Team",
+      captain: "deowasd",
+      platform: "kick",
+      url: "https://kick.com/deowasd",
+      image: deowasdLogo,
+    },
+  ].map((team) => ({
+    ...team,
+    image: team.image || getAvatarFromPlatform(team.platform, team.captain),
+  }));
 
   const [selectedTeam, setSelectedTeam] = React.useState(null);
 
@@ -58,10 +114,21 @@ export default function Equipos() {
               onClick={() => setSelectedTeam(team)}
             >
               {team.image ? (
-                <img className="team-logo" src={team.image} alt={team.name} />
+                <img
+                  className="team-logo"
+                  src={team.image}
+                  alt={team.name}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    const fallback = e.currentTarget.parentElement?.querySelector(".team-logo--placeholder");
+                    if (fallback) fallback.style.display = "block";
+                  }}
+                />
               ) : (
                 <div className="team-logo team-logo--placeholder" aria-hidden />
               )}
+              <div className="team-logo team-logo--placeholder" aria-hidden style={{ display: "none" }} />
               <div className="team-name">{team.name}</div>
             </button>
           ))}
@@ -77,7 +144,13 @@ export default function Equipos() {
                 ✕
               </button>
             </div>
-            <div className="team-modal-body">Soon..</div>
+            <div className="team-modal-body">
+              Captain: {selectedTeam.captain}
+              <br />
+              <a href={selectedTeam.url} target="_blank" rel="noopener noreferrer">
+                {selectedTeam.url}
+              </a>
+            </div>
           </div>
         </div>
       )}
