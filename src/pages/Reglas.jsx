@@ -1347,6 +1347,7 @@ const reglas = [
       es: (
         <div>
           <b>El stream es obligatorio durante todo el tiempo en que las dogtags estén activas. No estar en directo durante este período será motivo de sanción (ban).
+          Las VODs deben permanecer activas en todo momento.
           Una vez que las dogtags se desactiven, los jugadores podrán continuar off stream, pero deberán grabar su gameplay en todo momento.
           No grabar no conlleva una sanción directa; sin embargo, perjudica exclusivamente al jugador en caso de existir un reporte, ya que la falta de evidencia puede jugar en su contra.</b>
         </div>
@@ -1354,6 +1355,7 @@ const reglas = [
       en: (
         <div>
           <b>Streaming is mandatory for as long as the dog tags are active. Failure to stream during this period will result in a penalty (ban).
+          VODs must remain enabled at all times.
           Once the dog tags are deactivated, players may continue off stream, but must record their gameplay at all times.
           Failure to record does not result in a direct penalty; however, it exclusively harms the player in the event of a report, as the lack of evidence can work against them.</b>
         </div>
@@ -1361,6 +1363,7 @@ const reglas = [
       pt: (
         <div>
           <b>A transmissão é obrigatória durante todo o tempo em que as dogtags estiverem ativas. Não estar ao vivo durante esse período será motivo para sanção (banimento).
+          As VODs devem permanecer ativas em todos os momentos.
           Uma vez que as dogtags forem desativadas, os jogadores poderão continuar fora da transmissão, mas deverão gravar sua jogabilidade em todos os momentos.
           Não gravar não acarreta uma sanção direta; no entanto, prejudica exclusivamente o jogador em caso de denúncia, uma vez que a falta de provas pode jogar contra ele.</b>
         </div>
