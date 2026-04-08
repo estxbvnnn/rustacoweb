@@ -15,6 +15,21 @@ const getAvatarFromPlatform = (platform, username) => {
   return `https://unavatar.io/${platform}/${safeUser}`;
 };
 
+const normalizeUrl = (url) => {
+  const safeUrl = String(url || "").trim();
+  if (!safeUrl) return "";
+  if (/^https?:\/\//i.test(safeUrl)) return safeUrl;
+  return `https://${safeUrl}`;
+};
+
+const getPlatformLabel = (url) => {
+  const clean = String(url || "").toLowerCase();
+  if (clean.includes("twitch.tv")) return "Twitch";
+  if (clean.includes("kick.com")) return "Kick";
+  if (clean.includes("youtube.com") || clean.includes("youtu.be")) return "YouTube";
+  return "Link";
+};
+
 export default function Equipos() {
   React.useEffect(() => {
     document.body.classList.add("has-video-bg");
@@ -24,59 +39,173 @@ export default function Equipos() {
   const teams = [
     {
       name: "CaptainMyko Team",
-      captain: "captainmyko",
+      captain: "Captain Myko",
+      avatarSeed: "captainmyko",
       platform: "twitch",
       url: "https://www.twitch.tv/captainmyko",
+      members: [
+        { name: "Captain Myko", url: "https://www.twitch.tv/captainmyko" },
+        { name: "FunjiRust", url: "https://www.twitch.tv/funjirust" },
+        { name: "NiniRust", url: "https://www.twitch.tv/ninirust" },
+        { name: "FunkerLive", url: "https://www.twitch.tv/funkerlive" },
+        { name: "Donfladi", url: "https://www.twitch.tv/donfladi" },
+        { name: "Kris_siie", url: "https://www.twitch.tv/kris_siie" },
+        { name: "Maafgaming", url: "https://www.twitch.tv/maafgaming" },
+        { name: "L0vis", url: "https://www.twitch.tv/l0visl" },
+        { name: "Kamin", url: "https://www.twitch.tv/kaminrust" },
+        { name: "Schmollkorn", url: "https://www.twitch.tv/schmollk0rn" },
+      ],
     },
     {
       name: "Alexdieci Team",
       captain: "alexdieci",
       platform: "twitch",
       url: "https://www.twitch.tv/alexdieci",
+      members: [
+        { name: "alexdieci", url: "https://www.twitch.tv/alexdieci" },
+        { name: "noizee", url: "https://www.twitch.tv/noizeettv" },
+        { name: "aroscapodellatrap", url: "https://www.twitch.tv/arostv_" },
+        { name: "pataisi", url: "https://www.twitch.tv/patashishi" },
+        { name: "tifi", url: "https://www.twitch.tv/tifi___" },
+        { name: "i.am.miky", url: "https://www.twitch.tv/mmmikyy" },
+        { name: "tommykzn", url: "https://twitch.tv/tommyykzn" },
+        { name: "realsparkk", url: "https://www.twitch.tv/sparkkrust2" },
+        { name: "ryanrust", url: "https://www.twitch.tv/ryanfqq" },
+        { name: "nogard98", url: "http://twitch.tv/nogardttv" },
+      ],
     },
     {
       name: "SalomonL96 Team",
-      captain: "salomonl96_",
+      captain: "SalomonL96",
+      avatarSeed: "salomonl96_",
       platform: "twitch",
       url: "https://www.twitch.tv/salomonl96_",
+      members: [
+        { name: "SalomonL96", url: "https://www.twitch.tv/salomonl96_" },
+        { name: "NoScopeAim", url: "https://www.twitch.tv/noscopeaim" },
+        { name: "Vicky", url: "https://www.twitch.tv/vickyperez3" },
+        { name: "Fridavh", url: "https://www.twitch.tv/fridavh" },
+        { name: "Mateopsz", url: "https://kick.com/mateopsz" },
+        { name: "killerfounn", url: "https://www.twitch.tv/killerfounn" },
+        { name: "smylls", url: "https://kick.com/smyllss" },
+        { name: "andres", url: "https://www.twitch.tv/andres_448" },
+        { name: "Singlaso", url: "https://www.twitch.tv/singlaso" },
+        { name: "Karinios0", url: "https://kick.com/karinios0" },
+      ],
     },
     {
       name: "Wideok Team",
-      captain: "wideok",
+      captain: "Wide",
+      avatarSeed: "wideok",
       platform: "twitch",
       url: "https://www.twitch.tv/wideok",
+      members: [
+        { name: "Wide", url: "https://www.twitch.tv/wideok" },
+        { name: "vangog", url: "https://www.twitch.tv/vangogrst" },
+        { name: "whokashin", url: "https://www.twitch.tv/whokashin" },
+        { name: "Scresh", url: "https://www.youtube.com/@Screshasio" },
+        { name: "mikonine", url: "https://twitch.tv/mikonine" },
+        { name: "karameliwe", url: "https://www.twitch.tv/karameliwe" },
+        { name: "warriortsur", url: "https://www.twitch.tv/warriortsur" },
+        { name: "BONE5", url: "https://www.youtube.com/@BONE5" },
+        { name: "Gerter Pol", url: "https://www.youtube.com/channel/UCHnhl7v5GlxiQ9sHlWHOPwQ" },
+        { name: "sorbonn3", url: "https://www.twitch.tv/sorbonn3" },
+      ],
     },
     {
       name: "Trytum Team",
-      captain: "trytum",
+      captain: "Caritas",
+      avatarSeed: "trytum",
       platform: "twitch",
-      url: "https://www.twitch.tv/trytum",
+      url: "https://www.twitch.tv/tvcaritas",
+      members: [
+        { name: "Caritas", url: "https://www.twitch.tv/tvcaritas" },
+        { name: "RafaaaGF", url: "https://kick.com/rafaaagf" },
+        { name: "thebanankiller", url: "https://www.twitch.tv/thebanankiller03" },
+        { name: "JITA", url: "https://www.twitch.tv/jita____" },
+        { name: "Gaucho", url: "https://www.twitch.tv/gaucho_08" },
+        { name: "Marquitos", url: "https://www.twitch.tv/xmarquitos22" },
+        { name: "LOOPEEZ_4", url: "https://www.twitch.tv/loopeez_4" },
+        { name: "Taparrajas", url: "https://www.twitch.tv/ramondeverano" },
+        { name: "Zurreitor", url: "https://www.twitch.tv/zurreitor" },
+        { name: "COKEIN", url: "https://kick.com/c0kein" },
+      ],
     },
     {
       name: "Tchubi Team",
       captain: "tchubi",
-      platform: "kick",
-      url: "https://kick.com/tchubi",
+      platform: "twitch",
+      url: "https://www.twitch.tv/tchubi",
       image: tchubiLogo,
+      members: [
+        { name: "sh0cker", url: "twitch.tv/sh0cker" },
+        { name: "yse_flor", url: "twitch.tv/yse_flor" },
+        { name: "rubyhub", url: "twitch.tv/rubyhub" },
+        { name: "b3ckbr", url: "twitch.tv/b3ckbr" },
+        { name: "lipee_brr", url: "twitch.tv/lipee_brr" },
+        { name: "1stompz", url: "twitch.tv/1stompz" },
+        { name: "badzinho1", url: "twitch.tv/badzinho1" },
+        { name: "neeo01", url: "twitch.tv/neeo01" },
+        { name: "tchubi", url: "twitch.tv/tchubi" },
+        { name: "blood__rust", url: "twitch.tv/blood__rust" },
+      ],
     },
     {
       name: "Poionako Team",
-      captain: "poionako",
+      captain: "Poionako",
+      avatarSeed: "poionako",
       platform: "kick",
       url: "https://kick.com/poionako",
       image: poionakoLogo,
+      members: [
+        { name: "Poionako", url: "https://kick.com/poionako" },
+        { name: "Company", url: "https://kick.com/mcompanyv" },
+        { name: "Basik", url: "https://kick.com/basiklr" },
+        { name: "ApologiZe", url: "https://kick.com/apologiize" },
+        { name: "Raulkelok", url: "https://kick.com/raulkelok" },
+        { name: "xLibano", url: "https://kick.com/xlibano" },
+        { name: "Uruguayo28", url: "https://kick.com/Uruguayo28" },
+        { name: "Itrol", url: "https://kick.com/itrol" },
+        { name: "Zerito", url: "https://kick.com/zeritoo" },
+        { name: "Mardecoira14", url: "https://kick.com/mardecoira14" },
+      ],
     },
     {
       name: "Lukasito Team",
       captain: "lukasito",
       platform: "twitch",
       url: "https://www.twitch.tv/lukasito",
+      members: [
+        { name: "lukasito", url: "https://www.twitch.tv/lukasito" },
+        { name: "EdinZ", url: "https://www.twitch.tv/edinz_" },
+        { name: "ferb", url: "https://www.twitch.tv/ferb" },
+        { name: "spinky", url: "https://www.twitch.tv/spinky_r" },
+        { name: "Donkey", url: "https://www.twitch.tv/donkeystn" },
+        { name: "playback", url: "https://www.twitch.tv/playbackkr" },
+        { name: "silas", url: "https://www.twitch.tv/silaszz_" },
+        { name: "adriidr", url: "https://www.twitch.tv/adriidr" },
+        { name: "Vection", url: "https://www.twitch.tv/vectiong" },
+        { name: "Dilanzito", url: "https://kick.com/dilanzito" },
+      ],
     },
     {
       name: "Babayaga Team",
-      captain: "babayaga__0",
+      captain: "BabaYaga",
+      avatarSeed: "babayaga__0",
       platform: "twitch",
       url: "https://www.twitch.tv/babayaga__0",
+      members: [
+        { name: "KAL", url: "https://www.twitch.tv/kalrust" },
+        { name: "Quitrix", url: "https://www.twitch.tv/qutr1ixx" },
+        { name: "Ducky", url: "https://www.youtube.com/channel/UCAuitwN3fz-rlY_viIljImQ" },
+        { name: "999Rust", url: "https://www.twitch.tv/999rust" },
+        { name: "Justin", url: "https://www.twitch.tv/justinn1111" },
+        { name: "Skiaa", url: "https://www.twitch.tv/skiaaaa_" },
+        { name: "AOM", url: "https://www.twitch.tv/aomtv__" },
+        { name: "BabaYaga", url: "https://www.twitch.tv/babayaga__0" },
+        { name: "Weffwey", url: "https://twitch.tv/weffweyyt" },
+        { name: "Zoozrust", url: "https://www.twitch.tv/zoozrust" },
+      ],
     },
     {
       name: "Deowasd Team",
@@ -84,10 +213,22 @@ export default function Equipos() {
       platform: "kick",
       url: "https://kick.com/deowasd",
       image: deowasdLogo,
+      members: [
+        { name: "luleee04", url: "https://kick.com/luleee04" },
+        { name: "xzeenn", url: "https://kick.com/xzeenn" },
+        { name: "deowasd", url: "https://kick.com/deowasd" },
+        { name: "chichor", url: "https://kick.com/chichor" },
+        { name: "skylane77", url: "https://kick.com/skylane77" },
+        { name: "ch1mu21", url: "https://kick.com/ch1mu21" },
+        { name: "marzze-y2k", url: "https://kick.com/marzze-y2k" },
+        { name: "chooww", url: "https://kick.com/chooww" },
+        { name: "krakenpez", url: "https://kick.com/krakenpez" },
+        { name: "kzeco", url: "https://kick.com/kzeco" },
+      ],
     },
   ].map((team) => ({
     ...team,
-    image: team.image || getAvatarFromPlatform(team.platform, team.captain),
+    image: team.image || getAvatarFromPlatform(team.platform, team.avatarSeed || team.captain),
   }));
 
   const [selectedTeam, setSelectedTeam] = React.useState(null);
@@ -145,11 +286,37 @@ export default function Equipos() {
               </button>
             </div>
             <div className="team-modal-body">
-              Captain: {selectedTeam.captain}
-              <br />
-              <a href={selectedTeam.url} target="_blank" rel="noopener noreferrer">
-                {selectedTeam.url}
-              </a>
+              <div className="team-modal-meta">
+                <div className="team-roster-captain">
+                  <span className="team-roster-label">Captain</span>
+                  <span className="team-roster-value">{selectedTeam.captain}</span>
+                </div>
+                <span className={`team-platform-badge team-platform-${selectedTeam.platform || "link"}`}>
+                  {getPlatformLabel(selectedTeam.url)}
+                </span>
+              </div>
+              <div className="team-roster-main-link-wrap">
+                <a className="team-main-link" href={normalizeUrl(selectedTeam.url)} target="_blank" rel="noopener noreferrer">
+                  {selectedTeam.url}
+                </a>
+              </div>
+              <div className="team-roster-title">Roster</div>
+              <ul className="team-roster-list">
+                {(selectedTeam.members || []).map((member, idx) => (
+                  <li key={`${selectedTeam.name}-${member.name}`} className="team-roster-item">
+                    <span className="team-roster-index">#{String(idx + 1).padStart(2, "0")}</span>
+                    <a className="team-roster-link" href={normalizeUrl(member.url)} target="_blank" rel="noopener noreferrer">
+                      <span className="team-roster-member-row">
+                        <span className="team-roster-member">{member.name}</span>
+                        <span className={`team-platform-badge team-platform-${getPlatformLabel(member.url).toLowerCase()}`}>
+                          {getPlatformLabel(member.url)}
+                        </span>
+                      </span>
+                      <span className="team-roster-url">{member.url}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

@@ -46,6 +46,7 @@ export default function Home() {
           <Link to="/reglas" className="nav-btn">Rules</Link>
           <Link to="/equipos" className="nav-btn">Teams</Link>
           <Link to="/events" className="nav-btn">Stats</Link>
+          <a href="https://giveaway.rustaco.site" className="nav-btn">Giveaway</a>
         </nav>
         <div className="hud-flags" style={{ marginLeft: "auto" }}>
           <button className={`icon-btn flag ${lang === "es" ? "lang-btn-active" : ""}`} onClick={() => setLang("es")} title="Español LATAM">

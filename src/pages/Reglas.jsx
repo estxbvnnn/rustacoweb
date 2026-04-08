@@ -1543,7 +1543,7 @@ export default function Reglas() {
       >
         <nav className="TopBar-links TopBar-links--left" aria-label="Navegación">
           <Link to="/reglas" className="nav-btn">Rules</Link>
-          <span className="nav-btn" aria-disabled="true">Teams (Soon..)</span>
+          <Link to="/equipos" className="nav-btn">Teams</Link>
           {/* eliminar el botón/link de Stats aquí */}
           <div style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 8 }}>
             <button
