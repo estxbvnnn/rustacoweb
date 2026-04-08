@@ -113,11 +113,11 @@ export default function Equipos() {
       ],
     },
     {
-      name: "Trytum Team",
-      captain: "Caritas",
-      avatarSeed: "trytum",
+      name: "JITA Team",
+      captain: "JITA",
+      avatarSeed: "jita____",
       platform: "twitch",
-      url: "https://www.twitch.tv/tvcaritas",
+      url: "https://www.twitch.tv/jita____",
       members: [
         { name: "Caritas", url: "https://www.twitch.tv/tvcaritas" },
         { name: "RafaaaGF", url: "https://kick.com/rafaaagf" },
