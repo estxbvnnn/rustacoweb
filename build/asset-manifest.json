@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.08cab183.css",
-    "main.js": "/static/js/main.a75b3143.js",
+    "main.js": "/static/js/main.b4ad6288.js",
     "static/media/logorustaco.png": "/static/media/logorustaco.faa03ef6966b689dd7b6.png",
     "static/media/logonuevo.png": "/static/media/logonuevo.7869942a3c3ea5b3575d.png",
     "static/media/rustgamedark.jpg": "/static/media/rustgamedark.a9992883535538729ecf.jpg",
@@ -66,10 +66,10 @@
     "static/media/radtown-crate-elite.avif": "/static/media/radtown-crate-elite.413e461b997c485d4781.avif",
     "index.html": "/index.html",
     "main.08cab183.css.map": "/static/css/main.08cab183.css.map",
-    "main.a75b3143.js.map": "/static/js/main.a75b3143.js.map"
+    "main.b4ad6288.js.map": "/static/js/main.b4ad6288.js.map"
   },
   "entrypoints": [
     "static/css/main.08cab183.css",
-    "static/js/main.a75b3143.js"
+    "static/js/main.b4ad6288.js"
   ]
 }
