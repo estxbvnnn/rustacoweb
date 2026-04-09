@@ -262,7 +262,7 @@ const Events = () => {
         }
       } catch (err) {
         if (isActive) {
-          setError('Stats available during the event');
+          setError('stats disponibles en el evento');
           setRows([]);
           setColumns([]);
         }

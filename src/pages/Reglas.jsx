@@ -1000,13 +1000,11 @@ const reglas = [
         <div>
           Para raidear la <b>base main</b> de otro equipo, solo está permitido hacerlo durante la <b>ERA RAIDS</b>. 
           <br />
-          Las alianzas (merge) están permitidas únicamente para raideos, con un máximo de 3 equipos aliados. No se permite el merge raid de más de 3 equipos bajo ninguna circunstancia.
+          Las alianzas (merge) están permitidas exclusivamente para raideos y podrán conformarse sin límite de equipos aliados, siempre bajo la supervisión y criterios establecidos por la organización.
           <br />
           <br />
           La base del huerto/garage podrá ser raideada a partir de la <b>Era Tier 3</b>.
           <br />
-          <br />
-          <b>Counter raids:</b> Cualquier COUNTER RAID deberá dirigirse únicamente a las FOVs enemigas que estén participando activamente en el raid.
           <br />
           <span style={{ color: "#f39c12" }}>
             La comunicación entre equipos aliados durante los raideos debe realizarse exclusivamente por el chat de voz del juego. No está permitido el uso de otros medios de comunicación externos para coordinar raids.
@@ -1017,13 +1015,11 @@ const reglas = [
         <div>
           To raid another team's <b>main base</b>, it is only allowed during the <b>RAIDS ERA</b>. 
           <br />
-          Alliances (merges) are only allowed for raiding, with a maximum of 3 allied teams. Merge raiding of more than 3 teams is not allowed under any circumstances.
+          Alliances (merges) are permitted exclusively for raiding and may be formed without a limit on allied teams, always under the supervision and criteria established by the organization.
           <br />
           <br />
           The garden/garage base may be raided starting from <b>Era Tier 3</b>.
           <br />
-          <br />
-          <b>Counter raids:</b> Any COUNTER RAID must be directed only at enemy FOVs that are actively participating in the raid.
           <br />
           <span style={{ color: "#f39c12" }}>
             Communication between allied teams during raids must be done exclusively through the in-game voice chat. The use of other external communication means to coordinate raids is not allowed.
@@ -1034,13 +1030,11 @@ const reglas = [
         <div>
           Para raidar a <b>base principal</b> de outra equipe, é permitido apenas durante a <b>ERA DE RAIDS</b>. 
           <br />
-          Alianças (merge) são permitidas apenas para raids, com um máximo de 3 equipes aliadas. Não é permitido o merge raid de mais de 3 equipes sob nenhuma circunstância.
+          As alianças (merge) são permitidas exclusivamente para raids e poderão ser formadas sem limite de equipes aliadas, sempre sob supervisão e critérios estabelecidos pela organização.
           <br />
           <br />
           A base do huerto/garage pode ser raidada a partir da <b>Era Tier 3</b>.
           <br />
-          <br />
-          <b>Counter raids:</b> Qualquer COUNTER RAID deverá ser direcionado apenas às FOVs inimigas que estejam participando ativamente do raid.
           <br />
           <span style={{ color: "#f39c12" }}>
             A comunicação entre equipes aliadas durante os raids deve ser feita exclusivamente pelo chat de voz do jogo. Não é permitido o uso de outros meios de comunicação externos para coordenar raids.
