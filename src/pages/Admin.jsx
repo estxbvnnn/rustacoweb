@@ -227,7 +227,7 @@ const Admin = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
+    fetch('/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setUser(data && data.steamid ? data : null);
@@ -238,14 +238,14 @@ const Admin = () => {
 
   useEffect(() => {
     if (user && ADMIN_STEAM_IDS.includes(user.steamid)) {
-      fetch('https://www.rustaco.site/api/admin/users', { credentials: 'include' })
+      fetch('/api/admin/users', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setUsers(Array.isArray(data) ? data : []);
           setLoadingUsers(false);
         })
         .catch(() => setLoadingUsers(false));
-      fetch('https://www.rustaco.site/api/admin/applys', { credentials: 'include' })
+      fetch('/api/admin/applys', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
           setApplys(Array.isArray(data) ? data : []);
@@ -259,7 +259,7 @@ const Admin = () => {
   const handleDeleteApply = idx => {
     if (!window.confirm('¿Seguro que deseas eliminar esta solicitud?')) return;
     setDeletingIdx(idx);
-    fetch(`https://www.rustaco.site/api/admin/applys/${idx}`, {
+    fetch(`/api/admin/applys/${idx}`, {
       method: 'DELETE',
       credentials: 'include'
     })

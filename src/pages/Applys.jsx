@@ -165,7 +165,7 @@ const Applys = () => {
   const history = useHistory();
 
   useEffect(() => {
-    fetch('https://www.rustaco.site/api/user', { credentials: 'include' })
+    fetch('/api/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setUser(data && data.steamid ? data : null))
       .catch(() => setUser(null));
@@ -190,7 +190,7 @@ const Applys = () => {
       setError(translations[lang].errorCampos);
       return;
     }
-    fetch('https://www.rustaco.site/api/apply', {
+    fetch('/api/apply', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
