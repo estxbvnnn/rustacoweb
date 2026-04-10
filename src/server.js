@@ -11,29 +11,41 @@ const mysql = require('mysql2/promise');
 
 const app = express();
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const SERVER_PUBLIC_URL = process.env.SERVER_PUBLIC_URL || 'https://158.69.212.144';
+const CLIENT_URL = process.env.CLIENT_URL || 'https://158.69.212.144';
+const PORT = Number(process.env.PORT) || 3001;
+const HOST = process.env.HOST || '0.0.0.0';
+
+const corsOrigins = [
+  CLIENT_URL,
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  process.env.EXTRA_CORS_ORIGINS
+].filter(Boolean)
+  .flatMap((value) => String(value).split(',').map((item) => item.trim()).filter(Boolean));
+
 // --- AGREGAR ESTA LÍNEA PARA PRODUCCIÓN DETRÁS DE NGINX ---
 app.set('trust proxy', 1);
 
-// Cambia la IP de binding y los orígenes CORS para desarrollo local
-// Usa localhost y 127.0.0.1 en vez de la IP de red si solo trabajas en tu PC
-
-// 1. Cambia el origin de CORS para aceptar solo localhost y 127.0.0.1
 app.use(cors({
-  origin: [
-    'https://www.rustaco.site',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000'
-  ],
+  origin: (origin, callback) => {
+    if (!origin || corsOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
 
 app.use(session({
-  secret: 'rustaco',
+  secret: process.env.SESSION_SECRET || 'rustaco',
   resave: false,
   saveUninitialized: true,
   cookie: {
-    sameSite: 'none',
-    secure: true
+    sameSite: NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: NODE_ENV === 'production'
   }
 }));
 app.use(passport.initialize());
@@ -68,8 +80,8 @@ const steamUsers = {};
 
 // Modifica el callback de SteamStrategy para guardar usuarios
 passport.use(new SteamStrategy({
-  returnURL: 'https://www.rustaco.site/auth/steam/return',
-  realm: 'https://www.rustaco.site/',
+  returnURL: `${SERVER_PUBLIC_URL.replace(/\/$/, '')}/auth/steam/return`,
+  realm: `${SERVER_PUBLIC_URL.replace(/\/$/, '')}/`,
   apiKey: STEAM_API_KEY
 }, (identifier, profile, done) => {
   process.nextTick(() => {
@@ -92,19 +104,14 @@ passport.use(new SteamStrategy({
   });
 }));
 
-
-// Cambia la ruta de inicio de login Steam para usar localhost
-app.get('/auth/steam', (req, res, next) => {
-  req.headers.host = 'www.rustaco.site';
-  next();
-}, passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }));
+app.get('/auth/steam', passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }));
 
 app.get('/auth/steam/return',
   passport.authenticate('steam', { failureRedirect: '/auth/steam/fail' }),
   (req, res) => {
     if (req.user && req.user.steamid) {
       // Redirige solo a la home sin parámetros visibles
-      res.redirect('https://www.rustaco.site/');
+      res.redirect(CLIENT_URL);
     } else {
       res.redirect('/auth/steam/fail');
     }
@@ -471,16 +478,15 @@ function getLocalIPv4() {
 }
 
 // IMPORTANTE:
-// Este backend Express debe correr en HTTP (puerto 3001).
-// Nginx debe estar configurado para HTTPS en el dominio www.rustaco.site
-// y redirigir /auth/steam y /api/* al backend en http://localhost:3001
-
-const PORT = 3001;
-const HOST = '0.0.0.0';
+// Este backend Express debe correr en HTTP (puerto 3001 por defecto).
+// Nginx puede exponer HTTPS y redirigir /auth/steam y /api/* al backend.
 
 app.listen(PORT, HOST, () => {
   const ip = getLocalIPv4();
   console.log(`Backend Steam Auth en http://${ip}:${PORT} (accesible desde tu red local)`);
+  console.log(`SERVER_PUBLIC_URL=${SERVER_PUBLIC_URL}`);
+  console.log(`CLIENT_URL=${CLIENT_URL}`);
+  console.log(`CORS origins: ${corsOrigins.join(', ')}`);
 });
 
 // Si ves "Cannot find module 'cors'", debes instalarlo primero:
