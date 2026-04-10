@@ -53,17 +53,38 @@ app.use(passport.session());
 
 app.use(express.json()); // Para parsear JSON en POST
 
+const DB_HOST = process.env.DB_HOST || '34.139.33.19';
+const DB_USER = process.env.DB_USER || 'rustaco';
+const DB_PASSWORD = process.env.DB_PASSWORD || 'Rustaco.2000';
+const DB_NAME = process.env.DB_NAME || 'rustaco';
+const DB_PORT = Number(process.env.DB_PORT) || 3306;
+
 const statsDb = mysql.createPool({
-  host: '34.139.33.19',
-  user: 'rustaco',
-  password: 'Rustaco.2000',
-  database: 'rustaco',
-  port: 3306,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  port: DB_PORT,
   waitForConnections: true,
   connectionLimit: 5,
+  connectTimeout: 10000,
   supportBigNumbers: true,
   bigNumberStrings: true
 });
+
+async function verifyDbConnection() {
+  try {
+    await statsDb.query('SELECT 1 AS ok');
+    console.log(`MySQL OK at ${DB_HOST}:${DB_PORT} (${DB_NAME})`);
+  } catch (error) {
+    console.error('MySQL connection failed:', {
+      code: error.code || null,
+      errno: error.errno || null,
+      sqlState: error.sqlState || null,
+      message: error.message || 'Unknown error'
+    });
+  }
+}
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY || '3E6FB3DF729486B3EF9485399557CC45';
 
@@ -372,6 +393,21 @@ app.get('/api/player-stats', async (req, res) => {
   }
 });
 
+app.get('/api/health/db', async (req, res) => {
+  try {
+    await statsDb.query('SELECT 1 AS ok');
+    res.json({ ok: true, host: DB_HOST, database: DB_NAME, port: DB_PORT });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      code: error.code || null,
+      errno: error.errno || null,
+      sqlState: error.sqlState || null,
+      message: error.message || 'Unknown error'
+    });
+  }
+});
+
 // --- Almacena solicitudes de inscripción ---
 // Usar archivo JSON para persistencia
 const applysFile = path.join(__dirname, '..', 'applys.json');
@@ -487,6 +523,7 @@ app.listen(PORT, HOST, () => {
   console.log(`SERVER_PUBLIC_URL=${SERVER_PUBLIC_URL}`);
   console.log(`CLIENT_URL=${CLIENT_URL}`);
   console.log(`CORS origins: ${corsOrigins.join(', ')}`);
+  verifyDbConnection();
 });
 
 // Si ves "Cannot find module 'cors'", debes instalarlo primero:
