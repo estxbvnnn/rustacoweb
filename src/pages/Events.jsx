@@ -39,6 +39,7 @@ const Events = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
   const [activeFilter, setActiveFilter] = React.useState('PVP');
+  const [sortConfig, setSortConfig] = React.useState({ key: 'Kills', direction: 'desc' });
   const [selectedPlayer, setSelectedPlayer] = React.useState(null);
   const [playerDetail, setPlayerDetail] = React.useState(null);
   const [detailLoading, setDetailLoading] = React.useState(false);
@@ -149,6 +150,56 @@ const Events = () => {
     return target.filter((col) => columns.includes(col) || col === 'Rank');
   }, [activeFilter, columns]);
 
+  const handleSort = React.useCallback((column) => {
+    if (column === 'Rank') {
+      return;
+    }
+
+    setSortConfig((prev) => {
+      if (prev.key === column) {
+        return {
+          key: column,
+          direction: prev.direction === 'asc' ? 'desc' : 'asc'
+        };
+      }
+      return {
+        key: column,
+        direction: 'desc'
+      };
+    });
+  }, []);
+
+  const sortedRows = React.useMemo(() => {
+    if (!Array.isArray(rows) || rows.length === 0 || !sortConfig?.key || sortConfig.key === 'Rank') {
+      return rows;
+    }
+
+    const { key, direction } = sortConfig;
+    const directionFactor = direction === 'asc' ? 1 : -1;
+
+    const asNumber = (value) => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
+
+    return [...rows].sort((a, b) => {
+      const aValue = a?.[key];
+      const bValue = b?.[key];
+
+      const aNumber = asNumber(aValue);
+      const bNumber = asNumber(bValue);
+
+      if (aNumber !== null && bNumber !== null) {
+        return (aNumber - bNumber) * directionFactor;
+      }
+
+      return String(aValue ?? '').localeCompare(String(bValue ?? ''), undefined, {
+        numeric: true,
+        sensitivity: 'base'
+      }) * directionFactor;
+    });
+  }, [rows, sortConfig]);
+
   const buildResourceCards = (shortNames) => (
     shortNames
       .map((shortName) => {
@@ -245,6 +296,7 @@ const Events = () => {
           nextColumns = nextColumns.filter((col) => !hiddenColumns.has(col));
           nextRows = [...nextRows].sort((a, b) => Number(b.Kills || 0) - Number(a.Kills || 0));
           nextColumns = ['Rank', ...nextColumns];
+          setSortConfig({ key: 'Kills', direction: 'desc' });
           setSelectedPlayer(null);
           setPlayerDetail(null);
         }
@@ -316,7 +368,12 @@ const Events = () => {
             <thead>
               <tr>
                 {visibleColumns.map((col) => (
-                  <th key={col} className="events-th">
+                  <th
+                    key={col}
+                    className="events-th"
+                    onClick={() => handleSort(col)}
+                    style={{ cursor: col === 'Rank' ? 'default' : 'pointer', userSelect: 'none' }}
+                  >
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                       {col === 'Deaths' ? (
                         <span
@@ -342,13 +399,16 @@ const Events = () => {
                           <span className="sr-only">{headerMeta[col]?.label || col}</span>
                         </>
                       )}
+                      {sortConfig.key === col && (
+                        <span aria-hidden="true">{sortConfig.direction === 'asc' ? '▲' : '▼'}</span>
+                      )}
                     </span>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {rows.map((row, idx) => (
+              {sortedRows.map((row, idx) => (
                 <tr
                   key={idx}
                   className={idx % 2 === 0 ? 'events-row events-row--even' : 'events-row events-row--odd'}
