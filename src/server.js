@@ -72,6 +72,27 @@ const statsDb = mysql.createPool({
   bigNumberStrings: true
 });
 
+function stripSensitiveStatsFields(row) {
+  if (!row || typeof row !== 'object') {
+    return row;
+  }
+
+  const blockedKeys = new Set([
+    'ip',
+    'lastip',
+    'last_ip',
+    'userip',
+    'clientip',
+    'remoteip',
+    'ipv4',
+    'ipv6'
+  ]);
+
+  return Object.fromEntries(
+    Object.entries(row).filter(([key]) => !blockedKeys.has(String(key).toLowerCase()))
+  );
+}
+
 async function verifyDbConnection() {
   try {
     await statsDb.query('SELECT 1 AS ok');
@@ -258,7 +279,7 @@ app.get('/api/stats', async (req, res) => {
         resourceShortNames.forEach((name) => {
           resources[name] = perUser.get(name) || 0;
         });
-        return { ...row, ...resources };
+        return stripSensitiveStatsFields({ ...row, ...resources });
       });
 
       res.json({ table, rows: rowsWithResources });
@@ -266,7 +287,7 @@ app.get('/api/stats', async (req, res) => {
     }
 
     const [rows] = await statsDb.query('SELECT * FROM ?? LIMIT ?', [table, limit]);
-    res.json({ table, rows });
+    res.json({ table, rows: rows.map(stripSensitiveStatsFields) });
   } catch (error) {
     console.error('Stats query error:', error);
     res.status(500).json({
