@@ -65,7 +65,7 @@ export default function Equipos() {
         { name: "alexdieci", url: "https://www.twitch.tv/alexdieci" },
         { name: "noizee", url: "https://www.twitch.tv/noizeettv" },
         { name: "aroscapodellatrap", url: "https://www.twitch.tv/arostv_" },
-        { name: "pataisi", url: "https://www.twitch.tv/patashishi" },
+        { name: "pataisi", url: "https://www.twitch.tv/patttttashishi" },
         { name: "tifi", url: "https://www.twitch.tv/tifi___" },
         { name: "i.am.miky", url: "https://www.twitch.tv/mmmikyy" },
         { name: "tommykzn", url: "https://twitch.tv/tommyykzn" },
