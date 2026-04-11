@@ -196,7 +196,7 @@ export default function Equipos() {
       url: "https://www.twitch.tv/babayaga__0",
       members: [
         { name: "KAL", url: "https://www.twitch.tv/kalrust" },
-        { name: "Quitrix", url: "https://www.twitch.tv/qutr1ixx" },
+        { name: "RKM", url: "https://www.twitch.tv/rkmrust" },
         { name: "Ducky", url: "https://www.youtube.com/channel/UCAuitwN3fz-rlY_viIljImQ" },
         { name: "999Rust", url: "https://www.twitch.tv/999rust" },
         { name: "Justin", url: "https://www.twitch.tv/justinn1111" },
