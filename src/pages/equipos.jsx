@@ -69,7 +69,7 @@ export default function Equipos() {
         { name: "tifi", url: "https://www.twitch.tv/tifi___" },
         { name: "i.am.miky", url: "https://www.twitch.tv/mmmikyy" },
         { name: "tommykzn", url: "https://twitch.tv/tommyykzn" },
-        { name: "zyrexrustt", url: "https://www.twitch.tv/zyrexrustt" },
+        { name: "Huncho", url: "https://www.twitch.tv/huncho2456" },
         { name: "lsd_rust", url: "https://www.twitch.tv/lsd_rust" },
         { name: "nogard98", url: "http://twitch.tv/nogardttv" },
       ],
