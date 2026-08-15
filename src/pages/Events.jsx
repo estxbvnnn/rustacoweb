@@ -1,5 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import '../assets/styles.css';
+import '../assets/home-dark.css';
+import '../assets/server-theme.css';
+
+import { useT } from '../context/LanguageContext.jsx';
 
 import stonesImg from '../assets/img/stones.png';
 import sulfurOreImg from '../assets/img/sulfur.ore.png';
@@ -29,21 +33,22 @@ import rifleExplosiveImg from '../assets/img/rust-ammo-rifle-explosive-300x300.w
 import crateNormal2Img from '../assets/img/radtown-crate-normal-2.avif';
 import crateNormalImg from '../assets/img/radtown-crate-normal.avif';
 import crateEliteImg from '../assets/img/radtown-crate-elite.avif';
-import skullImg from '../assets/img/skull.png';
 
 const Events = () => {
-  const history = useHistory();
   const table = 'PlayerStats';
   const [rows, setRows] = React.useState([]);
   const [columns, setColumns] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState('');
   const [activeFilter, setActiveFilter] = React.useState('PVP');
+  const [search, setSearch] = React.useState('');
   const [sortConfig, setSortConfig] = React.useState({ key: 'Kills', direction: 'desc' });
   const [selectedPlayer, setSelectedPlayer] = React.useState(null);
   const [playerDetail, setPlayerDetail] = React.useState(null);
   const [detailLoading, setDetailLoading] = React.useState(false);
   const [detailError, setDetailError] = React.useState('');
+
+  const t = useT();
 
   React.useEffect(() => {
     document.body.classList.add('has-video-bg');
@@ -53,9 +58,9 @@ const Events = () => {
   const headerMeta = {
     Rank: { label: '#', icon: 'trophy' },
     UserId: { label: 'UserId', icon: 'person-badge' },
-    LastName: { label: 'Nickname', icon: 'person' },
+    LastName: { label: t.lbColPlayer, icon: 'person' },
     Kills: { label: 'Kills', icon: 'crosshair' },
-    Deaths: { label: 'Deaths', icon: 'skull' },
+    Deaths: { label: 'Deaths', icon: 'heartbreak' },
     KDR: { label: 'KDR', icon: 'bar-chart' },
     TotalPlayTime: { label: 'Play Time', icon: 'clock' },
     ShortName: { label: 'Short Name', icon: 'tag' },
@@ -102,10 +107,12 @@ const Events = () => {
   const resourceSections = [
     {
       title: 'Resources',
+      icon: 'bi-minecart-loaded',
       items: ['sulfur.ore', 'stones', 'metal.ore', 'hq.metal.ore', 'wood', 'bone.fragments', 'leather', 'scrap']
     },
     {
       title: 'Farming',
+      icon: 'bi-flower1',
       items: [
         'cloth',
         'green.berry',
@@ -123,6 +130,7 @@ const Events = () => {
     },
     {
       title: 'Raid',
+      icon: 'bi-fire',
       items: [
         'ammo.rocket.basic',
         'ammo.rocket.hv',
@@ -133,8 +141,17 @@ const Events = () => {
     },
     {
       title: 'Loot',
+      icon: 'bi-box-seam',
       items: ['crate_normal_2', 'crate_normal', 'crate_elite']
     }
+  ];
+
+  const tabs = [
+    { key: 'PVP', icon: 'bi-crosshair' },
+    { key: 'Resources', icon: 'bi-minecart-loaded' },
+    { key: 'Farming', icon: 'bi-flower1' },
+    { key: 'Raid', icon: 'bi-fire' },
+    { key: 'Loot', icon: 'bi-box-seam' }
   ];
 
   const filterColumns = {
@@ -200,41 +217,23 @@ const Events = () => {
     });
   }, [rows, sortConfig]);
 
-  const buildResourceCards = (shortNames) => (
-    shortNames
-      .map((shortName) => {
-        const resource = playerDetail.resources?.find(
-          (item) => item.ShortName === shortName
-        );
-        const meta = resourceMeta[shortName];
-        return {
-          ShortName: shortName,
-          label: meta?.label || shortName,
-          image: meta?.image || '',
-          ItemValue: resource ? resource.ItemValue : 0
-        };
-      })
-      .map((resource) => (
-        <div key={resource.ShortName} className="resource-card">
-          <div
-            className="resource-icon"
-            aria-label={resource.label}
-            title={resource.label}
-          >
-            {resource.image ? (
-              <span className="resource-icon-wrap">
-                <img src={resource.image} alt={resource.label} />
-              </span>
-            ) : (
-              <span>{resource.label}</span>
-            )}
-          </div>
-          <div className="resource-value">
-            {Number(resource.ItemValue || 0).toLocaleString()}
-          </div>
-        </div>
-      ))
-  );
+  // filas con rank fijo según el orden actual; el buscador filtra sin alterar el rank
+  const displayRows = React.useMemo(() => {
+    const ranked = sortedRows.map((row, idx) => ({ row, rank: idx + 1 }));
+    const term = search.trim().toLowerCase();
+    if (!term) return ranked;
+    return ranked.filter(({ row }) =>
+      String(row.LastName ?? '').toLowerCase().includes(term)
+    );
+  }, [sortedRows, search]);
+
+  // top 3 por kills para el podio (independiente del orden de la tabla)
+  const podium = React.useMemo(() => {
+    if (!Array.isArray(rows) || rows.length === 0) return [];
+    return [...rows]
+      .sort((a, b) => Number(b.Kills || 0) - Number(a.Kills || 0))
+      .slice(0, 3);
+  }, [rows]);
 
   const openPlayerDetail = async (row) => {
     const userIdFromRow = String(row?.UserId || '').trim();
@@ -261,7 +260,7 @@ const Events = () => {
       const data = await response.json();
       setPlayerDetail(data);
     } catch (err) {
-      setDetailError('Unable to load player stats.');
+      setDetailError('No se pudieron cargar las estadísticas del jugador.');
     } finally {
       setDetailLoading(false);
     }
@@ -314,7 +313,7 @@ const Events = () => {
         }
       } catch (err) {
         if (isActive) {
-          setError('stats disponibles en el evento');
+          setError('Las estadísticas estarán disponibles durante el wipe.');
           setRows([]);
           setColumns([]);
         }
@@ -331,173 +330,277 @@ const Events = () => {
     };
   }, []);
 
+  const renderHeaderCell = (col) => {
+    const meta = headerMeta[col];
+    const resource = resourceMeta[col];
+
+    if (resource?.image) {
+      return (
+        <span className="rw-lb-th-inner rw-lb-th-icon" title={resource.label}>
+          <img src={resource.image} alt={resource.label} />
+        </span>
+      );
+    }
+
+    return (
+      <span className="rw-lb-th-inner">
+        {meta?.icon && <i className={`bi bi-${meta.icon}`} aria-hidden="true" />}
+        <span>{meta?.label || col}</span>
+      </span>
+    );
+  };
+
+  const renderKdr = (value) => {
+    const kdr = Number(value);
+    if (!Number.isFinite(kdr)) return String(value ?? '');
+    return (
+      <span className={kdr >= 1 ? 'rw-lb-kdr--good' : 'rw-lb-kdr--bad'}>
+        {String(value)}
+      </span>
+    );
+  };
+
   return (
-    <div className="events-panel">
-      <h1 className="events-title">Event Statistics</h1>
-
-      <div className="events-tabs" role="tablist" aria-label="Stats filters">
-        {['PVP', 'Resources', 'Farming', 'Raid', 'Loot'].map((filter) => (
-          <button
-            key={filter}
-            type="button"
-            onClick={() => setActiveFilter(filter)}
-            className={`events-tab ${activeFilter === filter ? 'events-tab--active' : ''}`}
-            role="tab"
-            aria-selected={activeFilter === filter}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
-
-      {loading && (
-        <div className="events-state">Loading stats...</div>
-      )}
-
-      {!loading && error && (
-        <div className="events-state events-state--error">{error}</div>
-      )}
-
-      {!loading && !error && rows.length === 0 && (
-        <div className="events-state events-state--empty">No records yet.</div>
-      )}
-
-      {!loading && !error && rows.length > 0 && (
-        <div className="events-table-wrap">
-          <table className="events-table">
-            <thead>
-              <tr>
-                {visibleColumns.map((col) => (
-                  <th
-                    key={col}
-                    className="events-th"
-                    onClick={() => handleSort(col)}
-                    style={{ cursor: col === 'Rank' ? 'default' : 'pointer', userSelect: 'none' }}
-                  >
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                      {col === 'Deaths' ? (
-                        <span
-                          className="events-header-icon events-header-icon--skull"
-                          title={headerMeta[col]?.label || col}
-                          aria-label={headerMeta[col]?.label || col}
-                        >
-                          <img src={skullImg} alt={headerMeta[col]?.label || col} />
-                        </span>
-                      ) : resourceMeta[col]?.image ? (
-                        <span
-                          className="events-header-icon"
-                          title={resourceMeta[col].label}
-                          aria-label={resourceMeta[col].label}
-                        >
-                          <img src={resourceMeta[col].image} alt={resourceMeta[col].label} />
-                        </span>
-                      ) : (
-                        <>
-                          {headerMeta[col]?.icon && (
-                            <i className={`bi bi-${headerMeta[col].icon}`} aria-hidden="true" />
-                          )}
-                          <span className="sr-only">{headerMeta[col]?.label || col}</span>
-                        </>
-                      )}
-                      {sortConfig.key === col && (
-                        <span aria-hidden="true">{sortConfig.direction === 'asc' ? '▲' : '▼'}</span>
-                      )}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedRows.map((row, idx) => (
-                <tr
-                  key={idx}
-                  className={idx % 2 === 0 ? 'events-row events-row--even' : 'events-row events-row--odd'}
-                >
-                  {visibleColumns.map((col) => (
-                    <td key={`${idx}-${col}`} className="events-td">
-                      {table === 'PlayerStats' && col === 'Rank' ? (
-                        <span className="events-rank">{idx + 1}</span>
-                      ) : table === 'PlayerStats' && col === 'LastName' ? (
-                        <button
-                          type="button"
-                          onClick={() => openPlayerDetail(row)}
-                          className="events-player-btn"
-                        >
-                          {String(row[col] ?? '')}
-                        </button>
-                      ) : table === 'PlayerStats' && col === 'Deaths' ? (
-                        <span>{String(row[col] ?? '')}</span>
-                      ) : (
-                        String(row[col] ?? '')
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="rw-page">
+      <main className="rw-lb-main">
+        <div className="rw-lb-head">
+          <span className="rw-section-kicker">{t.lbKicker}</span>
+          <h1>{t.lbTitle}</h1>
+          <p>{t.lbSubtitle}</p>
         </div>
-      )}
+
+        {loading && (
+          <div className="rw-lb-state">
+            <span className="rw-spinner" />
+            <div>{t.lbLoading}</div>
+          </div>
+        )}
+
+        {!loading && error && (
+          <div className="rw-lb-state rw-lb-state--error">
+            <i className="bi bi-exclamation-triangle" style={{ fontSize: '1.4rem', display: 'block', marginBottom: 8 }} />
+            {error}
+          </div>
+        )}
+
+        {!loading && !error && rows.length === 0 && (
+          <div className="rw-lb-state">{t.lbEmpty}</div>
+        )}
+
+        {!loading && !error && rows.length > 0 && (
+          <>
+            {activeFilter === 'PVP' && podium.length === 3 && (
+              <div className="rw-podium">
+                {[podium[1], podium[0], podium[2]].map((player, visualIdx) => {
+                  const place = visualIdx === 1 ? 1 : visualIdx === 0 ? 2 : 3;
+                  return (
+                    <div key={place} className={`rw-podium-card rw-podium-card--${place}`}>
+                      <span className="rw-podium-medal">{place}</span>
+                      <button
+                        type="button"
+                        className="rw-podium-name"
+                        onClick={() => openPlayerDetail(player)}
+                        title={String(player.LastName ?? '')}
+                      >
+                        {String(player.LastName ?? '')}
+                      </button>
+                      <div className="rw-podium-stats">
+                        <div className="rw-podium-stat">
+                          <strong>{String(player.Kills ?? 0)}</strong>
+                          <span>Kills</span>
+                        </div>
+                        <div className="rw-podium-stat">
+                          <strong>{String(player.Deaths ?? 0)}</strong>
+                          <span>Deaths</span>
+                        </div>
+                        <div className="rw-podium-stat">
+                          <strong>{String(player.KDR ?? 0)}</strong>
+                          <span>KDR</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className="rw-lb-controls">
+              <div className="rw-lb-tabs" role="tablist" aria-label="Filtros de estadísticas">
+                {tabs.map(({ key, icon }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setActiveFilter(key)}
+                    className={`rw-lb-tab ${activeFilter === key ? 'rw-lb-tab--active' : ''}`}
+                    role="tab"
+                    aria-selected={activeFilter === key}
+                  >
+                    <i className={`bi ${icon}`} aria-hidden="true" /> {key === 'PVP' ? 'PVP' : (t.lbResGroups[key] || key)}
+                  </button>
+                ))}
+              </div>
+
+              <div className="rw-lb-search">
+                <i className="bi bi-search" aria-hidden="true" />
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder={t.lbSearch}
+                  aria-label={t.lbSearch}
+                />
+              </div>
+            </div>
+
+            <div className="rw-lb-tablewrap">
+              <table className="rw-lb-table">
+                <thead>
+                  <tr>
+                    {visibleColumns.map((col) => (
+                      <th
+                        key={col}
+                        onClick={() => handleSort(col)}
+                        className={[
+                          col !== 'Rank' ? 'rw-lb-th--sortable' : '',
+                          sortConfig.key === col ? 'rw-lb-th--sorted' : ''
+                        ].join(' ')}
+                      >
+                        <span className="rw-lb-th-inner">
+                          {renderHeaderCell(col)}
+                          {sortConfig.key === col && (
+                            <i
+                              className={`bi ${sortConfig.direction === 'asc' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'}`}
+                              aria-hidden="true"
+                            />
+                          )}
+                        </span>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {displayRows.map(({ row, rank }) => (
+                    <tr key={rank}>
+                      {visibleColumns.map((col) => (
+                        <td key={`${rank}-${col}`}>
+                          {col === 'Rank' ? (
+                            <span className={`rw-lb-rank ${rank <= 3 ? `rw-lb-rank--${rank}` : ''}`}>
+                              {rank}
+                            </span>
+                          ) : col === 'LastName' ? (
+                            <button
+                              type="button"
+                              onClick={() => openPlayerDetail(row)}
+                              className="rw-lb-player"
+                            >
+                              {String(row[col] ?? '')}
+                            </button>
+                          ) : col === 'KDR' ? (
+                            renderKdr(row[col])
+                          ) : (
+                            Number.isFinite(Number(row[col]))
+                              ? Number(row[col]).toLocaleString()
+                              : String(row[col] ?? '')
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {displayRows.length === 0 && (
+                <div className="rw-lb-state" style={{ border: 'none' }}>
+                  {t.lbNoResults} "{search}".
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </main>
 
       {selectedPlayer && (
         <div
           role="presentation"
           onClick={() => setSelectedPlayer(null)}
-          className="player-modal-overlay"
+          className="rw-modal-overlay"
         >
           <div
             role="dialog"
             aria-modal="true"
             onClick={(event) => event.stopPropagation()}
-            className="player-modal"
+            className="rw-modal"
           >
-            <div className="player-modal-header">
-              <h2 className="player-modal-title">
-                {playerDetail?.player?.LastName || selectedPlayer.LastName || 'Player'}
+            <div className="rw-modal-header">
+              <h2 className="rw-modal-title">
+                <i className="bi bi-person-fill" aria-hidden="true" />
+                {playerDetail?.player?.LastName || selectedPlayer.LastName || 'Jugador'}
               </h2>
               <button
                 type="button"
                 onClick={() => setSelectedPlayer(null)}
-                className="player-modal-close"
+                className="rw-modal-close"
+                aria-label="Cerrar"
               >
-                Close
+                <i className="bi bi-x-lg" aria-hidden="true" />
               </button>
             </div>
 
             {detailLoading && (
-              <div className="events-state">Loading stats...</div>
+              <div className="rw-lb-state" style={{ border: 'none' }}>
+                <span className="rw-spinner" />
+                <div>{t.lbLoading}</div>
+              </div>
             )}
 
             {!detailLoading && detailError && (
-              <div className="events-state events-state--error">{detailError}</div>
+              <div className="rw-lb-state rw-lb-state--error" style={{ border: 'none' }}>
+                {detailError}
+              </div>
             )}
 
             {!detailLoading && !detailError && playerDetail && (
-              <div className="player-modal-body">
-                <div className="stats-grid">
+              <div className="rw-modal-body">
+                <div className="rw-modal-statgrid">
                   {[
                     { label: 'Kills', value: playerDetail.player?.Kills, icon: 'crosshair' },
-                    { label: 'Deaths', value: playerDetail.player?.Deaths, icon: 'skull' },
+                    { label: 'Deaths', value: playerDetail.player?.Deaths, icon: 'heartbreak' },
                     { label: 'KDR', value: playerDetail.player?.KDR, icon: 'bar-chart' }
                   ].map((item) => (
-                    <div key={item.label} className="stat-card">
-                      <div className="stat-label">
-                        <i className={`bi bi-${item.icon}`} aria-hidden="true" />
-                        {item.label}
-                      </div>
-                      <div className="stat-value">{String(item.value ?? 0)}</div>
+                    <div key={item.label} className="rw-modal-stat">
+                      <i className={`bi bi-${item.icon}`} aria-hidden="true" />
+                      <strong>{String(item.value ?? 0)}</strong>
+                      <span>{item.label}</span>
                     </div>
                   ))}
                 </div>
 
                 {playerDetail.resources?.length === 0 ? (
-                  <div className="events-state">No resources recorded.</div>
+                  <div className="rw-lb-state" style={{ border: 'none' }}>
+                    {t.lbNoResources}
+                  </div>
                 ) : (
                   resourceSections.map((section) => (
-                    <div key={section.title} className="resource-section">
-                      <h3 className="resource-title">{section.title}</h3>
-                      <div className="resource-grid">
-                        {buildResourceCards(section.items)}
+                    <div key={section.title}>
+                      <h3 className="rw-modal-sectiontitle">
+                        <span>
+                          <i className={`bi ${section.icon}`} aria-hidden="true" /> {t.lbResGroups[section.title] || section.title}
+                        </span>
+                      </h3>
+                      <div className="rw-resource-grid">
+                        {section.items.map((shortName) => {
+                          const resource = playerDetail.resources?.find(
+                            (item) => item.ShortName === shortName
+                          );
+                          const meta = resourceMeta[shortName];
+                          const label = meta?.label || shortName;
+                          return (
+                            <div key={shortName} className="rw-resource-card" title={label}>
+                              {meta?.image && <img src={meta.image} alt={label} />}
+                              <strong>{Number(resource?.ItemValue || 0).toLocaleString()}</strong>
+                              <span>{label}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ))
@@ -507,10 +610,6 @@ const Events = () => {
           </div>
         </div>
       )}
-
-      <button onClick={() => history.push('/')} className="events-back-btn">
-        Back to home
-      </button>
     </div>
   );
 };

@@ -1,560 +1,409 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../assets/styles.css';
+import '../assets/home-dark.css';
+import '../assets/server-theme.css';
 
-const ADMIN_STEAM_IDS = [
-  '76561198416933402',
-  '76561198067186042',
-  '76561199167906871',
-  '76561199220103836',
-  '76561198301561047'
-];
+import { useLang, useT, formatDate } from '../context/LanguageContext.jsx';
+import {
+  TICKET_CATEGORIES,
+  TicketThread,
+  categoryMeta,
+  statusMeta,
+} from './Profile.jsx';
 
-function AdminPanelMenu({ active, setActive }) {
+async function readJsonSafe(response) {
+  try {
+    return await response.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+export default function Admin() {
+  const { lang } = useLang();
+  const t = useT();
+  const [user, setUser] = React.useState(undefined);
+  const [tab, setTab] = React.useState('tickets'); // tickets | users
+
+  // tickets
+  const [tickets, setTickets] = React.useState([]);
+  const [counts, setCounts] = React.useState({ open: 0, answered: 0, closed: 0 });
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
+  const [statusFilter, setStatusFilter] = React.useState('');
+  const [categoryFilter, setCategoryFilter] = React.useState('');
+  const [search, setSearch] = React.useState('');
+  const [selectedId, setSelectedId] = React.useState(null);
+  const [deleteError, setDeleteError] = React.useState('');
+
+  // usuarios
+  const [users, setUsers] = React.useState([]);
+  const [usersLoading, setUsersLoading] = React.useState(false);
+
+  const STATUS_FILTERS = [
+    { id: '', label: t.admFilterAll },
+    { id: 'open', label: t.admOpen },
+    { id: 'answered', label: t.admAnswered },
+    { id: 'closed', label: t.admClosed },
+  ];
+
+  React.useEffect(() => {
+    document.body.classList.add('has-video-bg');
+    return () => document.body.classList.remove('has-video-bg');
+  }, []);
+
+  React.useEffect(() => {
+    let active = true;
+    fetch('/api/user', { credentials: 'include' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (active) setUser(data && data.steamid ? data : null);
+      })
+      .catch(() => {
+        if (active) setUser(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const isAdmin = Boolean(user && user.isAdmin);
+
+  const loadTickets = React.useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const params = new URLSearchParams();
+      if (statusFilter) params.set('status', statusFilter);
+      if (categoryFilter) params.set('category', categoryFilter);
+      if (search.trim()) params.set('q', search.trim());
+      const response = await fetch(`/api/admin/tickets?${params.toString()}`, { credentials: 'include' });
+      const json = await readJsonSafe(response);
+      if (!response.ok) {
+        setError(json?.error || t.admTicketsLoading);
+        setTickets([]);
+        return;
+      }
+      setTickets(Array.isArray(json?.tickets) ? json.tickets : []);
+      if (json?.counts) setCounts(json.counts);
+    } catch (e) {
+      setError(t.tkErrConn);
+      setTickets([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [statusFilter, categoryFilter, search, t]);
+
+  React.useEffect(() => {
+    if (!isAdmin) return;
+    loadTickets();
+  }, [isAdmin, loadTickets]);
+
+  React.useEffect(() => {
+    if (!isAdmin || tab !== 'users') return undefined;
+    let active = true;
+    setUsersLoading(true);
+    fetch('/api/admin/users', { credentials: 'include' })
+      .then((response) => (response.ok ? response.json() : []))
+      .then((data) => {
+        if (active) setUsers(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (active) setUsers([]);
+      })
+      .finally(() => {
+        if (active) setUsersLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [isAdmin, tab]);
+
+  const deleteTicket = async (id) => {
+    if (!window.confirm(t.admDeleteConfirm(id))) {
+      return;
+    }
+    setDeleteError('');
+    try {
+      const response = await fetch(`/api/admin/tickets/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      const json = await readJsonSafe(response);
+      if (!response.ok) {
+        setDeleteError(json?.error || t.admDeleteError);
+        return;
+      }
+      if (selectedId === id) setSelectedId(null);
+      loadTickets();
+    } catch (e) {
+      setDeleteError(t.tkErrConn);
+    }
+  };
+
   return (
-    <div style={{
-      display: 'flex',
-      gap: 18,
-      justifyContent: 'center',
-      marginBottom: 32,
-      marginTop: 8
-    }}>
-      <button
-        onClick={() => setActive('dashboard')}
-        className={active === 'dashboard' ? 'active' : ''}
-        style={{
-          padding: '0.7rem 2.2rem',
-          fontWeight: 800,
-          fontSize: '1.08rem',
-          borderRadius: 10,
-          border: 'none',
-          background: active === 'dashboard' ? '#27ae60' : '#23201a',
-          color: '#fff',
-          boxShadow: active === 'dashboard' ? '0 2px 8px #27ae60' : '0 2px 8px #0007',
-          cursor: 'pointer',
-          letterSpacing: '1px',
-          transition: 'background 0.2s'
-        }}
-      >
-        Dashboard
-      </button>
-      <button
-        onClick={() => setActive('users')}
-        className={active === 'users' ? 'active' : ''}
-        style={{
-          padding: '0.7rem 2.2rem',
-          fontWeight: 800,
-          fontSize: '1.08rem',
-          borderRadius: 10,
-          border: 'none',
-          background: active === 'users' ? '#27ae60' : '#23201a',
-          color: '#fff',
-          boxShadow: active === 'users' ? '0 2px 8px #27ae60' : '0 2px 8px #0007',
-          cursor: 'pointer',
-          letterSpacing: '1px',
-          transition: 'background 0.2s'
-        }}
-      >
-        Usuarios
-      </button>
-      <button
-        onClick={() => setActive('applys')}
-        className={active === 'applys' ? 'active' : ''}
-        style={{
-          padding: '0.7rem 2.2rem',
-          fontWeight: 800,
-          fontSize: '1.08rem',
-          borderRadius: 10,
-          border: 'none',
-          background: active === 'applys' ? '#27ae60' : '#23201a',
-          color: '#fff',
-          boxShadow: active === 'applys' ? '0 2px 8px #27ae60' : '0 2px 8px #0007',
-          cursor: 'pointer',
-          letterSpacing: '1px',
-          transition: 'background 0.2s'
-        }}
-      >
-        Solicitudes
-      </button>
+    <div className="rw-page">
+      <main className="rw-lb-main">
+        {user === undefined && (
+          <div className="rw-lb-state" style={{ maxWidth: 560 }}>
+            <span className="rw-spinner" />
+            <div>{t.admChecking}</div>
+          </div>
+        )}
+
+        {user === null && (
+          <div className="rw-login-card">
+            <i className="bi bi-shield-lock rw-login-icon" />
+            <h1>{t.admRestrictedTitle}</h1>
+            <p>{t.admRestrictedText}</p>
+            <a className="rw-btn rw-btn--primary" href="/auth/steam">
+              <i className="bi bi-steam" /> {t.profLoginBtn}
+            </a>
+          </div>
+        )}
+
+        {user && !isAdmin && (
+          <div className="rw-login-card">
+            <i className="bi bi-shield-x rw-login-icon" />
+            <h1>{t.admNoPermTitle}</h1>
+            <p>
+              {t.admNoPermPre} <b>{user.name}</b> {t.admNoPermPost}
+            </p>
+            <Link className="rw-btn rw-btn--ghost" to="/profile">
+              <i className="bi bi-person" /> {t.admGoProfile}
+            </Link>
+          </div>
+        )}
+
+        {isAdmin && (
+          <div className="rw-profile">
+            <div className="rw-lb-head" style={{ marginBottom: '1.6rem' }}>
+              <span className="rw-section-kicker">{t.admKicker}</span>
+              <h1>{t.admTitle}</h1>
+            </div>
+
+            {/* ── Contadores ── */}
+            <section className="rw-admin-stats">
+              <div className="rw-admin-stat rw-admin-stat--open">
+                <strong>{counts.open}</strong>
+                <span>{t.admOpen}</span>
+              </div>
+              <div className="rw-admin-stat rw-admin-stat--answered">
+                <strong>{counts.answered}</strong>
+                <span>{t.admAnswered}</span>
+              </div>
+              <div className="rw-admin-stat rw-admin-stat--closed">
+                <strong>{counts.closed}</strong>
+                <span>{t.admClosed}</span>
+              </div>
+              <div className="rw-admin-stat">
+                <strong>{counts.open + counts.answered + counts.closed}</strong>
+                <span>{t.admTotal}</span>
+              </div>
+            </section>
+
+            {/* ── Tabs panel ── */}
+            <div className="rw-lb-tabs" style={{ marginBottom: '1rem', alignSelf: 'flex-start' }}>
+              <button
+                type="button"
+                className={`rw-lb-tab ${tab === 'tickets' ? 'rw-lb-tab--active' : ''}`}
+                onClick={() => setTab('tickets')}
+              >
+                <i className="bi bi-ticket-detailed" /> {t.admTabTickets}
+              </button>
+              <button
+                type="button"
+                className={`rw-lb-tab ${tab === 'users' ? 'rw-lb-tab--active' : ''}`}
+                onClick={() => setTab('users')}
+              >
+                <i className="bi bi-people" /> {t.admTabUsers}
+              </button>
+            </div>
+
+            {tab === 'tickets' && (
+              <section className="rw-panel">
+                {/* filtros */}
+                <div className="rw-admin-filters">
+                  <div className="rw-lb-tabs">
+                    {STATUS_FILTERS.map((filter) => (
+                      <button
+                        key={filter.id || 'all'}
+                        type="button"
+                        className={`rw-lb-tab ${statusFilter === filter.id ? 'rw-lb-tab--active' : ''}`}
+                        onClick={() => setStatusFilter(filter.id)}
+                      >
+                        {filter.label}
+                      </button>
+                    ))}
+                  </div>
+                  <select
+                    className="rw-input rw-input--inline"
+                    value={categoryFilter}
+                    onChange={(event) => setCategoryFilter(event.target.value)}
+                    aria-label={t.admAllCategories}
+                  >
+                    <option value="">{t.admAllCategories}</option>
+                    {TICKET_CATEGORIES.map((cat) => (
+                      <option key={cat.id} value={cat.id}>{t.ticketCat[cat.id]}</option>
+                    ))}
+                  </select>
+                  <div className="rw-lb-search">
+                    <i className="bi bi-search" aria-hidden="true" />
+                    <input
+                      type="search"
+                      value={search}
+                      onChange={(event) => setSearch(event.target.value)}
+                      placeholder={t.admSearchTickets}
+                      aria-label={t.admSearchTickets}
+                    />
+                  </div>
+                </div>
+
+                {deleteError && (
+                  <div className="rw-form-error">
+                    <i className="bi bi-exclamation-circle" /> {deleteError}
+                  </div>
+                )}
+
+                {loading && (
+                  <div className="rw-lb-state" style={{ border: 'none' }}>
+                    <span className="rw-spinner" />
+                    <div>{t.admTicketsLoading}</div>
+                  </div>
+                )}
+
+                {!loading && error && (
+                  <div className="rw-lb-state rw-lb-state--error">{error}</div>
+                )}
+
+                {!loading && !error && tickets.length === 0 && (
+                  <div className="rw-lb-state" style={{ border: 'none' }}>
+                    <i className="bi bi-inbox" style={{ fontSize: '1.6rem', display: 'block', marginBottom: 8 }} />
+                    {t.admNoTickets}
+                  </div>
+                )}
+
+                {!loading && !error && tickets.length > 0 && (
+                  <div className="rw-ticket-list">
+                    {tickets.map((ticket) => {
+                      const status = statusMeta(ticket.Status);
+                      const cat = categoryMeta(ticket.Category);
+                      return (
+                        <div key={ticket.Id} className="rw-ticket-item rw-ticket-item--admin">
+                          <button
+                            type="button"
+                            className="rw-ticket-item-open"
+                            onClick={() => setSelectedId(ticket.Id)}
+                          >
+                            <span className="rw-ticket-item-icon">
+                              {ticket.Avatar ? <img src={ticket.Avatar} alt="" /> : <i className={`bi ${cat.icon}`} />}
+                            </span>
+                            <span className="rw-ticket-item-main">
+                              <strong>
+                                <span className="rw-thread-id">#{ticket.Id}</span> {ticket.Subject}
+                              </strong>
+                              <span className="rw-ticket-item-sub">
+                                {ticket.UserName} ({ticket.SteamId}) · {t.ticketCat[cat.id]} · {Number(ticket.Messages) || 0} msg · {formatDate(ticket.UpdatedAt, lang)}
+                              </span>
+                            </span>
+                            <span className={`rw-badge ${status.className}`}>
+                              <i className={`bi ${status.icon}`} /> {t.ticketStatus[ticket.Status]}
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            className="rw-icon-btn rw-icon-btn--danger"
+                            title={t.admDeleteConfirm(ticket.Id)}
+                            onClick={() => deleteTicket(ticket.Id)}
+                          >
+                            <i className="bi bi-trash3" />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </section>
+            )}
+
+            {tab === 'users' && (
+              <section className="rw-panel">
+                <div className="rw-panel-head">
+                  <h2>
+                    <i className="bi bi-people" /> {t.admUsersTitle}
+                  </h2>
+                </div>
+                {usersLoading ? (
+                  <div className="rw-lb-state" style={{ border: 'none' }}>
+                    <span className="rw-spinner" />
+                    <div>{t.admUsersLoading}</div>
+                  </div>
+                ) : users.length === 0 ? (
+                  <div className="rw-lb-state" style={{ border: 'none' }}>
+                    {t.admNoUsers}
+                  </div>
+                ) : (
+                  <div className="rw-ticket-list">
+                    {users.map((entry) => (
+                      <div key={entry.steamid} className="rw-ticket-item" style={{ cursor: 'default' }}>
+                        <span className="rw-ticket-item-icon">
+                          {entry.avatar ? <img src={entry.avatar} alt="" /> : <i className="bi bi-person-circle" />}
+                        </span>
+                        <span className="rw-ticket-item-main">
+                          <strong>{entry.name}</strong>
+                          <span className="rw-ticket-item-sub">
+                            {entry.steamid} · {t.admLastLogin}: {formatDate(entry.lastLogin, lang)}
+                          </span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
+          </div>
+        )}
+      </main>
+
+      {/* ── Modal detalle de ticket ── */}
+      {isAdmin && selectedId !== null && (
+        <div
+          role="presentation"
+          onClick={() => setSelectedId(null)}
+          className="rw-modal-overlay"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            onClick={(event) => event.stopPropagation()}
+            className="rw-modal"
+          >
+            <div className="rw-modal-header">
+              <h2 className="rw-modal-title">
+                <i className="bi bi-ticket-detailed" aria-hidden="true" />
+                Ticket #{selectedId}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setSelectedId(null)}
+                className="rw-modal-close"
+                aria-label="Cerrar"
+              >
+                <i className="bi bi-x-lg" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="rw-modal-body">
+              <TicketThread
+                ticketId={selectedId}
+                currentUser={user}
+                onChanged={loadTickets}
+                allowAdminActions
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-const ApplyDetailModal = ({ apply, user, onClose }) => {
-  if (!apply) return null;
-  return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(24,24,24,0.93)',
-      zIndex: 9999,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <div style={{
-        maxWidth: 700,
-        width: '95vw',
-        background: 'linear-gradient(120deg, #23201a 80%, #e25822 100%)',
-        borderRadius: 32,
-        boxShadow: '0 8px 32px #000b',
-        padding: '2.5rem 2.5rem',
-        color: '#fff',
-        fontFamily: 'Montserrat, Arial, sans-serif',
-        border: '2px solid #e25822cc',
-        position: 'relative',
-        overflowY: 'auto',
-        maxHeight: '90vh'
-      }}>
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: 18,
-            right: 18,
-            background: '#e25822',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 8,
-            padding: '0.5rem 1.2rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px #0007',
-            zIndex: 2
-          }}
-        >
-          Cerrar
-        </button>
-        <h2 style={{
-          color: '#27ae60',
-          fontWeight: 900,
-          fontSize: '2rem',
-          marginBottom: '1.2rem',
-          letterSpacing: '2px',
-          textShadow: '0 2px 18px #000a'
-        }}>
-          Solicitud de inscripción
-        </h2>
-        <div style={{ marginBottom: 18 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src={user?.avatar} alt="avatar" style={{ width: 32, height: 32, borderRadius: '50%', border: '2px solid #7289da' }} />
-            <span style={{ color: '#b3cfff', fontWeight: 700 }}>{apply.submittedByName}</span>
-            <span style={{ color: '#fff', fontSize: '0.95rem' }}>({apply.submittedBy})</span>
-          </div>
-          <span style={{ color: '#e0e0e0', fontSize: '1.05rem', marginLeft: 8 }}>
-            Fecha: {apply.submittedAt ? new Date(apply.submittedAt).toLocaleString() : '-'}
-          </span>
-        </div>
-        <div style={{ marginBottom: 18 }}>
-          <b style={{ color: '#f39c12' }}>Equipo:</b> {apply.teamName}<br />
-          <b style={{ color: '#f39c12' }}>Capitán:</b> {apply.captain}<br />
-          <b style={{ color: '#7289da' }}>Discord:</b> {apply.discord}
-        </div>
-        <div style={{ marginBottom: 18 }}>
-          <b style={{ color: '#f39c12' }}>¿Por qué debe participar tu equipo?</b>
-          <div style={{
-            background: '#181818',
-            borderRadius: 10,
-            padding: '0.7rem 1.2rem',
-            marginTop: 6,
-            color: '#fff',
-            wordBreak: 'break-word'
-          }}>{apply.why}</div>
-        </div>
-        <div style={{ marginBottom: 18 }}>
-          <b style={{ color: '#f39c12' }}>Estrategia o preparación especial</b>
-          <div style={{
-            background: '#181818',
-            borderRadius: 10,
-            padding: '0.7rem 1.2rem',
-            marginTop: 6,
-            color: '#fff',
-            wordBreak: 'break-word'
-          }}>{apply.strategy}</div>
-        </div>
-        <div style={{
-          marginBottom: 18,
-          background: 'rgba(34,34,34,0.97)',
-          borderRadius: 18,
-          padding: '1.5rem 1.2rem',
-          boxShadow: '0 2px 12px #0007'
-        }}>
-          <b style={{ color: '#f39c12', marginBottom: 12, display: 'block' }}>
-            Participantes del Equipo (8 jugadores, capitán incluido)
-          </b>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '1.2rem'
-          }}>
-            {apply.players.map((p, idx) => (
-              <div key={idx} style={{
-                background: 'linear-gradient(120deg, #23201a 80%, #7289da 100%)',
-                borderRadius: 14,
-                boxShadow: '0 2px 12px #7289da88',
-                padding: '1.1rem 1rem',
-                marginBottom: 12,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                borderLeft: '5px solid #7289da',
-                wordBreak: 'break-word'
-              }}>
-                <div style={{ fontWeight: 700, color: '#b3cfff', fontSize: '1.08rem', marginBottom: 4 }}>
-                  Jugador {idx + 1}
-                </div>
-                <div style={{ color: '#fff', fontWeight: 600 }}>Nombre: <span style={{ color: '#b3cfff' }}>{p.name}</span></div>
-                <div style={{ color: '#fff', fontWeight: 600 }}>SteamID: <span style={{ color: '#b3cfff' }}>{p.steamid}</span></div>
-                <div style={{ color: '#fff', fontWeight: 600 }}>Canal de Transmision: <span style={{ color: '#27ae60' }}>{p.twitch}</span></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Admin = () => {
-  const [user, setUser] = useState(null);
-  const [checking, setChecking] = useState(true);
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
-  const [applys, setApplys] = useState([]);
-  const [loadingApplys, setLoadingApplys] = useState(true);
-  const [deletingIdx, setDeletingIdx] = useState(null);
-  const [showApplyDetail, setShowApplyDetail] = useState(null);
-  const [activePanel, setActivePanel] = useState('dashboard');
-  const history = useHistory();
-
-  useEffect(() => {
-    fetch('/api/user', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        setUser(data && data.steamid ? data : null);
-        setChecking(false);
-      })
-      .catch(() => setChecking(false));
-  }, []);
-
-  useEffect(() => {
-    if (user && ADMIN_STEAM_IDS.includes(user.steamid)) {
-      fetch('/api/admin/users', { credentials: 'include' })
-        .then(res => res.json())
-        .then(data => {
-          setUsers(Array.isArray(data) ? data : []);
-          setLoadingUsers(false);
-        })
-        .catch(() => setLoadingUsers(false));
-      fetch('/api/admin/applys', { credentials: 'include' })
-        .then(res => res.json())
-        .then(data => {
-          setApplys(Array.isArray(data) ? data : []);
-          setLoadingApplys(false);
-        })
-        .catch(() => setLoadingApplys(false));
-    }
-  }, [user]);
-
-  // Nuevo: Eliminar solicitud de inscripción
-  const handleDeleteApply = idx => {
-    if (!window.confirm('¿Seguro que deseas eliminar esta solicitud?')) return;
-    setDeletingIdx(idx);
-    fetch(`/api/admin/applys/${idx}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok) {
-          setApplys(applys => applys.filter((_, i) => i !== idx));
-        }
-        setDeletingIdx(null);
-      })
-      .catch(() => setDeletingIdx(null));
-  };
-
-  if (checking) {
-    return <div style={{ color: '#fff', textAlign: 'center', margin: '2rem' }}>Cargando...</div>;
-  }
-
-  if (!user || !ADMIN_STEAM_IDS.includes(user.steamid)) {
-    return (
-      <div style={{
-        maxWidth: 600,
-        margin: '4rem auto',
-        background: 'rgba(24,24,24,0.97)',
-        borderRadius: 24,
-        boxShadow: '0 8px 32px #000b',
-        padding: '2.5rem 2rem',
-        textAlign: 'center',
-        color: '#fff',
-        fontFamily: 'Montserrat, Arial, sans-serif'
-      }}>
-        <h2 style={{ color: '#e25822', fontWeight: 900, fontSize: '2rem', marginBottom: '1.5rem' }}>
-          Acceso denegado
-        </h2>
-        <p>No tienes permisos para ver este panel.</p>
-        <button
-          onClick={() => history.push('/')}
-          style={{
-            marginTop: 24,
-            background: '#e25822',
-            color: '#fff',
-            fontWeight: 700,
-            fontSize: '1rem',
-            padding: '0.7rem 2rem',
-            border: 'none',
-            borderRadius: 10,
-            boxShadow: '0 2px 8px #0007',
-            cursor: 'pointer',
-            letterSpacing: '1px',
-            textDecoration: 'none',
-            transition: 'background 0.2s, transform 0.2s'
-          }}
-        >
-          Volver al Home
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{
-      maxWidth: 1100,
-      margin: '4rem auto',
-      background: 'rgba(24,24,24,0.97)',
-      borderRadius: 32,
-      boxShadow: '0 8px 32px #000b',
-      padding: '2.5rem 2rem',
-      textAlign: 'center',
-      color: '#fff',
-      fontFamily: 'Montserrat, Arial, sans-serif',
-      border: '2px solid #27ae60cc'
-    }}>
-      <h1 style={{
-        color: '#27ae60',
-        fontWeight: 900,
-        fontSize: '2.5rem',
-        marginBottom: '2rem',
-        letterSpacing: '2px',
-        textShadow: '0 2px 18px #000a'
-      }}>
-        Admin Panel
-      </h1>
-      <AdminPanelMenu active={activePanel} setActive={setActivePanel} />
-
-      {activePanel === 'dashboard' && (
-        <div style={{
-          background: '#23201a',
-          borderRadius: 14,
-          boxShadow: '0 2px 12px #27ae6088',
-          padding: '2rem 1.5rem',
-          marginBottom: '2.5rem',
-          fontSize: '1.18rem',
-          fontWeight: 600,
-          color: '#fff',
-          letterSpacing: '1px',
-          textShadow: '0 1px 8px #000a',
-          border: '1.5px solid #27ae60cc'
-        }}>
-          <div style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: 12 }}>
-            Bienvenido, {user.name}
-          </div>
-          <div>
-            <span style={{ color: '#b3cfff' }}>Usuarios registrados:</span> {users.length}
-            <span style={{ marginLeft: 24, color: '#e25822' }}>Solicitudes:</span> {applys.length}
-          </div>
-          <div style={{ marginTop: 18, fontSize: '1.08rem', color: '#fff', opacity: 0.85 }}>
-            Usa el menú superior para gestionar usuarios y solicitudes.
-          </div>
-        </div>
-      )}
-
-      {activePanel === 'users' && (
-        <div style={{
-          margin: '2.5rem 0 0 0',
-          background: '#23201a',
-          borderRadius: 18,
-          boxShadow: '0 2px 12px #0007',
-          padding: '1.2rem 1rem',
-          color: '#fff',
-          fontFamily: 'Montserrat, Arial, sans-serif'
-        }}>
-          <h2 style={{ color: '#e25822', fontWeight: 800, fontSize: '1.3rem', marginBottom: 18 }}>
-            Usuarios registrados por Steam
-          </h2>
-          {loadingUsers ? (
-            <div>Cargando usuarios...</div>
-          ) : users.length === 0 ? (
-            <div>No hay usuarios registrados aún.</div>
-          ) : (
-            <table style={{
-              width: '100%',
-              color: '#fff',
-              borderCollapse: 'collapse',
-              fontSize: '1rem',
-              background: '#181818',
-              borderRadius: 12,
-              overflow: 'hidden',
-              marginBottom: 24
-            }}>
-              <thead style={{ background: '#23201a' }}>
-                <tr>
-                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Avatar</th>
-                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>SteamID</th>
-                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Nombre</th>
-                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #27ae60', fontWeight: 700 }}>Último login</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map(u => (
-                  <tr key={u.steamid} style={{ background: '#23201a' }}>
-                    <td style={{ padding: 10 }}>
-                      <img src={u.avatar} alt="avatar" style={{ width: 38, height: 38, borderRadius: '50%', border: '2px solid #7289da' }} />
-                    </td>
-                    <td style={{ padding: 10 }}>{u.steamid}</td>
-                    <td style={{ padding: 10 }}>{u.name}</td>
-                    <td style={{ padding: 10 }}>{u.lastLogin ? new Date(u.lastLogin).toLocaleString() : '-'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      )}
-
-      {activePanel === 'applys' && (
-        <div style={{
-          margin: '2.5rem 0 0 0',
-          background: '#23201a',
-          borderRadius: 18,
-          boxShadow: '0 2px 12px #0007',
-          padding: '1.2rem 1rem',
-          color: '#fff',
-          fontFamily: 'Montserrat, Arial, sans-serif'
-        }}>
-          <h2 style={{ color: '#27ae60', fontWeight: 800, fontSize: '1.3rem', marginBottom: 18 }}>
-            Solicitudes de inscripción
-          </h2>
-          {loadingApplys ? (
-            <div>Cargando solicitudes...</div>
-          ) : applys.length === 0 ? (
-            <div>No hay solicitudes de inscripción aún.</div>
-          ) : (
-            <table style={{
-              width: '100%',
-              color: '#fff',
-              borderCollapse: 'collapse',
-              fontSize: '1rem',
-              background: '#181818',
-              borderRadius: 12,
-              overflow: 'hidden'
-            }}>
-              <thead style={{ background: '#23201a' }}>
-                <tr>
-                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Equipo</th>
-                  <th style={{ textAlign: 'left', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Postulante</th>
-                  <th style={{ textAlign: 'center', padding: 10, borderBottom: '2px solid #e25822', fontWeight: 700 }}>Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applys.map((a, idx) => (
-                  <tr key={idx} style={{ background: idx % 2 === 0 ? '#23201a' : '#181818' }}>
-                    <td style={{ padding: 10 }}>{a.teamName}</td>
-                    <td style={{ padding: 10 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <img src={users.find(u => u.steamid === a.submittedBy)?.avatar} alt="avatar" style={{ width: 28, height: 28, borderRadius: '50%', border: '2px solid #7289da' }} />
-                        <span style={{ color: '#b3cfff', fontWeight: 700 }}>{a.submittedByName}</span>
-                        <span style={{ color: '#fff', fontSize: '0.95rem' }}>({a.submittedBy})</span>
-                      </div>
-                    </td>
-                    <td style={{ padding: 10, textAlign: 'center' }}>
-                      <button
-                        onClick={() => setShowApplyDetail({ apply: a, user: users.find(u => u.steamid === a.submittedBy) })}
-                        style={{
-                          background: 'linear-gradient(90deg, #27ae60 60%, #e25822 100%)',
-                          color: '#fff',
-                          fontWeight: 700,
-                          fontSize: '1rem',
-                          padding: '0.5rem 1.2rem',
-                          border: 'none',
-                          borderRadius: 8,
-                          boxShadow: '0 2px 8px #0007',
-                          cursor: 'pointer',
-                          letterSpacing: '1px',
-                          textDecoration: 'none',
-                          transition: 'background 0.2s, transform 0.2s',
-                          marginRight: 8
-                        }}
-                      >
-                        Ver Apply
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      )}
-
-      <button
-        onClick={() => history.push('/')}
-        style={{
-          marginTop: 32,
-          background: '#e25822',
-          color: '#fff',
-          fontWeight: 700,
-          fontSize: '1rem',
-          padding: '0.7rem 2rem',
-          border: 'none',
-          borderRadius: 10,
-          boxShadow: '0 2px 8px #0007',
-          cursor: 'pointer',
-          letterSpacing: '1px',
-          textDecoration: 'none',
-          transition: 'background 0.2s, transform 0.2s'
-        }}
-      >
-        Volver al Home
-      </button>
-      <span style={{
-        color: '#b3cfff',
-        fontSize: '1.05rem',
-        fontWeight: 500,
-        display: 'block',
-        marginTop: '1.2rem',
-        opacity: 0.85
-      }}>
-        (Solo visible para el usuario administrador)
-      </span>
-      <style>
-        {`
-          table {
-            border-radius: 12px;
-            overflow: hidden;
-          }
-          th, td {
-            vertical-align: top;
-          }
-          tr:hover {
-            background: #2d2d2d !important;
-          }
-          button:hover:not(:disabled) {
-            transform: scale(1.07);
-            background: linear-gradient(90deg, #27ae60 60%, #e25822 100%);
-          }
-        `}
-      </style>
-      {showApplyDetail && (
-        <ApplyDetailModal
-          apply={showApplyDetail.apply}
-          user={showApplyDetail.user}
-          onClose={() => setShowApplyDetail(null)}
-        />
-      )}
-    </div>
-  );
-};
-
-export default Admin;
