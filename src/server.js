@@ -1,4 +1,10 @@
-// filepath: server.js
+// filepath: src/server.js
+const path = require('path');
+
+// Carga el .env de la raíz del proyecto sin depender del cwd desde el que
+// se arranque (pm2, systemd, npm, etc.).
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -6,16 +12,80 @@ const SteamStrategy = require('passport-steam').Strategy;
 const cors = require('cors');
 const os = require('os');
 const fs = require('fs');
-const path = require('path');
 const mysql = require('mysql2/promise');
 
 const app = express();
 
+// ============================================================
+//  CONFIGURACIÓN
+//  Todo se lee de variables de entorno / .env.
+//  Ver .env.example para la lista completa y su documentación.
+//  Regla: cero secretos hardcodeados en este archivo.
+// ============================================================
+
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const SERVER_PUBLIC_URL = process.env.SERVER_PUBLIC_URL || 'https://158.69.212.144';
-const CLIENT_URL = process.env.CLIENT_URL || 'https://158.69.212.144';
+const IS_PROD = NODE_ENV === 'production';
+
+const missingEnv = [];
+
+function readEnv(name, { required = false, fallback = '' } = {}) {
+  const value = String(process.env[name] ?? '').trim();
+  if (value) {
+    return value;
+  }
+  if (required) {
+    missingEnv.push(name);
+  }
+  return fallback;
+}
+
 const PORT = Number(process.env.PORT) || 3001;
-const HOST = process.env.HOST || '0.0.0.0';
+// Detrás de Nginx el backend solo debe escuchar en loopback.
+const HOST = readEnv('HOST', { fallback: IS_PROD ? '127.0.0.1' : '0.0.0.0' });
+
+const SERVER_PUBLIC_URL = readEnv('SERVER_PUBLIC_URL', {
+  required: IS_PROD,
+  fallback: `http://localhost:${PORT}`
+});
+const CLIENT_URL = readEnv('CLIENT_URL', {
+  required: IS_PROD,
+  fallback: 'http://localhost:3000'
+});
+
+const SESSION_SECRET = readEnv('SESSION_SECRET', {
+  required: IS_PROD,
+  fallback: 'dev-only-insecure-secret'
+});
+const STEAM_API_KEY = readEnv('STEAM_API_KEY', { required: true });
+
+// SteamIDs con acceso al panel administrativo (separados por coma)
+const ADMIN_STEAM_IDS = readEnv('ADMIN_STEAM_IDS')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+// MySQL deshabilitado por defecto. Cuando tengas una base de datos,
+// poné DB_ENABLED=true en el .env con las credenciales DB_* correspondientes.
+const DB_ENABLED = readEnv('DB_ENABLED', { fallback: 'false' }).toLowerCase() === 'true';
+const DB_HOST = readEnv('DB_HOST', { required: DB_ENABLED });
+const DB_USER = readEnv('DB_USER', { required: DB_ENABLED });
+const DB_PASSWORD = readEnv('DB_PASSWORD', { required: DB_ENABLED });
+const DB_NAME = readEnv('DB_NAME', { required: DB_ENABLED });
+const DB_PORT = Number(process.env.DB_PORT) || 3306;
+
+if (missingEnv.length > 0) {
+  console.error('[config] Faltan variables de entorno obligatorias:');
+  missingEnv.forEach((name) => console.error(`  - ${name}`));
+  console.error('[config] Copiá .env.example a .env y completá los valores antes de arrancar.');
+  process.exit(1);
+}
+
+if (ADMIN_STEAM_IDS.length === 0) {
+  console.warn('[config] ADMIN_STEAM_IDS está vacío: nadie podrá entrar al panel de administración.');
+}
+if (IS_PROD && SESSION_SECRET.length < 32) {
+  console.warn('[config] SESSION_SECRET es demasiado corto. Generá uno con: openssl rand -hex 32');
+}
 
 const corsOrigins = [
   CLIENT_URL,
@@ -40,7 +110,7 @@ app.use(cors({
 }));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'rustaco',
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -52,16 +122,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.json()); // Para parsear JSON en POST
-
-// MySQL deshabilitado por defecto. Cuando tengas una base de datos,
-// arranca con DB_ENABLED=true (y las credenciales DB_* correspondientes).
-const DB_ENABLED = String(process.env.DB_ENABLED || 'false').toLowerCase() === 'true';
-
-const DB_HOST = process.env.DB_HOST || '34.139.33.19';
-const DB_USER = process.env.DB_USER || 'rustaco';
-const DB_PASSWORD = process.env.DB_PASSWORD || 'Rustaco.2000';
-const DB_NAME = process.env.DB_NAME || 'rustaco';
-const DB_PORT = Number(process.env.DB_PORT) || 3306;
 
 const statsDb = DB_ENABLED
   ? mysql.createPool({
@@ -121,14 +181,6 @@ async function verifyDbConnection() {
     });
   }
 }
-
-const STEAM_API_KEY = process.env.STEAM_API_KEY || '5B524B1DFABA4C0079095168DA81EF7F';
-
-// SteamIDs con acceso al panel administrativo (separados por coma en env ADMIN_STEAM_IDS)
-const ADMIN_STEAM_IDS = (process.env.ADMIN_STEAM_IDS || '76561198416933402')
-  .split(',')
-  .map((value) => value.trim())
-  .filter(Boolean);
 
 function isAdminSteamId(steamid) {
   return ADMIN_STEAM_IDS.includes(String(steamid || ''));
