@@ -5,6 +5,7 @@ import '../assets/home-dark.css';
 import '../assets/server-theme.css';
 
 import { useLang, useT, formatDate } from '../context/LanguageContext.jsx';
+import { LOGIN_ENABLED } from '../config/features.js';
 import {
   TICKET_CATEGORIES,
   TicketThread,
@@ -155,11 +156,13 @@ export default function Admin() {
         {user === null && (
           <div className="rw-login-card">
             <i className="bi bi-shield-lock rw-login-icon" />
-            <h1>{t.admRestrictedTitle}</h1>
-            <p>{t.admRestrictedText}</p>
-            <a className="rw-btn rw-btn--primary" href="/auth/steam">
-              <i className="bi bi-steam" /> {t.profLoginBtn}
-            </a>
+            <h1>{LOGIN_ENABLED ? t.admRestrictedTitle : t.loginDisabledTitle}</h1>
+            <p>{LOGIN_ENABLED ? t.admRestrictedText : t.loginDisabledText}</p>
+            {LOGIN_ENABLED && (
+              <a className="rw-btn rw-btn--primary" href="/auth/steam">
+                <i className="bi bi-steam" /> {t.profLoginBtn}
+              </a>
+            )}
           </div>
         )}
 

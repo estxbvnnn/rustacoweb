@@ -319,7 +319,7 @@ export default function Home() {
 
       <footer className="rw-footer">
         <div className="rw-footer-brand">
-          <img src={logoNuevo} alt="Rustaco" />
+          <img src={logoNuevo} alt="Rustaco" loading="lazy" decoding="async" />
           <span>
             {t.footerRights}
             <small style={{ display: "block", opacity: 0.7 }}>{t.footerDisclaimer}</small>

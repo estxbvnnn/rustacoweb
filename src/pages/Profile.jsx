@@ -6,6 +6,7 @@ import '../assets/server-theme.css';
 
 import logoNuevo from '../assets/img/logonuevo.png';
 import { useLang, useT, formatDate } from '../context/LanguageContext.jsx';
+import { LOGIN_ENABLED } from '../config/features.js';
 
 const DISCORD_URL = 'https://discord.gg/WEjcYM3wRs';
 
@@ -323,7 +324,7 @@ export function TicketThread({ ticketId, currentUser, onChanged, onBack, allowAd
               className={`rw-msg ${msg.IsAdmin ? 'rw-msg--admin' : ''} ${mine ? 'rw-msg--mine' : ''}`}
             >
               <div className="rw-msg-avatar">
-                {msg.Avatar ? <img src={msg.Avatar} alt="" /> : <i className="bi bi-person-circle" />}
+                {msg.Avatar ? <img src={msg.Avatar} alt="" loading="lazy" decoding="async" /> : <i className="bi bi-person-circle" />}
               </div>
               <div className="rw-msg-content">
                 <div className="rw-msg-author">
@@ -500,14 +501,22 @@ export default function Profile() {
         )}
 
         {user === null && (
-          <div className="rw-login-card">
-            <i className="bi bi-steam rw-login-icon" />
-            <h1>{t.profLoginTitle}</h1>
-            <p>{t.profLoginText}</p>
-            <a className="rw-btn rw-btn--primary" href="/auth/steam">
-              <i className="bi bi-steam" /> {t.profLoginBtn}
-            </a>
-          </div>
+          LOGIN_ENABLED ? (
+            <div className="rw-login-card">
+              <i className="bi bi-steam rw-login-icon" />
+              <h1>{t.profLoginTitle}</h1>
+              <p>{t.profLoginText}</p>
+              <a className="rw-btn rw-btn--primary" href="/auth/steam">
+                <i className="bi bi-steam" /> {t.profLoginBtn}
+              </a>
+            </div>
+          ) : (
+            <div className="rw-login-card">
+              <i className="bi bi-lock rw-login-icon" />
+              <h1>{t.loginDisabledTitle}</h1>
+              <p>{t.loginDisabledText}</p>
+            </div>
+          )
         )}
 
         {user && (
@@ -664,7 +673,7 @@ export default function Profile() {
 
       <footer className="rw-footer">
         <div className="rw-footer-brand">
-          <img src={logoNuevo} alt="Rustaco" />
+          <img src={logoNuevo} alt="Rustaco" loading="lazy" decoding="async" />
           <span>{t.footerRights}</span>
         </div>
         <nav className="rw-footer-links">

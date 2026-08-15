@@ -337,7 +337,7 @@ const Events = () => {
     if (resource?.image) {
       return (
         <span className="rw-lb-th-inner rw-lb-th-icon" title={resource.label}>
-          <img src={resource.image} alt={resource.label} />
+          <img src={resource.image} alt={resource.label} loading="lazy" decoding="async" />
         </span>
       );
     }
@@ -595,7 +595,7 @@ const Events = () => {
                           const label = meta?.label || shortName;
                           return (
                             <div key={shortName} className="rw-resource-card" title={label}>
-                              {meta?.image && <img src={meta.image} alt={label} />}
+                              {meta?.image && <img src={meta.image} alt={label} loading="lazy" decoding="async" />}
                               <strong>{Number(resource?.ItemValue || 0).toLocaleString()}</strong>
                               <span>{label}</span>
                             </div>

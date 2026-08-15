@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useT } from '../context/LanguageContext.jsx';
+import { LOGIN_ENABLED } from '../config/features.js';
 
 /**
  * Botón de sesión para la navbar: muestra "Iniciar sesión" (Steam) o el
@@ -25,6 +26,13 @@ export default function UserMenu({ loginLabel }) {
       active = false;
     };
   }, []);
+
+  // Con el login oculto no se muestra nada mientras no haya sesión (ni el
+  // skeleton de carga, para evitar un parpadeo en la navbar). Las sesiones
+  // ya iniciadas siguen viendo su avatar.
+  if (!LOGIN_ENABLED && !user) {
+    return null;
+  }
 
   if (user === undefined) {
     return <span className="rw-user-skeleton" aria-hidden="true" />;

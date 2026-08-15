@@ -141,6 +141,8 @@ export const STRINGS = {
     profLoginText:
       'Conéctate con tu cuenta de Steam para ver tu perfil, tus estadísticas del servidor y abrir tickets de soporte.',
     profLoginBtn: 'Iniciar sesión con Steam',
+    loginDisabledTitle: 'No disponible',
+    loginDisabledText: 'El inicio de sesión está temporalmente deshabilitado. Volvé a intentarlo más tarde.',
     profAdminBadge: 'Admin',
     profCopySteamId: 'Copiar SteamID',
     profAdminPanel: 'Panel admin',
@@ -280,6 +282,8 @@ export const STRINGS = {
     profLoginText:
       'Sign in with your Steam account to see your profile, your server stats and open support tickets.',
     profLoginBtn: 'Sign in with Steam',
+    loginDisabledTitle: 'Unavailable',
+    loginDisabledText: 'Sign in is temporarily disabled. Please try again later.',
     profAdminBadge: 'Admin',
     profCopySteamId: 'Copy SteamID',
     profAdminPanel: 'Admin panel',
@@ -417,6 +421,8 @@ export const STRINGS = {
     profLoginText:
       'Conecte-se com sua conta Steam para ver seu perfil, suas estatísticas do servidor e abrir tickets de suporte.',
     profLoginBtn: 'Entrar com Steam',
+    loginDisabledTitle: 'Indisponível',
+    loginDisabledText: 'O login está temporariamente desativado. Tente novamente mais tarde.',
     profAdminBadge: 'Admin',
     profCopySteamId: 'Copiar SteamID',
     profAdminPanel: 'Painel admin',

@@ -2657,12 +2657,16 @@ select.rw-input option {
 }
 
 /* aurora giratoria muy difusa */
+/* RENDIMIENTO: 144% es el mínimo que sigue cubriendo el viewport al rotar
+   (un cuadrado rotado 45° solo cubre lado/√2 ≈ 71% de sí mismo). Bajar de
+   160% a 144% recorta ~19% del área a desenfocar, y el blur de 60px a 45px
+   reduce el muestreo sin que se note el cambio con esta opacidad. */
 .rw-bg-aurora {
   position: absolute;
-  top: -30%;
-  left: -30%;
-  width: 160%;
-  height: 160%;
+  top: -22%;
+  left: -22%;
+  width: 144%;
+  height: 144%;
   background:
     conic-gradient(
       from 0deg at 50% 50%,
@@ -2672,21 +2676,23 @@ select.rw-input option {
       rgba(10, 12, 15, 0) 60%,
       rgba(226, 88, 34, 0.12)
     );
-  filter: blur(60px);
+  filter: blur(45px);
   opacity: 0.7;
   will-change: transform;
   animation: rwAurora 40s linear infinite;
 }
 
 @keyframes rwAurora {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: rotate3d(0, 0, 1, 0deg); }
+  to { transform: rotate3d(0, 0, 1, 360deg); }
 }
 
+/* RENDIMIENTO: el degradado radial ya se desvanece al 70%, así que un blur
+   de 90px era casi redundante; 60px da el mismo resultado más barato. */
 .rw-bg-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(60px);
   opacity: 0.55;
   will-change: transform;
 }
@@ -2718,35 +2724,54 @@ select.rw-input option {
   animation: rwGlowC 31s ease-in-out infinite;
 }
 
+/* RENDIMIENTO: estos keyframes animaban también scale(). Escalar una capa
+   con filter: blur() obliga al navegador a volver a rasterizar el desenfoque
+   en cada frame en lugar de reutilizar la textura ya compuesta. Dejando solo
+   translate3d, el movimiento lo resuelve el compositor en la GPU y el blur
+   se calcula una única vez. Es el cambio que más FPS recupera. */
 @keyframes rwGlowA {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(70px, 46px) scale(1.08); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(70px, 46px, 0); }
 }
 @keyframes rwGlowB {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-56px, 34px) scale(1.1); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-56px, 34px, 0); }
 }
 @keyframes rwGlowC {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(36px, -54px) scale(1.06); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(36px, -54px, 0); }
 }
 
-/* rejilla sutil que deriva */
+/* rejilla sutil que deriva
+   RENDIMIENTO: antes animaba background-position, que no es una propiedad
+   componible: obligaba a repintar la pantalla completa en cada frame, en el
+   hilo principal y de forma permanente. Ahora la máscara queda en el
+   contenedor y las líneas viven en un ::before que se desplaza con
+   transform, que sí resuelve el compositor. El efecto visual es el mismo. */
 .rw-bg-grid {
   position: absolute;
-  inset: -40px;
+  inset: 0;
+  overflow: hidden;
+  mask-image: radial-gradient(120% 100% at 50% 30%, #000 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 30%, #000 55%, transparent 100%);
+}
+
+.rw-bg-grid::before {
+  content: '';
+  position: absolute;
+  /* margen holgado para que el desplazamiento no descubra los bordes */
+  inset: -140px;
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 46px 46px;
-  mask-image: radial-gradient(120% 100% at 50% 30%, #000 55%, transparent 100%);
-  -webkit-mask-image: radial-gradient(120% 100% at 50% 30%, #000 55%, transparent 100%);
+  will-change: transform;
   animation: rwGridDrift 55s linear infinite;
 }
 
 @keyframes rwGridDrift {
-  from { background-position: 0 0, 0 0; }
-  to { background-position: 46px 92px, 46px 92px; }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(46px, 92px, 0); }
 }
 
 /* hexágonos flotantes */
@@ -2798,6 +2823,7 @@ select.rw-input option {
   transform: translate(-50%, -50%);
   opacity: 0.045;
   filter: grayscale(0.15);
+  will-change: opacity, transform;
   animation: rwWatermark 14s ease-in-out infinite;
 }
 
@@ -2949,6 +2975,7 @@ select.rw-input option {
   .rw-bg-aurora,
   .rw-bg-glow,
   .rw-bg-grid,
+  .rw-bg-grid::before,
   .rw-hex,
   .rw-bg-watermark,
   .rw-ember,

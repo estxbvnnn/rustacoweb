@@ -1,8 +1,16 @@
 import React from 'react';
 import logoNuevo from '../assets/img/logonuevo.png';
 
+// NOTA DE RENDIMIENTO
+// Cada partícula es un elemento del DOM animado de forma permanente. Las
+// cantidades de abajo se bajaron de 132 a 74 elementos en total porque los
+// usuarios reportaban caídas de FPS: el costo de compositar tantas capas
+// (varias con will-change, que reserva memoria de GPU por elemento) crece
+// de forma lineal y se paga en todos los frames, en todas las páginas.
+// Si vas a subirlas, medí antes con el panel Rendimiento de Chrome.
+
 // Brasas que suben (deterministas, sin Math.random para render estable)
-const EMBERS = Array.from({ length: 36 }, (_, i) => ({
+const EMBERS = Array.from({ length: 20 }, (_, i) => ({
   key: i,
   left: (i * 29 + 5) % 100,
   size: 2 + (i % 4),
@@ -12,7 +20,7 @@ const EMBERS = Array.from({ length: 36 }, (_, i) => ({
 }));
 
 // Motas de polvo a la deriva (lentas, tenues)
-const DUST = Array.from({ length: 44 }, (_, i) => ({
+const DUST = Array.from({ length: 24 }, (_, i) => ({
   key: i,
   left: (i * 43 + 9) % 100,
   top: (i * 67 + 13) % 100,
@@ -23,7 +31,7 @@ const DUST = Array.from({ length: 44 }, (_, i) => ({
 }));
 
 // Hexágonos flotantes que giran
-const HEXES = Array.from({ length: 12 }, (_, i) => ({
+const HEXES = Array.from({ length: 8 }, (_, i) => ({
   key: i,
   left: (i * 37 + 4) % 96,
   top: (i * 29 + 6) % 90,
@@ -35,7 +43,7 @@ const HEXES = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 // Destellos que titilan
-const SPARKS = Array.from({ length: 34 }, (_, i) => ({
+const SPARKS = Array.from({ length: 18 }, (_, i) => ({
   key: i,
   left: (i * 47 + 3) % 100,
   top: (i * 59 + 11) % 96,
@@ -45,7 +53,7 @@ const SPARKS = Array.from({ length: 34 }, (_, i) => ({
 }));
 
 // Estelas fugaces diagonales
-const STREAKS = Array.from({ length: 6 }, (_, i) => ({
+const STREAKS = Array.from({ length: 4 }, (_, i) => ({
   key: i,
   top: (i * 17 + 6) % 70,
   duration: 5 + (i % 4),

@@ -70,7 +70,7 @@ export default function Maps() {
 
       <footer className="rw-footer">
         <div className="rw-footer-brand">
-          <img src={logoNuevo} alt="Rustaco" />
+          <img src={logoNuevo} alt="Rustaco" loading="lazy" decoding="async" />
           <span>{t.footerRights}</span>
         </div>
         <nav className="rw-footer-links">
